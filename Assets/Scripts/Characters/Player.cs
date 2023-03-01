@@ -88,8 +88,8 @@ public class Player : Character
     {
         float formattingHPValueToWidget = currentHP / maxHP;
         float formattingDefenceValueToWidget = currentDefence / maxDefence;
-        if(_hpBarUI is not null) _hpBarUI.GetComponent<ProgressBar>().ÑhangeWidgetValue(formattingHPValueToWidget);
-        if(_defenceBarUI is not null) _defenceBarUI.GetComponent<ProgressBar>().ÑhangeWidgetValue(formattingDefenceValueToWidget);
+        if(_hpBarUI is not null) _hpBarUI.GetComponent<ProgressBar>().hangeWidgetValue(formattingHPValueToWidget);
+        if(_defenceBarUI is not null) _defenceBarUI.GetComponent<ProgressBar>().hangeWidgetValue(formattingDefenceValueToWidget);
     }
     public override void EffectWidgetTrigger(string effectType, float duration)
     {
