@@ -1,11 +1,11 @@
 using UnityEngine.UI;
 using UnityEngine;
-using System.Collections;
 
 public class HUD : MonoBehaviour
 {
     [SerializeField] private Image[] _iconSlots;
     private Color[] setAlfa = new Color[6];
+    private bool isPauseButtonPressed = false;
 
     private void Start()
     {
@@ -37,6 +37,17 @@ public class HUD : MonoBehaviour
         setAlfa[slot] = _iconSlots[slot].color;
         setAlfa[slot].a = transparent;
         _iconSlots[slot].color = setAlfa[slot];
+    }
+    public void SettingsButtonClick()
+    {
+        if (isPauseButtonPressed) Pause(false);
+        else Pause(true);
+    }
+    private void Pause(bool pauseState)
+    {
+        if(pauseState) Time.timeScale = 0;
+        else Time.timeScale = 1;
+        isPauseButtonPressed = pauseState;
     }
     private void HideAllIcons()
     {

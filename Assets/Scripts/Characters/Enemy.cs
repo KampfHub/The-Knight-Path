@@ -18,6 +18,7 @@ public class Enemy : Character
         speed = _speed;
         attackPower = _attackPower;
         attackRange = _attackRange;
+        RotationCorrection();
     }
     void Update()
     {
@@ -56,4 +57,14 @@ public class Enemy : Character
             if (RaycastCheck(Vector2.right, _sightLenght, playerLayer)) spriteRenderer.flipX = false;
         }
     }
+    private void RotationCorrection()
+    {
+
+        if(transform.rotation.y != 0)
+        {
+            transform.Rotate(0, -180, 0);
+            spriteRenderer.flipX = false;
+        }
+    }
+
 }

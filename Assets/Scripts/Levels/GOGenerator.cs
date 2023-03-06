@@ -2,20 +2,28 @@ using UnityEngine;
 
 public class GOGenerator : MonoBehaviour
 {
-    [SerializeField] GameObject[] enemies;
-    GameObject[] enemiesPoints;
+    [SerializeField] private GameObject[] _enemies;
+    [SerializeField] private GameObject[] _obstacles;
+    private GameObject[] enemiesPoints;
+    private GameObject[] obstaclePoints;
     private void Start()
     {
-        SpawnEnemies();
+        if (isNotNullOrEmptyCheck(_enemies)) SwapObjects("EmptyEnemy", enemiesPoints, _enemies);
+        if (isNotNullOrEmptyCheck(_obstacles)) SwapObjects("EmptyObstacle", obstaclePoints, _obstacles);
     }
-    private void SpawnEnemies()
+    private void SwapObjects(string tagReplaceableObjects, GameObject[] originalObjects, GameObject[] newObjects)
     {
-        enemiesPoints = GameObject.FindGameObjectsWithTag("EmptyEnemy");
-        for(int i = 0; i < enemiesPoints.Length; i++)
+        originalObjects = GameObject.FindGameObjectsWithTag(tagReplaceableObjects);
+        for(int i = 0; i < originalObjects.Length; i++)
         {
-            Vector3 position = enemiesPoints[i].transform.position;
-            Destroy(enemiesPoints[i]);
-            Instantiate(enemies[Random.Range(0, enemies.Length)], position, Quaternion.identity);
+            Vector3 position = originalObjects[i].transform.position;
+            Quaternion rotation = originalObjects[i].transform.rotation;
+            Destroy(originalObjects[i]);
+            Instantiate(newObjects[Random.Range(0, newObjects.Length)], position, rotation);
         }
+    }
+    private bool isNotNullOrEmptyCheck(GameObject[] go)
+    {
+        return go is null || go.Length == 0 ? false : true;
     }
 }
