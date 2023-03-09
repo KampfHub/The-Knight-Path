@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class MoveToRightButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class MoveToLeftButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
     private GameObject playerRef;
     private bool isHold;

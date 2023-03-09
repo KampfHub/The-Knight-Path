@@ -1,5 +1,5 @@
 using UnityEngine;
-
+public delegate void PlayerTrigger();
 public class Player : Character
 {
     [SerializeField] private float _maxHP;
@@ -10,11 +10,11 @@ public class Player : Character
     [SerializeField] private float _jumpForce;
     [SerializeField] private float _timeAttack;
     [SerializeField] private float _raycastlengthForJump;
-    private GameObject HUD;
+    private GameObject GUI;
     private bool isAttacikng;
     private void Awake()
     {
-        HUD = GameObject.Find("GUI");
+        GUI = GameObject.Find("GUI");
         CheckAndSetEmptyValues();
     }
     void Start()
@@ -32,11 +32,14 @@ public class Player : Character
         jumpForce = _jumpForce;
         raycastlengthForJump = _raycastlengthForJump;
         immortalState = false;
+        GUI.GetComponent<Buttons>().JumpTrigger += Jump;
+        GUI.GetComponent<Buttons>().AttackTrigger += Attack;
         HealthWidgetTrigger();
     }
     void Update()
     {
         if (currentHP >= 0 && isAttacikng == false) InputsListener();
+        if (CheckOnPit()) InThePit();
     }
     private void InputsListener()
     {
@@ -52,9 +55,15 @@ public class Player : Character
             isWalking(false);
         if (Input.GetKeyDown(KeyCode.Space))
             Jump();
-
+        if (GUI.GetComponentInChildren<MoveToRightButton>().ButtonIsHold())
+            MoveTo(Vector2.right);
+        if (GUI.GetComponentInChildren<MoveToLeftButton>().ButtonIsHold())
+            MoveTo(Vector2.left);
     }
-    
+    public void StopMove()
+    {
+        animator.SetBool("isWalking", false);
+    }
     private void Attack()
     {
         if (RaycastCheck(Vector2.down, raycastlengthForJump, groundLayer))
@@ -63,6 +72,20 @@ public class Player : Character
             isAttacikng = true;
             Invoke("RestoreAttakState", _timeAttack);
         }
+    }
+    private void Jump()
+    {
+        if (RaycastCheck(Vector2.down, raycastlengthForJump, groundLayer))
+        {
+            animator.SetTrigger("isJumping");
+            rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+        }
+    }
+    protected override void InThePit()
+    {
+        //TODO
+        gameObject.SetActive(false);
+        Time.timeScale = 0;
     }
     private void RestoreAttakState()
     {
@@ -95,13 +118,12 @@ public class Player : Character
     }
     public override void HealthWidgetTrigger()
     {
-        if (HUD is not null) HUD.GetComponent<HUD>().ÑhangeWidgetValue();
+        if (GUI is not null) GUI.GetComponent<HUD>().ÑhangeWidgetValue();
     }
     public override void EffectWidgetTrigger(string effectType, float duration)
     {
-        if (HUD is not null) HUD.GetComponent<HUD>().SetIconInSlot(effectType, duration);
+        if (GUI is not null) GUI.GetComponent<HUD>().SetIconInSlot(effectType, duration);
     }
-
     private void CheckAndSetEmptyValues()
     {
         if (_raycastlengthForJump == 0) raycastlengthForJump = 0.8f;

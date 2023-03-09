@@ -12,7 +12,6 @@ public class Character : MonoBehaviour
     protected float jumpForce { get; set; }
     protected float raycastlengthForJump { get; set; }
     protected bool immortalState { get; set; }
- 
     private Vector2 currentDirection
     {
         get { return vector;}
@@ -27,18 +26,12 @@ public class Character : MonoBehaviour
     protected const int enemyLayer = 256;
     protected const int deadLayer = 512; 
     private Vector2 vector;
-    void Start()
+    private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-    }
-
-    void Update()
-    {
-        
-    }
-
+    }    
     protected void MoveTo(Vector2 direction)
     {
         currentDirection = direction;
@@ -57,14 +50,6 @@ public class Character : MonoBehaviour
     protected void isWalking(bool state)
     {
         animator.SetBool("isWalking", state);
-    }
-    protected void Jump()
-    {
-        if (RaycastCheck(Vector2.down, raycastlengthForJump, groundLayer))
-        {
-            animator.SetTrigger("isJumping");
-            rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
-        }
     }
     protected void LaunchAttack()
     {
@@ -101,8 +86,9 @@ public class Character : MonoBehaviour
         }
     }
     public virtual void HealthWidgetTrigger() { }
+    protected virtual void InThePit() { }
     public virtual void EffectWidgetTrigger(string effectType, float duration) { }
-    private void Dead()
+    protected void Dead()
     {
         gameObject.layer = 9;
         animator.SetTrigger("isDead");
@@ -115,6 +101,11 @@ public class Character : MonoBehaviour
             return true;
  
     }
+    protected bool CheckOnPit()
+    {
+        return transform.position.y <= -5 ? true : false;
+    }
+
     public void GetImpact(Impact impact)
     {
         EffectWidgetTrigger(impact._name, impact._duration);

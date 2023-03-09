@@ -43,6 +43,11 @@ public class Enemy : Character
                 }
             }
         }
+        if (CheckOnPit()) InThePit();
+    }
+    protected override void InThePit()
+    {
+        Destroy(gameObject);
     }
     private Vector2 GetCurrentDirection()
     {

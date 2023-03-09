@@ -1,6 +1,8 @@
 using UnityEngine;
 public class Buttons : MonoBehaviour
 {
+    public event PlayerTrigger JumpTrigger;
+    public event PlayerTrigger AttackTrigger;
     private bool isPauseButtonPressed = false;
     void Start()
     {
@@ -17,9 +19,13 @@ public class Buttons : MonoBehaviour
         if (isPauseButtonPressed) Pause(false);
         else Pause(true);
     }
-    public void MoveToRightButton()
+    public void JumpButton()
     {
-        //todo
+        JumpTrigger();
+    }
+    public void AttackButton()
+    {
+        AttackTrigger();
     }
     private void Pause(bool pauseState)
     {
