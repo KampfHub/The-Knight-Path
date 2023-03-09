@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-
     protected float maxHP { get; set; }
     protected float currentHP { get; set; }
     protected float maxDefence { get; set; }
@@ -13,6 +12,7 @@ public class Character : MonoBehaviour
     protected float jumpForce { get; set; }
     protected float raycastlengthForJump { get; set; }
     protected bool immortalState { get; set; }
+ 
     private Vector2 currentDirection
     {
         get { return vector;}
@@ -76,7 +76,10 @@ public class Character : MonoBehaviour
         if (raycast.collider is not null)
         {
             var enemyScript = raycast.collider.gameObject.GetComponent<Character>();
-            if (enemyScript is not null) enemyScript.GetHit(attackPower);
+            if (enemyScript is not null)
+            {
+                enemyScript.GetHit(attackPower);
+            } 
         }
     }
     private int GetTargetLayer()

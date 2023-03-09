@@ -8,7 +8,12 @@ public class Enemy : Character
     [SerializeField] private float _attackRange;
     [SerializeField] private float _sightLenght;
     private GameObject playerRef { get; set; }
-    void Start()
+
+    private void Awake()
+    {
+        playerRef = GameObject.FindWithTag("Player");
+    }
+    private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
@@ -20,26 +25,24 @@ public class Enemy : Character
         attackRange = _attackRange;
         RotationCorrection();
     }
-    void Update()
+    private void Update()
     {
         if (playerRef is not null && playerRef.layer != 9 && this.currentHP > 0)
-        {
-            if (RaycastCheck(GetCurrentDirection(),attackRange, playerLayer))
+        {   
+            if (RaycastCheck(Vector2.left, _sightLenght, playerLayer) || RaycastCheck(Vector2.right, _sightLenght, playerLayer))
             {
-                isWalking(false);
-                LaunchAttack();
+                if (RaycastCheck(GetCurrentDirection(), attackRange, playerLayer) == false)
+                {
+                    MoveTo(GetCurrentDirection());
+                    CheckPlayerBehind();
+                }
+                if (RaycastCheck(GetCurrentDirection(),attackRange, playerLayer))
+                {
+                    isWalking(false);
+                    LaunchAttack();
+                }
             }
-            if (RaycastCheck(GetCurrentDirection(), attackRange, playerLayer) == false)
-            {
-                MoveTo(GetCurrentDirection());
-                CheckPlayerBehind();
-            }
-
         }
-    }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "Player") playerRef = collision.gameObject;
     }
     private Vector2 GetCurrentDirection()
     {

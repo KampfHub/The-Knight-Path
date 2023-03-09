@@ -10,13 +10,12 @@ public class Player : Character
     [SerializeField] private float _jumpForce;
     [SerializeField] private float _timeAttack;
     [SerializeField] private float _raycastlengthForJump;
-    private GameObject _hpBarUI;
-    private GameObject _defenceBarUI;
-    private GameObject _HUD;
+    private GameObject HUD;
     private bool isAttacikng;
     private void Awake()
     {
-        NullObjectsCheck();
+        HUD = GameObject.Find("GUI");
+        CheckAndSetEmptyValues();
     }
     void Start()
     {
@@ -53,7 +52,9 @@ public class Player : Character
             isWalking(false);
         if (Input.GetKeyDown(KeyCode.Space))
             Jump();
+
     }
+    
     private void Attack()
     {
         if (RaycastCheck(Vector2.down, raycastlengthForJump, groundLayer))
@@ -84,23 +85,25 @@ public class Player : Character
     {
         immortalState = false;
     }
+    public float GetFormattingHPValueToWidget()
+    {
+        return currentHP / maxHP;
+    }
+    public float GetFormattingDefenceValueToWidget()
+    {
+        return currentDefence / maxDefence;
+    }
     public override void HealthWidgetTrigger()
     {
-        float formattingHPValueToWidget = currentHP / maxHP;
-        float formattingDefenceValueToWidget = currentDefence / maxDefence;
-        if(_hpBarUI is not null) _hpBarUI.GetComponent<ProgressBar>().ÑhangeWidgetValue(formattingHPValueToWidget);
-        if(_defenceBarUI is not null) _defenceBarUI.GetComponent<ProgressBar>().ÑhangeWidgetValue(formattingDefenceValueToWidget);
+        if (HUD is not null) HUD.GetComponent<HUD>().ÑhangeWidgetValue();
     }
     public override void EffectWidgetTrigger(string effectType, float duration)
     {
-        if (_HUD is not null) _HUD.GetComponent<HUD>().SetIconInSlot(effectType, duration);
+        if (HUD is not null) HUD.GetComponent<HUD>().SetIconInSlot(effectType, duration);
     }
 
-    private void NullObjectsCheck()
+    private void CheckAndSetEmptyValues()
     {
-        if (_hpBarUI is null) _hpBarUI = GameObject.Find("HPBar");
-        if (_defenceBarUI is null) _defenceBarUI = GameObject.Find("DefenseBar");
-        if (_HUD is null) _HUD = GameObject.Find("HUD");
         if (_raycastlengthForJump == 0) raycastlengthForJump = 0.8f;
     }
 }

@@ -5,10 +5,13 @@ public class HUD : MonoBehaviour
 {
     [SerializeField] private Image[] _iconSlots;
     private Color[] setAlfa = new Color[6];
-    private bool isPauseButtonPressed = false;
+    private GameObject playerRef, hpBar, defenseBar;
 
-    private void Start()
+    private void Awake()
     {
+        playerRef = GameObject.FindWithTag("Player");
+        hpBar = GameObject.Find("HPBar");
+        defenseBar = GameObject.Find("DefenseBar");
         HideAllIcons();  
     }
 
@@ -17,6 +20,18 @@ public class HUD : MonoBehaviour
     {
 
     }
+    public void ÑhangeWidgetValue()
+    {
+        if (hpBar is not null)
+        {
+           hpBar.GetComponent<Image>().fillAmount = playerRef.GetComponent<Player>().GetFormattingHPValueToWidget(); 
+        }
+        if (defenseBar is not null)
+        {
+            defenseBar.GetComponent<Image>().fillAmount = playerRef.GetComponent<Player>().GetFormattingDefenceValueToWidget();
+        }  
+    }
+
     public void SetIconInSlot(string impactName, float duration)
     {
 
@@ -37,17 +52,6 @@ public class HUD : MonoBehaviour
         setAlfa[slot] = _iconSlots[slot].color;
         setAlfa[slot].a = transparent;
         _iconSlots[slot].color = setAlfa[slot];
-    }
-    public void SettingsButtonClick()
-    {
-        if (isPauseButtonPressed) Pause(false);
-        else Pause(true);
-    }
-    private void Pause(bool pauseState)
-    {
-        if(pauseState) Time.timeScale = 0;
-        else Time.timeScale = 1;
-        isPauseButtonPressed = pauseState;
     }
     private void HideAllIcons()
     {
