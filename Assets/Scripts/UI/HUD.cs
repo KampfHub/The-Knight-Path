@@ -24,7 +24,7 @@ public class HUD : MonoBehaviour
 
     private void Start()
     {
-        
+      
     }
     private IEnumerator ChangeBorderOnTimer(int slot, float duration)
     {
@@ -56,7 +56,7 @@ public class HUD : MonoBehaviour
             case "Poison": ShowIcon(2, 1); Invoke("HideIconBrokenSword", duration); StartCoroutine(ChangeBorderOnTimer(2, duration)); break;
             case "Power": ShowIcon(3, 1); Invoke("HideIconPower", duration); StartCoroutine(ChangeBorderOnTimer(3, duration)); break;
             case "Trap": ShowIcon(4, 1); Invoke("HideIconLowSpeed", duration); StartCoroutine(ChangeBorderOnTimer(4, duration)); break;
-            case "Immortal": ShowIcon(5, 1); Invoke("HideIconImmortal", duration); StartCoroutine(ChangeBorderOnTimer(5, duration)); break;
+            case "Immortal": ShowIcon(5, 1); Invoke("HideIconImmortal", duration); StartCoroutine(ChangeBorderOnTimer(5, duration));break;
         }
     }
     public void ShowIcon(int slot, int transparent)
