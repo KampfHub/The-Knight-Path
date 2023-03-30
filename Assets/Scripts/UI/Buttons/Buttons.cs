@@ -15,7 +15,7 @@ public class Buttons : MonoBehaviour
     private bool isPauseButtonPressed = false;
     private int LevelMenuState = 0;
     private GameObject
-        mainMenuPanel, selectLevelMenuPanel, loadPanel,
+        mainMenuPanel, selectLevelMenuPanel, loadPanel, pausePanel,
         btnBack, btnNext,
         btnLevelHightSlot, btnLevelMiddleSlot, btnLevelLowSlot, 
         textLevelHightSlot, textLevelMiddleSlot, textLevelLowSlot;
@@ -27,7 +27,8 @@ public class Buttons : MonoBehaviour
             ShowLevelMenu(false);
             HideAllLevelMenuButtons();
         }
-        if (GONullCheck(loadPanel)) ShowLoadMenu(false);
+        if (GONullCheck(loadPanel)) ShowMenu(loadPanel, false);
+        if (GONullCheck(pausePanel)) ShowMenu(pausePanel, false);
     }
 
     // Update is called once per frame
@@ -44,12 +45,12 @@ public class Buttons : MonoBehaviour
         if (isPauseButtonPressed)
         { 
             Pause(false);
-            ShowLevelMenu(false);
+            ShowMenu(pausePanel, false);
         }
         else
         {
             Pause(true);
-            ShowLevelMenu(true);
+            ShowMenu(pausePanel, true);
         }
     }
     public void JumpButton()
@@ -66,7 +67,7 @@ public class Buttons : MonoBehaviour
     }
     public void OpenSelectLevelMenu()
     {
-        ShowMainMenu(false);
+        ShowMenu(mainMenuPanel, false);
         ShowLevelMenu(true);
     }
     public void OpenLevelHSBtnClick()
@@ -102,6 +103,7 @@ public class Buttons : MonoBehaviour
         mainMenuPanel = GameObject.Find("MainMenu");
         selectLevelMenuPanel = GameObject.Find("SelectLevelMenu");
         loadPanel = GameObject.Find("LoadMenu");
+        pausePanel = GameObject.Find("PauseMenu");
         textLevelHightSlot = GameObject.Find("textLevelHightSlot");
         textLevelMiddleSlot = GameObject.Find("textLevelMiddleSlot");
         textLevelLowSlot = GameObject.Find("textLevelLowSlot");
@@ -169,6 +171,7 @@ public class Buttons : MonoBehaviour
                     }
             }
             HideUnavailableLevel();
+            ShowMenu(pausePanel, false);
         } 
         
     }
@@ -211,12 +214,8 @@ public class Buttons : MonoBehaviour
             btnBack.SetActive(false);
         }  
     }
-    private void ShowLoadMenu(bool state)
+    private void ShowMenu(GameObject menuPanel, bool state)
     {
-        if (GONullCheck(loadPanel)) loadPanel.SetActive(state);
-    }
-    private void ShowMainMenu(bool state)
-    {
-        if (GONullCheck(mainMenuPanel)) mainMenuPanel.SetActive(state);
+        if (GONullCheck(menuPanel)) menuPanel.SetActive(state);
     }
 }
