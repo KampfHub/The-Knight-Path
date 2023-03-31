@@ -1,3 +1,5 @@
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 using UnityEngine;
 public delegate void PlayerTrigger();
 public class Player : Character
@@ -11,7 +13,7 @@ public class Player : Character
     [SerializeField] private float _timeAttack;
     [SerializeField] private float _raycastlengthForJump;
     private GameObject GUI;
-    private bool isAttacikng;
+    private bool isAttacikng, isLockController;
     private void Awake()
     {
         GUI = GameObject.Find("GUI");
@@ -38,7 +40,7 @@ public class Player : Character
     }
     void Update()
     {
-        if (currentHP >= 0 && isAttacikng == false) InputsListener();
+        if (PlayerIsAlive()) InputsListener();
         if (CheckOnPit()) InThePit();
     }
     private void InputsListener()
@@ -60,9 +62,25 @@ public class Player : Character
         if (GUI.GetComponentInChildren<MoveToLeftButton>().ButtonIsHold())
             MoveTo(Vector2.left);
     }
-    public void StopMove()
+    public void StopMove() //crutch for ui
     {
         animator.SetBool("isWalking", false);
+    }
+    public void SaveGame(int level)
+    {
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream file = File.Create(Application.persistentDataPath
+          + "/SaveData.dat");
+        bf.Serialize(file, level);
+        file.Close();
+        Debug.Log("Game data saved!");
+    }
+    public void LevelCompleteTrigger(int newAvailableLevel)
+    {   
+        isLockController = true;
+        StopMove();
+        GUI.GetComponent<Buttons>().AvailableLevelUpgrade(newAvailableLevel);
+        GUI.GetComponent<Buttons>().ShowWinWindow(); 
     }
     private void Attack()
     {
@@ -83,9 +101,12 @@ public class Player : Character
     }
     protected override void InThePit()
     {
-        //TODO
+        this.PlayerDead();
+    }
+    protected override void PlayerDead()
+    {
         gameObject.SetActive(false);
-        Time.timeScale = 0;
+        GUI.GetComponent<Buttons>().ShowLoseWindow();
     }
     private void RestoreAttakState()
     {
@@ -127,5 +148,9 @@ public class Player : Character
     private void CheckAndSetEmptyValues()
     {
         if (_raycastlengthForJump == 0) raycastlengthForJump = 0.8f;
+    }
+    private bool PlayerIsAlive()
+    {
+        return currentHP <= 0 || isAttacikng || isLockController ? false : true;
     }
 }

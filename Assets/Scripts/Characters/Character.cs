@@ -87,11 +87,13 @@ public class Character : MonoBehaviour
     }
     public virtual void HealthWidgetTrigger() { }
     protected virtual void InThePit() { }
+    protected virtual void PlayerDead() { }
     public virtual void EffectWidgetTrigger(string effectType, float duration) { }
     protected void Dead()
     {
         gameObject.layer = 9;
         animator.SetTrigger("isDead");
+        PlayerDead();
     }
     protected bool RaycastCheck(Vector2 direction, float distance, int layer)
     {

@@ -4,41 +4,28 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 public class Buttons : MonoBehaviour
 {
-    [SerializeField] private int _availableLevel;
+    private int availableLevel;
     AsyncOperation asyncOperation;
     Image loadProgressBar;
-    public event PlayerTrigger JumpTrigger;
-    public event PlayerTrigger AttackTrigger;
+    public event PlayerTrigger JumpTrigger, AttackTrigger;
     private bool isPauseButtonPressed = false;
     private int LevelMenuState = 0;
     private GameObject
         mainMenuPanel, selectLevelMenuPanel, loadPanel, pausePanel,
-        btnBack, btnNext,
+        btnBack, btnNext, windowWin, windowLose, HUD,
+        btnMoveToRight, btnMoveToLeft, btnJump, btnAttack, btnSettings,
         btnLevelHightSlot, btnLevelMiddleSlot, btnLevelLowSlot, 
         textLevelHightSlot, textLevelMiddleSlot, textLevelLowSlot;
-    void Start()
+    private void Start()
     {
+        LoadGame();
         FindAndSetUIComponents();
-        if (GONullCheck(selectLevelMenuPanel))
-        {
-            ShowLevelMenu(false);
-            HideAllLevelMenuButtons();
-        }
-        if (GONullCheck(loadPanel)) ShowMenu(loadPanel, false);
-        if (GONullCheck(pausePanel)) ShowMenu(pausePanel, false);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-    public void TestClick()
-    {
-        //todo
+        UIPreparation();
     }
     public void SettingsButton()
     {
@@ -46,6 +33,7 @@ public class Buttons : MonoBehaviour
         { 
             Pause(false);
             ShowMenu(pausePanel, false);
+            ShowLevelMenu(false);
         }
         else
         {
@@ -82,6 +70,24 @@ public class Buttons : MonoBehaviour
     {
         StartCoroutine(LoadLevel(GetLevelId(btnLevelLowSlot.GetComponentInChildren<TextMeshProUGUI>().text)));
     }
+    public void NextLevelBtnClick()
+    {
+        StartCoroutine(LoadLevel(availableLevel));
+    }
+    public void ShowWinWindow()
+    {
+        ShowMenu(windowWin, true);
+        HideHUDandActionBtns();
+    }
+    public void ShowLoseWindow()
+    {
+        ShowMenu(windowLose, true);
+        HideHUDandActionBtns();
+    }
+    public void RelpayBtnClick()
+    {
+        StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex));
+    }
     public void NextBtnClick()
     {
         LevelMenuState++;
@@ -92,6 +98,10 @@ public class Buttons : MonoBehaviour
         LevelMenuState--;
         ShowLevelMenu(true);
     }
+    public void AvailableLevelUpgrade(int level)
+    {
+        availableLevel = level;
+    }
     private void Pause(bool pauseState)
     {
         if (pauseState) Time.timeScale = 0;
@@ -100,10 +110,13 @@ public class Buttons : MonoBehaviour
     }
     private void FindAndSetUIComponents()
     {
+        HUD = GameObject.Find("HUD");
         mainMenuPanel = GameObject.Find("MainMenu");
         selectLevelMenuPanel = GameObject.Find("SelectLevelMenu");
         loadPanel = GameObject.Find("LoadMenu");
         pausePanel = GameObject.Find("PauseMenu");
+        windowLose = GameObject.Find("LoseWindow");
+        windowWin = GameObject.Find("WinWindow");
         textLevelHightSlot = GameObject.Find("textLevelHightSlot");
         textLevelMiddleSlot = GameObject.Find("textLevelMiddleSlot");
         textLevelLowSlot = GameObject.Find("textLevelLowSlot");
@@ -112,7 +125,12 @@ public class Buttons : MonoBehaviour
         btnLevelLowSlot = GameObject.Find("btnLevelLowSlot");
         btnBack = GameObject.Find("btnBack");
         btnNext = GameObject.Find("btnNext");
-        if(GONullCheck(loadPanel))
+        btnSettings = GameObject.Find("btnSettings");
+        btnMoveToLeft = GameObject.Find("btnMoveToLeft");
+        btnMoveToRight = GameObject.Find("btnMoveToRight");
+        btnJump = GameObject.Find("btnJump");
+        btnAttack = GameObject.Find("btnAttack");
+        if (GONullCheck(loadPanel))
         {
             loadProgressBar = GameObject.Find("LoadProgressBar").GetComponent<Image>();
         }
@@ -135,6 +153,56 @@ public class Buttons : MonoBehaviour
             yield return null;
         }
     }
+    private void LoadGame()
+    {
+        if (File.Exists(Application.persistentDataPath
+          + "/SaveData.dat"))
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file =
+              File.Open(Application.persistentDataPath
+              + "/SaveData.dat", FileMode.Open);
+                int level = (int)bf.Deserialize(file);
+                file.Close();
+                availableLevel = level;
+                Debug.Log("Game data loaded!");
+        }
+        else
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file = File.Create(Application.persistentDataPath
+              + "/SaveData.dat");
+            bf.Serialize(file, 1);
+            file.Close();
+            Debug.Log("Available Level = 1");
+        }    
+    }
+    private void ResetData()
+    {
+        if (File.Exists(Application.persistentDataPath
+          + "/SaveData.dat"))
+        {
+            File.Delete(Application.persistentDataPath
+              + "/SaveData.dat");
+            availableLevel= 1;
+            Debug.Log("Data reset complete!");
+        }
+        else
+            Debug.Log("No save data to delete.");
+    }
+    private void UIPreparation()
+    {
+        if (GONullCheck(selectLevelMenuPanel))
+        {
+            ShowLevelMenu(false);
+            HideAllLevelMenuButtons();
+        }
+        if (GONullCheck(loadPanel)) ShowMenu(loadPanel, false);
+        if (GONullCheck(pausePanel)) ShowMenu(pausePanel, false);
+        if (GONullCheck(windowWin)) ShowMenu(windowWin, false);
+        if (GONullCheck(windowLose)) ShowMenu(windowLose, false);
+        if (availableLevel == 0) availableLevel = 1;  
+    }
     private int GetLevelId(string btnTextLevel)
     {
         btnTextLevel = btnTextLevel.Trim(new char[] { 'L','e','v','l',' '});
@@ -145,6 +213,7 @@ public class Buttons : MonoBehaviour
         if (GONullCheck(selectLevelMenuPanel))
         {
             selectLevelMenuPanel.SetActive(state);
+            LoadGame();
             ShowLevelMenuButtons();
             switch (LevelMenuState)
             {
@@ -152,14 +221,14 @@ public class Buttons : MonoBehaviour
                     {
                         SetTextLevelMenu(1);
                         btnBack.SetActive(false);
-                        btnNext.SetActive(_availableLevel < 4 ? false : true);
+                        btnNext.SetActive(availableLevel < 4 ? false : true);
                         break;
                     }
                 case 1:
                     {
                         SetTextLevelMenu(4);
                         btnBack.SetActive(true);
-                        btnNext.SetActive(_availableLevel < 7 ? false : true);
+                        btnNext.SetActive(availableLevel < 7 ? false : true);
                         break;
                     }
                 case 2:
@@ -190,15 +259,15 @@ public class Buttons : MonoBehaviour
     private void HideUnavailableLevel()
     {
 
-        if(_availableLevel < GetLevelId(btnLevelHightSlot.GetComponentInChildren<TextMeshProUGUI>().text))
+        if(availableLevel < GetLevelId(btnLevelHightSlot.GetComponentInChildren<TextMeshProUGUI>().text))
             {
                 btnLevelHightSlot.SetActive(false);          
             }       
-        if(_availableLevel < GetLevelId(btnLevelMiddleSlot.GetComponentInChildren<TextMeshProUGUI>().text))
+        if(availableLevel < GetLevelId(btnLevelMiddleSlot.GetComponentInChildren<TextMeshProUGUI>().text))
             {
                 btnLevelMiddleSlot.SetActive(false);
             }
-        if(_availableLevel < GetLevelId(btnLevelLowSlot.GetComponentInChildren<TextMeshProUGUI>().text))
+        if(availableLevel < GetLevelId(btnLevelLowSlot.GetComponentInChildren<TextMeshProUGUI>().text))
             {
                 btnLevelLowSlot.SetActive(false);
             }
@@ -213,6 +282,15 @@ public class Buttons : MonoBehaviour
             btnNext.SetActive(false);
             btnBack.SetActive(false);
         }  
+    }
+    private void HideHUDandActionBtns()
+    {
+        if (GONullCheck(HUD)) HUD.SetActive(false);
+        if (GONullCheck(btnAttack)) btnAttack.SetActive(false);
+        if (GONullCheck(btnJump)) btnJump.SetActive(false);
+        if (GONullCheck(btnMoveToRight)) btnMoveToRight.SetActive(false);
+        if (GONullCheck(btnMoveToLeft)) btnMoveToLeft.SetActive(false);
+        if (GONullCheck(btnSettings)) btnSettings.SetActive(false);
     }
     private void ShowMenu(GameObject menuPanel, bool state)
     {
