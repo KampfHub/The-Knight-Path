@@ -34,8 +34,8 @@ public class Player : Character
         jumpForce = _jumpForce;
         raycastlengthForJump = _raycastlengthForJump;
         immortalState = false;
-        GUI.GetComponent<Buttons>().JumpTrigger += Jump;
-        GUI.GetComponent<Buttons>().AttackTrigger += Attack;
+        GUI.GetComponent<GeneralUI>().JumpTrigger += Jump;
+        GUI.GetComponent<GeneralUI>().AttackTrigger += Attack;
         HealthWidgetTrigger();
     }
     void Update()
@@ -79,8 +79,8 @@ public class Player : Character
     {   
         isLockController = true;
         StopMove();
-        GUI.GetComponent<Buttons>().AvailableLevelUpgrade(newAvailableLevel);
-        GUI.GetComponent<Buttons>().ShowWinWindow(); 
+        GUI.GetComponent<GeneralUI>().AvailableLevelUpgrade(newAvailableLevel);
+        GUI.GetComponent<GeneralUI>().ShowWinWindow(); 
     }
     private void Attack()
     {
@@ -106,7 +106,7 @@ public class Player : Character
     protected override void PlayerDead()
     {
         gameObject.SetActive(false);
-        GUI.GetComponent<Buttons>().ShowLoseWindow();
+        GUI.GetComponent<GeneralUI>().ShowLoseWindow();
     }
     private void RestoreAttakState()
     {

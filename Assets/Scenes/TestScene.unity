@@ -1011,7 +1011,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1474058633}
   - component: {fileID: 1474058632}
-  - component: {fileID: 1474058631}
   m_Layer: 0
   m_Name: Dead_Tree_02
   m_TagString: Untagged
@@ -1019,26 +1018,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1474058631
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1474058630}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0255d575bb6cd547ad29d0694798057, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _enemies:
-  - {fileID: 7671701598124770668, guid: a3f0efa676b6df44d98a8c321bdf83c9, type: 3}
-  - {fileID: 5189790165779689505, guid: 53e5679877be7034abc58d970be62bfe, type: 3}
-  - {fileID: 7764222470872419208, guid: a12a17ebc26345749bcc10372ab1eda2, type: 3}
-  _obstacles:
-  - {fileID: 1020354347104701576, guid: 64406629fc3d2574193f4727f817095a, type: 3}
-  - {fileID: 1880589095868568584, guid: 8aebd1e2c7ec4e747904218ef46b7055, type: 3}
-  - {fileID: 6419921192900613223, guid: 0efeb030fe2497a4e85ecd96aaa448c1, type: 3}
 --- !u!212 &1474058632
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1371,6 +1350,38 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -5164620268260101201, guid: 0a0f497f3e9f218448becab4ea0895aa, type: 3}
+      propertyPath: _enemies.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -5164620268260101201, guid: 0a0f497f3e9f218448becab4ea0895aa, type: 3}
+      propertyPath: _obstacles.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -5164620268260101201, guid: 0a0f497f3e9f218448becab4ea0895aa, type: 3}
+      propertyPath: _enemies.Array.data[0]
+      value: 
+      objectReference: {fileID: 913336095749117547, guid: 659a86ff81aa04c48ae439cbd3d1ad7a, type: 3}
+    - target: {fileID: -5164620268260101201, guid: 0a0f497f3e9f218448becab4ea0895aa, type: 3}
+      propertyPath: _enemies.Array.data[1]
+      value: 
+      objectReference: {fileID: 913336095749117547, guid: 659a86ff81aa04c48ae439cbd3d1ad7a, type: 3}
+    - target: {fileID: -5164620268260101201, guid: 0a0f497f3e9f218448becab4ea0895aa, type: 3}
+      propertyPath: _enemies.Array.data[2]
+      value: 
+      objectReference: {fileID: 1070159388324204230, guid: 07b35cfbfee58a24fab277494108bc83, type: 3}
+    - target: {fileID: -5164620268260101201, guid: 0a0f497f3e9f218448becab4ea0895aa, type: 3}
+      propertyPath: _obstacles.Array.data[0]
+      value: 
+      objectReference: {fileID: 1020354347104701576, guid: 64406629fc3d2574193f4727f817095a, type: 3}
+    - target: {fileID: -5164620268260101201, guid: 0a0f497f3e9f218448becab4ea0895aa, type: 3}
+      propertyPath: _obstacles.Array.data[1]
+      value: 
+      objectReference: {fileID: 1880589095868568584, guid: 8aebd1e2c7ec4e747904218ef46b7055, type: 3}
+    - target: {fileID: -5164620268260101201, guid: 0a0f497f3e9f218448becab4ea0895aa, type: 3}
+      propertyPath: _obstacles.Array.data[2]
+      value: 
+      objectReference: {fileID: 6419921192900613223, guid: 0efeb030fe2497a4e85ecd96aaa448c1, type: 3}
     - target: {fileID: 5728542381306408470, guid: 0a0f497f3e9f218448becab4ea0895aa, type: 3}
       propertyPath: m_RootOrder
       value: 8

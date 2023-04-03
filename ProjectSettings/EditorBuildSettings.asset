@@ -12,11 +12,14 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 0e2c0d31b62f8474dba55eb04283b87d
   - enabled: 1
-    path: Assets/Scenes/TestScene.unity
-    guid: cf72fb656e4957a41ad7975b5e84c342
-  - enabled: 1
     path: Assets/Scenes/VillageCartoon.unity
     guid: f8bf2c2e28bc31a498dcd5ead43e0205
+  - enabled: 1
+    path: Assets/Scenes/FreeMarket.unity
+    guid: d8b9aeff3505a924a9b940c21832fb48
+  - enabled: 1
+    path: Assets/Scenes/TestScene.unity
+    guid: cf72fb656e4957a41ad7975b5e84c342
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 8c63334f3ae100b4db8c00f48f804524, type: 2}
     com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000, guid: 80cf53611aa0c32468c45770fb09edf3, type: 2}

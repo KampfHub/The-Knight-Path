@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-public class Buttons : MonoBehaviour
+public class GeneralUI : MonoBehaviour
 {
     private int availableLevel;
     AsyncOperation asyncOperation;
