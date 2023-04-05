@@ -6,13 +6,14 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-
+[System.Serializable]
 public class GeneralUI : MonoBehaviour
 {
     private int availableLevel;
     AsyncOperation asyncOperation;
     Image loadProgressBar;
     public event PlayerTrigger JumpTrigger, AttackTrigger;
+    public event LoadConteiner UploadingCoins;
     private bool isPauseButtonPressed = false;
     private int LevelMenuState = 0;
     private GameObject
@@ -162,19 +163,25 @@ public class GeneralUI : MonoBehaviour
             FileStream file =
               File.Open(Application.persistentDataPath
               + "/SaveData.dat", FileMode.Open);
-                int level = (int)bf.Deserialize(file);
+                SaveData saveData = new SaveData();
+                saveData = (SaveData)bf.Deserialize(file);
                 file.Close();
-                availableLevel = level;
-                Debug.Log("Game data loaded!");
+                availableLevel = saveData.level;
+                GameObject playerRef = GameObject.FindWithTag("Player");
+                if (playerRef is not null) UploadingCoins(saveData.coins);
+            Debug.Log("Game data loaded!");
         }
         else
         {
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Create(Application.persistentDataPath
               + "/SaveData.dat");
-            bf.Serialize(file, 1);
+            SaveData saveData = new SaveData();
+            saveData.level = 1;
+            saveData.coins = 0;
+            bf.Serialize(file, saveData);
             file.Close();
-            Debug.Log("Available Level = 1");
+            Debug.Log("Available Level = 1, Coins = 0");
         }    
     }
     private void ResetData()

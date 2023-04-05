@@ -2,6 +2,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using UnityEngine;
 public delegate void PlayerTrigger();
+public delegate void LoadConteiner(int value);
+[System.Serializable]
 public class Player : Character
 {
     [SerializeField] private float _maxHP;
@@ -13,11 +15,15 @@ public class Player : Character
     [SerializeField] private float _timeAttack;
     [SerializeField] private float _raycastlengthForJump;
     private GameObject GUI;
+    private int coins;
     private bool isAttacikng, isLockController;
     private void Awake()
     {
-        GUI = GameObject.Find("GUI");
         CheckAndSetEmptyValues();
+        GUI = GameObject.Find("GUI");
+        GUI.GetComponent<GeneralUI>().JumpTrigger += Jump;
+        GUI.GetComponent<GeneralUI>().AttackTrigger += Attack;
+        GUI.GetComponent<GeneralUI>().UploadingCoins += SetCoinsValue;
     }
     void Start()
     {
@@ -34,8 +40,6 @@ public class Player : Character
         jumpForce = _jumpForce;
         raycastlengthForJump = _raycastlengthForJump;
         immortalState = false;
-        GUI.GetComponent<GeneralUI>().JumpTrigger += Jump;
-        GUI.GetComponent<GeneralUI>().AttackTrigger += Attack;
         HealthWidgetTrigger();
     }
     void Update()
@@ -71,7 +75,10 @@ public class Player : Character
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(Application.persistentDataPath
           + "/SaveData.dat");
-        bf.Serialize(file, level);
+        SaveData saveData = new SaveData();
+        saveData.level = level;
+        saveData.coins = coins;
+        bf.Serialize(file, saveData);
         file.Close();
         Debug.Log("Game data saved!");
     }
@@ -81,6 +88,15 @@ public class Player : Character
         StopMove();
         GUI.GetComponent<GeneralUI>().AvailableLevelUpgrade(newAvailableLevel);
         GUI.GetComponent<GeneralUI>().ShowWinWindow(); 
+    }
+    public void AddCoin()
+    {
+        coins++;
+        Debug.Log($"Coins = {coins.ToString()}");
+    }
+    public void SetCoinsValue(int value)
+    {
+        coins = value;
     }
     private void Attack()
     {
