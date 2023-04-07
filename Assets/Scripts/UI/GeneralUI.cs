@@ -17,8 +17,8 @@ public class GeneralUI : MonoBehaviour
     private bool isPauseButtonPressed = false;
     private int LevelMenuState = 0;
     private GameObject
-        mainMenuPanel, selectLevelMenuPanel, loadPanel, pausePanel,
-        btnBack, btnNext, windowWin, windowLose, HUD,
+        mainMenuPanel, selectLevelMenuPanel, loadPanel, pausePanel, gameShopPanel,
+        btnBack, btnNext, btnGameShop, windowWin, windowLose, HUD,
         btnMoveToRight, btnMoveToLeft, btnJump, btnAttack, btnSettings,
         btnLevelHightSlot, btnLevelMiddleSlot, btnLevelLowSlot, 
         textLevelHightSlot, textLevelMiddleSlot, textLevelLowSlot;
@@ -99,6 +99,26 @@ public class GeneralUI : MonoBehaviour
         LevelMenuState--;
         ShowLevelMenu(true);
     }
+    public void UsePotion()
+    {
+        //TODO
+    }
+    public void GameShopBtnClick()
+    {
+        ShowMenu(gameShopPanel, true);
+        Pause(true);
+        btnGameShop.SetActive(false);
+        btnSettings.SetActive(false);
+        FillGameShop();
+        SetWalletValue();
+    }
+    public void CloseGameShopBtnClick()
+    {
+        ShowMenu(gameShopPanel, false);
+        Pause(false);
+        btnGameShop.SetActive(true);
+        btnSettings.SetActive(true);
+    }
     public void AvailableLevelUpgrade(int level)
     {
         availableLevel = level;
@@ -116,6 +136,7 @@ public class GeneralUI : MonoBehaviour
         selectLevelMenuPanel = GameObject.Find("SelectLevelMenu");
         loadPanel = GameObject.Find("LoadMenu");
         pausePanel = GameObject.Find("PauseMenu");
+        gameShopPanel = GameObject.Find("GameShopMenu");
         windowLose = GameObject.Find("LoseWindow");
         windowWin = GameObject.Find("WinWindow");
         textLevelHightSlot = GameObject.Find("textLevelHightSlot");
@@ -127,6 +148,7 @@ public class GeneralUI : MonoBehaviour
         btnBack = GameObject.Find("btnBack");
         btnNext = GameObject.Find("btnNext");
         btnSettings = GameObject.Find("btnSettings");
+        btnGameShop = GameObject.Find("btnGameShop");
         btnMoveToLeft = GameObject.Find("btnMoveToLeft");
         btnMoveToRight = GameObject.Find("btnMoveToRight");
         btnJump = GameObject.Find("btnJump");
@@ -208,6 +230,7 @@ public class GeneralUI : MonoBehaviour
         if (GONullCheck(pausePanel)) ShowMenu(pausePanel, false);
         if (GONullCheck(windowWin)) ShowMenu(windowWin, false);
         if (GONullCheck(windowLose)) ShowMenu(windowLose, false);
+        if (GONullCheck(gameShopPanel)) ShowMenu(gameShopPanel, false);
         if (availableLevel == 0) availableLevel = 1;  
     }
     private int GetLevelId(string btnTextLevel)
@@ -289,6 +312,34 @@ public class GeneralUI : MonoBehaviour
             btnNext.SetActive(false);
             btnBack.SetActive(false);
         }  
+    }
+    private void FillGameShop()
+    {
+        FillPlaceInGameShop(1, "Potion of Power", "Increases attack power by 25% for 10 seconds", 2);
+        FillPlaceInGameShop(2, "Potion of Speed", "Increases movement speed by 25% for 10 seconds", 2);
+        FillPlaceInGameShop(3, "Mixture of Lightness", "Increases jump force by 25% for 10 seconds", 2);
+        FillPlaceInGameShop(4, "Elixir of Health", "Restores 30 health points", 1);
+        FillPlaceInGameShop(5, "Elixir of Forteresses", "Gives 30 armor points", 1);
+        FillPlaceInGameShop(6, "Mixture of Immortality", "Gives invulnerability for 20 seconds", 4);
+    }
+    private void FillPlaceInGameShop(int slot, string potionName, string potionDescription, int price)
+    {
+        GameObject slotPotion = GameObject.Find($"btnPotion_{slot}");
+        if(GONullCheck(slotPotion))
+        {
+            slotPotion.transform.GetChild(0).GetComponentInChildren<TextMeshProUGUI>().text = potionName;
+            slotPotion.transform.GetChild(1).GetComponentInChildren<TextMeshProUGUI>().text = potionDescription;
+            slotPotion.transform.GetChild(2).GetComponentInChildren<TextMeshProUGUI>().text = Convert.ToString(price);
+        }
+    }
+    private void SetWalletValue()
+    {
+        GameObject playerRef = GameObject.FindWithTag("Player");
+        GameObject coins = GameObject.Find("textCoinsValue");
+        if (GONullCheck(coins) && GONullCheck(playerRef))
+        {
+            coins.GetComponent<TextMeshProUGUI>().text = Convert.ToString(playerRef.GetComponent<Player>().GetCoinsValue());
+        }
     }
     private void HideHUDandActionBtns()
     {

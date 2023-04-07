@@ -89,6 +89,10 @@ public class Player : Character
         GUI.GetComponent<GeneralUI>().AvailableLevelUpgrade(newAvailableLevel);
         GUI.GetComponent<GeneralUI>().ShowWinWindow(); 
     }
+    public int GetCoinsValue()
+    {
+        return coins;
+    }
     public void AddCoin()
     {
         coins++;
