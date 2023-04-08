@@ -1,6 +1,8 @@
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using UnityEngine;
+
+
 public delegate void PlayerTrigger();
 public delegate void LoadConteiner(int value);
 [System.Serializable]
@@ -61,9 +63,9 @@ public class Player : Character
             isWalking(false);
         if (Input.GetKeyDown(KeyCode.Space))
             Jump();
-        if (GUI.GetComponentInChildren<MoveToRightButton>().ButtonIsHold())
+        if (CheckMoveToRightBtnHold())
             MoveTo(Vector2.right);
-        if (GUI.GetComponentInChildren<MoveToLeftButton>().ButtonIsHold())
+        if (CheckMoveToLeftBtnHold())
             MoveTo(Vector2.left);
     }
     public void StopMove() //crutch for ui
@@ -72,15 +74,18 @@ public class Player : Character
     }
     public void SaveGame(int level)
     {
-        BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Create(Application.persistentDataPath
-          + "/SaveData.dat");
-        SaveData saveData = new SaveData();
-        saveData.level = level;
-        saveData.coins = coins;
-        bf.Serialize(file, saveData);
-        file.Close();
-        Debug.Log("Game data saved!");
+        if (level > GUI.GetComponent<GeneralUI>().GetAvailableLevel())
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file = File.Create(Application.persistentDataPath
+              + "/SaveData.dat");
+            SaveData saveData = new SaveData();
+            saveData.level = level;
+            saveData.coins = coins;
+            bf.Serialize(file, saveData);
+            file.Close();
+            Debug.Log("Game data saved!");
+        }
     }
     public void LevelCompleteTrigger(int newAvailableLevel)
     {   
@@ -173,6 +178,22 @@ public class Player : Character
     private void CheckAndSetEmptyValues()
     {
         if (_raycastlengthForJump == 0) raycastlengthForJump = 0.8f;
+    }
+    private bool CheckMoveToRightBtnHold()
+    {
+        if (GUI.GetComponentInChildren<MoveToRightButton>() is not null)
+        {
+            return GUI.GetComponentInChildren<MoveToRightButton>().ButtonIsHold();
+        }
+        else return false;
+    }
+    private bool CheckMoveToLeftBtnHold()
+    {
+        if (GUI.GetComponentInChildren<MoveToLeftButton>() is not null)
+        {
+            return GUI.GetComponentInChildren<MoveToLeftButton>().ButtonIsHold();
+        }
+        else return false;
     }
     private bool PlayerIsAlive()
     {

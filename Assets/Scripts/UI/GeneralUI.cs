@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine.EventSystems;
-using Newtonsoft.Json.Linq;
 
 [System.Serializable]
 public class GeneralUI : MonoBehaviour
@@ -19,10 +18,9 @@ public class GeneralUI : MonoBehaviour
     public event LoadConteiner UploadingCoins;
     private bool isPauseButtonPressed = false;
     private int LevelMenuState = 0;
-    private GameObject
-        mainMenuPanel, selectLevelMenuPanel, loadPanel, pausePanel, gameShopPanel,
-        btnBack, btnNext, btnGameShop, windowWin, windowLose, HUD,
-        btnMoveToRight, btnMoveToLeft, btnJump, btnAttack, btnSettings,
+    private GameObject playerRef,
+        mainMenuPanel, selectLevelMenuPanel, loadPanel, pausePanel, gameShopPanel, buttonsPanel,
+        btnBack, btnNext, windowWin, windowLose, HUD,
         btnLevelHightSlot, btnLevelMiddleSlot, btnLevelLowSlot, 
         textLevelHightSlot, textLevelMiddleSlot, textLevelLowSlot;
     private void Start()
@@ -105,15 +103,9 @@ public class GeneralUI : MonoBehaviour
     public void UsePotion()
     {
         Impact impact = new Impact();
-        GameObject playerRef = GameObject.FindWithTag("Player");
         GameObject buttonRef = EventSystem.current.currentSelectedGameObject;
         string buttonName = buttonRef.transform.GetChild(0).GetComponentInChildren<TextMeshProUGUI>().text;
         int cost = Convert.ToInt32(buttonRef.transform.GetChild(2).GetComponentInChildren<TextMeshProUGUI>().text);
-        if(GONullCheck(playerRef))
-        {
-            playerRef.GetComponent<Player>().SpendCoins(cost);
-            SetWalletValue();
-        }
         switch (buttonName)
         { 
             case "Potion of Power":
@@ -165,15 +157,21 @@ public class GeneralUI : MonoBehaviour
                     break;
                 }
         }
-        playerRef.GetComponent<Character>().GetImpact(impact);
-        playerRef.GetComponent<Character>().HealthWidgetTrigger();
+        if(GONullCheck(playerRef))
+        {
+            if(playerRef.GetComponent<Player>().GetCoinsValue() >= cost)
+            {
+                playerRef.GetComponent<Player>().SpendCoins(cost);
+                SetWalletValue();
+                playerRef.GetComponent<Character>().GetImpact(impact);
+                playerRef.GetComponent<Character>().HealthWidgetTrigger();
+            }  
+        }
     }
     public void GameShopBtnClick()
     {
         ShowMenu(gameShopPanel, true);
         Pause(true);
-        btnGameShop.SetActive(false);
-        btnSettings.SetActive(false);
         FillGameShop();
         SetWalletValue();
     }
@@ -181,22 +179,28 @@ public class GeneralUI : MonoBehaviour
     {
         ShowMenu(gameShopPanel, false);
         Pause(false);
-        btnGameShop.SetActive(true);
-        btnSettings.SetActive(true);
+
     }
     public void AvailableLevelUpgrade(int level)
     {
         availableLevel = level;
+    }
+    public int GetAvailableLevel()
+    {
+        return availableLevel;
     }
     private void Pause(bool pauseState)
     {
         if (pauseState) Time.timeScale = 0;
         else Time.timeScale = 1;
         isPauseButtonPressed = pauseState;
+        ShowMenu(buttonsPanel, !pauseState);
     }
     private void FindAndSetUIComponents()
     {
+        playerRef = GameObject.FindWithTag("Player");
         HUD = GameObject.Find("HUD");
+        buttonsPanel = GameObject.Find("ButtonsPanel");
         mainMenuPanel = GameObject.Find("MainMenu");
         selectLevelMenuPanel = GameObject.Find("SelectLevelMenu");
         loadPanel = GameObject.Find("LoadMenu");
@@ -212,12 +216,6 @@ public class GeneralUI : MonoBehaviour
         btnLevelLowSlot = GameObject.Find("btnLevelLowSlot");
         btnBack = GameObject.Find("btnBack");
         btnNext = GameObject.Find("btnNext");
-        btnSettings = GameObject.Find("btnSettings");
-        btnGameShop = GameObject.Find("btnGameShop");
-        btnMoveToLeft = GameObject.Find("btnMoveToLeft");
-        btnMoveToRight = GameObject.Find("btnMoveToRight");
-        btnJump = GameObject.Find("btnJump");
-        btnAttack = GameObject.Find("btnAttack");
         if (GONullCheck(loadPanel))
         {
             loadProgressBar = GameObject.Find("LoadProgressBar").GetComponent<Image>();
@@ -399,7 +397,6 @@ public class GeneralUI : MonoBehaviour
     }
     private void SetWalletValue()
     {
-        GameObject playerRef = GameObject.FindWithTag("Player");
         GameObject coins = GameObject.Find("textCoinsValue");
         if (GONullCheck(coins) && GONullCheck(playerRef))
         {
@@ -409,11 +406,7 @@ public class GeneralUI : MonoBehaviour
     private void HideHUDandActionBtns()
     {
         if (GONullCheck(HUD)) HUD.SetActive(false);
-        if (GONullCheck(btnAttack)) btnAttack.SetActive(false);
-        if (GONullCheck(btnJump)) btnJump.SetActive(false);
-        if (GONullCheck(btnMoveToRight)) btnMoveToRight.SetActive(false);
-        if (GONullCheck(btnMoveToLeft)) btnMoveToLeft.SetActive(false);
-        if (GONullCheck(btnSettings)) btnSettings.SetActive(false);
+        ShowMenu(buttonsPanel, false);
     }
     private void ShowMenu(GameObject menuPanel, bool state)
     {
