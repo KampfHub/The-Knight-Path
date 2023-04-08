@@ -173,8 +173,8 @@ MonoBehaviour:
   _maxDefence: 100
   _attackPower: 50
   _attackRange: 2.5
-  _speed: 3
-  _jumpForce: 5
+  _speed: 3.4
+  _jumpForce: 5.8
   _timeAttack: 0.5
   _raycastlengthForJump: 0.7
 --- !u!70 &7512652281157976844
