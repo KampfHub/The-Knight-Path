@@ -6,6 +6,9 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using UnityEngine.EventSystems;
+using Newtonsoft.Json.Linq;
+
 [System.Serializable]
 public class GeneralUI : MonoBehaviour
 {
@@ -101,7 +104,69 @@ public class GeneralUI : MonoBehaviour
     }
     public void UsePotion()
     {
-        //TODO
+        Impact impact = new Impact();
+        GameObject playerRef = GameObject.FindWithTag("Player");
+        GameObject buttonRef = EventSystem.current.currentSelectedGameObject;
+        string buttonName = buttonRef.transform.GetChild(0).GetComponentInChildren<TextMeshProUGUI>().text;
+        int cost = Convert.ToInt32(buttonRef.transform.GetChild(2).GetComponentInChildren<TextMeshProUGUI>().text);
+        if(GONullCheck(playerRef))
+        {
+            playerRef.GetComponent<Player>().SpendCoins(cost);
+            SetWalletValue();
+        }
+        switch (buttonName)
+        { 
+            case "Potion of Power":
+                {
+                    impact._type = "Boost";
+                    impact._name = "Power";
+                    impact._value = 1.25f;
+                    impact._duration = 10f;
+                    break; 
+                }
+            case "Potion of Speed":
+                {
+                    impact._type = "Boost";
+                    impact._name = "Speed";
+                    impact._value = 1.25f;
+                    impact._duration = 10f;
+                    break; 
+                }
+            case "Mixture of Lightness":
+                {
+                    impact._type = "Boost";
+                    impact._name = "JumpForce";
+                    impact._value = 1.25f;
+                    impact._duration = 10f;
+                    break;
+                }
+            case "Elixir of Health":
+                {
+                    impact._type = "Boost";
+                    impact._name = "HP";
+                    impact._value = 30f;
+                    impact._duration = 0f;
+                    break;
+                }
+            case "Elixir of Forteresses":
+                {
+                    impact._type = "Boost";
+                    impact._name = "Defence";
+                    impact._value = 30f;
+                    impact._duration = 0f;
+                    break;
+                }
+            case "Mixture of Immortality":
+                {
+                    impact._type = "Boost";
+                    impact._name = "Immortal";
+                    impact._value = 0f;
+                    impact._duration = 20f;
+                    break;
+                }
+        }
+        playerRef.GetComponent<Character>().GetImpact(impact);
+        playerRef.GetComponent<Character>().HealthWidgetTrigger();
     }
     public void GameShopBtnClick()
     {

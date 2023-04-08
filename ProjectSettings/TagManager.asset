@@ -8,6 +8,8 @@ TagManager:
   - Enemy
   - EmptyEnemy
   - EmptyObstacle
+  - Coin
+  - Potion
   layers:
   - Default
   - TransparentFX

@@ -98,6 +98,11 @@ public class Player : Character
         coins++;
         Debug.Log($"Coins = {coins.ToString()}");
     }
+    public void SpendCoins(int value)
+    {
+        coins -= value;
+        Debug.Log($"Coins = {coins.ToString()}");
+    }
     public void SetCoinsValue(int value)
     {
         coins = value;
