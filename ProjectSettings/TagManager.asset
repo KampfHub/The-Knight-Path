@@ -10,6 +10,7 @@ TagManager:
   - EmptyObstacle
   - Coin
   - Potion
+  - Rock
   layers:
   - Default
   - TransparentFX

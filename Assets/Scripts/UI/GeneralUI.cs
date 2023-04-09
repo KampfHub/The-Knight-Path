@@ -90,6 +90,11 @@ public class GeneralUI : MonoBehaviour
     {
         StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex));
     }
+    public void CloseSelectLevelMenuBtnClick()
+    {
+        ShowLevelMenu(false);
+        Pause(false);
+    }
     public void NextBtnClick()
     {
         LevelMenuState++;
@@ -195,6 +200,7 @@ public class GeneralUI : MonoBehaviour
         else Time.timeScale = 1;
         isPauseButtonPressed = pauseState;
         ShowMenu(buttonsPanel, !pauseState);
+        if (GONullCheck(playerRef)) playerRef.GetComponent<Player>().LockController(pauseState);
     }
     private void FindAndSetUIComponents()
     {

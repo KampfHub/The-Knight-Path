@@ -68,10 +68,7 @@ public class Player : Character
         if (CheckMoveToLeftBtnHold())
             MoveTo(Vector2.left);
     }
-    public void StopMove() //crutch for ui
-    {
-        animator.SetBool("isWalking", false);
-    }
+  
     public void SaveGame(int level)
     {
         if (level > GUI.GetComponent<GeneralUI>().GetAvailableLevel())
@@ -198,5 +195,21 @@ public class Player : Character
     private bool PlayerIsAlive()
     {
         return currentHP <= 0 || isAttacikng || isLockController ? false : true;
+    }
+    public void StopMove() //crutch for ui
+    {
+        animator.SetBool("isWalking", false);
+    }
+    public void LockController(bool state) //crutch for ui
+    {
+        isLockController = state;
+    }
+    public void LinkToPlatform(GameObject parent) //crutch for platform
+    {
+        this.transform.SetParent(parent.transform);
+    }
+    public void ClearLinkToPlatform()
+    {
+        this.transform.SetParent(null);
     }
 }
