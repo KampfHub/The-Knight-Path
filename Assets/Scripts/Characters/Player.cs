@@ -132,6 +132,7 @@ public class Player : Character
     }
     protected override void PlayerDead()
     {
+        ClearLinkToPlatform();
         gameObject.SetActive(false);
         GUI.GetComponent<GeneralUI>().ShowLoseWindow();
     }
