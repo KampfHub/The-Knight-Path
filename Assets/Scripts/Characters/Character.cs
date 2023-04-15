@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Character : MonoBehaviour
@@ -57,6 +58,7 @@ public class Character : MonoBehaviour
     }
     protected void EndAttack()
     {
+        OptionalEndAttack();
         RaycastHit2D raycast = Physics2D.Raycast(rb.position, currentDirection, attackRange, GetTargetLayer());
         if (raycast.collider is not null)
         {
@@ -64,7 +66,7 @@ public class Character : MonoBehaviour
             if (enemyScript is not null)
             {
                 enemyScript.GetHit(attackPower);
-            } 
+            }
         }
     }
     private int GetTargetLayer()
@@ -88,12 +90,15 @@ public class Character : MonoBehaviour
     public virtual void HealthWidgetTrigger() { }
     protected virtual void InThePit() { }
     protected virtual void PlayerDead() { }
+    protected virtual void OptionalDead() { }
+    protected virtual void OptionalEndAttack() { }
     public virtual void EffectWidgetTrigger(string effectType, float duration) { }
     protected void Dead()
     {
         gameObject.layer = 9;
         animator.SetTrigger("isDead");
         PlayerDead();
+        OptionalDead();
     }
     protected bool RaycastCheck(Vector2 direction, float distance, int layer)
     {
@@ -113,9 +118,9 @@ public class Character : MonoBehaviour
         EffectWidgetTrigger(impact._name, impact._duration);
         if (impact._type == "Boost")
         {
-            switch (impact._name)           //CancelInvoke("ImpactFinished");
+            switch (impact._name)           
             {
-                case "HP": currentHP += impact._value; break;
+                case "HP": currentHP += maxHP * (impact._value / 100); break; // impact.value get in percentages 
                 case "Defence": currentDefence += impact._value; break;
                 case "Power": Invoke("RestoreDefaulAttackPower", impact._duration); attackPower *= impact._value; break;
                 case "Speed": Invoke("RestoreDefaultSpeed", impact._duration); speed *= impact._value; break;

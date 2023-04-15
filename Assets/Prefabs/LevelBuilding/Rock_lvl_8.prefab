@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6112253718613897012}
   - component: {fileID: 6112253718613897019}
   - component: {fileID: 6112253718613897018}
+  - component: {fileID: -2893666102343656952}
   m_Layer: 0
   m_Name: Rock_lvl_8
   m_TagString: Untagged
@@ -123,3 +124,16 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-2893666102343656952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6112253718613897017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16cd0c3de3d1eba428767ac88de2f94d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _knockoutTime: 3

@@ -141,7 +141,7 @@ public class GeneralUI : MonoBehaviour
                 {
                     impact._type = "Boost";
                     impact._name = "HP";
-                    impact._value = 30f;
+                    impact._value = 33.3f;
                     impact._duration = 0f;
                     break;
                 }
@@ -387,7 +387,7 @@ public class GeneralUI : MonoBehaviour
         FillPlaceInGameShop(1, "Potion of Power", "Increases attack power by 25% for 10 seconds", 2);
         FillPlaceInGameShop(2, "Potion of Speed", "Increases movement speed by 25% for 10 seconds", 2);
         FillPlaceInGameShop(3, "Mixture of Lightness", "Increases jump force by 25% for 10 seconds", 2);
-        FillPlaceInGameShop(4, "Elixir of Health", "Restores 30 health points", 1);
+        FillPlaceInGameShop(4, "Elixir of Health", "Restores 33.3% of the maximum amount of health", 1);
         FillPlaceInGameShop(5, "Elixir of Forteresses", "Gives 30 armor points", 1);
         FillPlaceInGameShop(6, "Mixture of Immortality", "Gives invulnerability for 20 seconds", 4);
     }

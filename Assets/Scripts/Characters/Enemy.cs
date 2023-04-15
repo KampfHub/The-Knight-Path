@@ -1,12 +1,13 @@
 using UnityEngine;
-
 public class Enemy : Character
 {
     [SerializeField] private float _maxHP;
     [SerializeField] private float _speed;
     [SerializeField] private float _attackPower;
+    [SerializeField] private float _attackCooldownTime;
     [SerializeField] private float _attackRange;
     [SerializeField] private float _sightLenght;
+    private bool isAttackCooldown;
     private GameObject playerRef { get; set; }
 
     private void Awake()
@@ -23,6 +24,7 @@ public class Enemy : Character
         speed = _speed;
         attackPower = _attackPower;
         attackRange = _attackRange;
+        isAttackCooldown = true;
         RotationCorrection();
     }
     private void Update()
@@ -39,9 +41,10 @@ public class Enemy : Character
                 if (RaycastCheck(GetCurrentDirection(),attackRange, playerLayer))
                 {
                     isWalking(false);
-                    LaunchAttack();
+                    Attack();
                 }
             }
+            else TargetLoss();
         }
         if (CheckOnPit()) InThePit();
     }
@@ -49,6 +52,27 @@ public class Enemy : Character
     {
         Destroy(gameObject);
     }
+    private void Attack()
+    {
+        if (isAttackCooldown) 
+        {
+            LaunchAttack();
+            isAttackCooldown= false; 
+        }
+    }
+    private void RestoreCooldown()
+    {
+        isAttackCooldown = true;
+    }
+    protected override void OptionalEndAttack() 
+    {
+        Invoke("RestoreCooldown", _attackCooldownTime);
+    }
+    private void TargetLoss()
+    {
+        isWalking(false);
+    }
+    
     private Vector2 GetCurrentDirection()
     {
         if (spriteRenderer.flipX) return Vector2.left;

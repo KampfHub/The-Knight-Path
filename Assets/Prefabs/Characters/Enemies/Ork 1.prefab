@@ -160,5 +160,6 @@ MonoBehaviour:
   _maxHP: 25
   _speed: 2
   _attackPower: 6.25
+  _attackCooldownTime: 0.7
   _attackRange: 1.5
   _sightLenght: 5
