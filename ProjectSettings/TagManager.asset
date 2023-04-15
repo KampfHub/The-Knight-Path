@@ -12,6 +12,7 @@ TagManager:
   - Potion
   - Rock
   - Ground
+  - Summon
   layers:
   - Default
   - TransparentFX

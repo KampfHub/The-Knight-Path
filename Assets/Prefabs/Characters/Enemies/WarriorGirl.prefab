@@ -76,7 +76,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 4
+  m_SortingOrder: 9
   m_Sprite: {fileID: 21300000, guid: 942c5911511ea5842a4ae5bfd3dbb07a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
@@ -152,7 +152,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5955806156630271953}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e70a3d102132aa749905fb972d9065ac, type: 3}
   m_Name: 
@@ -160,5 +160,6 @@ MonoBehaviour:
   _maxHP: 800
   _speed: 3
   _attackPower: 62.5
+  _attackCooldownTime: 0
   _attackRange: 1.5
   _sightLenght: 10

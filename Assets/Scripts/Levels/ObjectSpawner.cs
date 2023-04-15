@@ -13,9 +13,18 @@ public class ObjectSpawner : MonoBehaviour
 
     public void RockSpawn()
     {
-        if(GONullCheck(spawnedObject))
+        SpawnObject();
+    }
+    public void DestroyAndSpawn()
+    {
+        Destroy(gameObject);
+        SpawnObject();
+    }
+    private void SpawnObject()
+    {
+        if (GONullCheck(spawnedObject))
         {
-            Vector3 spawnPoint = new Vector3 (_axisX, _axisY, 0);
+            Vector3 spawnPoint = new Vector3(_axisX, _axisY, 0);
             Instantiate(spawnedObject, spawnPoint, Quaternion.identity);
         }
     }

@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine.EventSystems;
+using UnityEditor;
 
 [System.Serializable]
 public class GeneralUI : MonoBehaviour
@@ -20,7 +21,7 @@ public class GeneralUI : MonoBehaviour
     private int LevelMenuState = 0;
     private GameObject playerRef,
         mainMenuPanel, selectLevelMenuPanel, loadPanel, pausePanel, gameShopPanel, buttonsPanel,
-        btnBack, btnNext, windowWin, windowLose, HUD,
+        endGamePanel, btnBack, btnNext, windowWin, windowLose, HUD,
         btnLevelHightSlot, btnLevelMiddleSlot, btnLevelLowSlot, 
         textLevelHightSlot, textLevelMiddleSlot, textLevelLowSlot;
     private void Start()
@@ -76,6 +77,10 @@ public class GeneralUI : MonoBehaviour
     {
         StartCoroutine(LoadLevel(availableLevel));
     }
+    public void MainMenuBtnClick()
+    {
+        StartCoroutine(LoadLevel(0));
+    }
     public void ShowWinWindow()
     {
         ShowMenu(windowWin, true);
@@ -104,6 +109,17 @@ public class GeneralUI : MonoBehaviour
     {
         LevelMenuState--;
         ShowLevelMenu(true);
+    }
+    public void EndGameMenu()
+    {
+        ShowMenu(HUD, false);
+        ShowMenu(buttonsPanel, false);
+        if (GONullCheck(playerRef))
+        {
+            playerRef.GetComponent<Player>().LockController(true);
+            playerRef.GetComponent<Player>().StopMove();
+        }  
+        ShowMenu(endGamePanel, true);
     }
     public void UsePotion()
     {
@@ -208,6 +224,7 @@ public class GeneralUI : MonoBehaviour
         HUD = GameObject.Find("HUD");
         buttonsPanel = GameObject.Find("ButtonsPanel");
         mainMenuPanel = GameObject.Find("MainMenu");
+        endGamePanel = GameObject.Find("EndGamePanel");
         selectLevelMenuPanel = GameObject.Find("SelectLevelMenu");
         loadPanel = GameObject.Find("LoadMenu");
         pausePanel = GameObject.Find("PauseMenu");
@@ -296,6 +313,7 @@ public class GeneralUI : MonoBehaviour
             HideAllLevelMenuButtons();
         }
         if (GONullCheck(loadPanel)) ShowMenu(loadPanel, false);
+        if (GONullCheck(endGamePanel)) ShowMenu(endGamePanel, false);
         if (GONullCheck(pausePanel)) ShowMenu(pausePanel, false);
         if (GONullCheck(windowWin)) ShowMenu(windowWin, false);
         if (GONullCheck(windowLose)) ShowMenu(windowLose, false);

@@ -9,6 +9,7 @@ public class Enemy : Character
     [SerializeField] private float _sightLenght;
     private bool isAttackCooldown;
     private GameObject playerRef { get; set; }
+    public event EnemyDeadTrigger EnemyDead;
 
     private void Awake()
     {
@@ -67,6 +68,10 @@ public class Enemy : Character
     protected override void OptionalEndAttack() 
     {
         Invoke("RestoreCooldown", _attackCooldownTime);
+    }
+    protected override void OptionalDead()
+    {
+        if(EnemyDead is not null) EnemyDead();
     }
     private void TargetLoss()
     {

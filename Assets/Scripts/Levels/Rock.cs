@@ -10,7 +10,7 @@ public class Rock : MonoBehaviour
             collision.gameObject.GetComponent<Dragon>().StoneFellOnHead(_knockoutTime);
             Destroy(gameObject);
         }
-        if (collision.gameObject.tag == "Ground555")
+        if (collision.gameObject.tag == "Ground" || collision.gameObject.tag == "Rock")
         {
             Destroy(gameObject);
         }
