@@ -180,7 +180,6 @@ GameObject:
   - component: {fileID: 5728542381306408681}
   - component: {fileID: 5728542381306408683}
   - component: {fileID: 5728542381306408471}
-  - component: {fileID: -5164620268260101201}
   m_Layer: 0
   m_Name: DemoCamera
   m_TagString: MainCamera
@@ -269,17 +268,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _smooth: 5
---- !u!114 &-5164620268260101201
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5728542381306408682}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0255d575bb6cd547ad29d0694798057, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _enemies: []
-  _obstacles: []

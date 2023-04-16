@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine.EventSystems;
-using UnityEditor;
 
 [System.Serializable]
 public class GeneralUI : MonoBehaviour
@@ -16,12 +15,13 @@ public class GeneralUI : MonoBehaviour
     AsyncOperation asyncOperation;
     Image loadProgressBar;
     public event PlayerTrigger JumpTrigger, AttackTrigger;
-    public event LoadConteiner UploadingCoins;
+    public event LoadCoinConteiner UploadingCoins;
+    public event LoadTextConteiner UploadingDifficultyValue;
     private bool isPauseButtonPressed = false;
     private int LevelMenuState = 0;
     private GameObject playerRef,
         mainMenuPanel, selectLevelMenuPanel, loadPanel, pausePanel, gameShopPanel, buttonsPanel,
-        endGamePanel, btnBack, btnNext, windowWin, windowLose, HUD,
+        endGamePanel, settingsPanel, btnBack, btnNext, windowWin, windowLose, HUD,
         btnLevelHightSlot, btnLevelMiddleSlot, btnLevelLowSlot, 
         textLevelHightSlot, textLevelMiddleSlot, textLevelLowSlot;
     private void Start()
@@ -60,6 +60,11 @@ public class GeneralUI : MonoBehaviour
     {
         ShowMenu(mainMenuPanel, false);
         ShowLevelMenu(true);
+    }
+    public void ShowSettingsMenuBtnClick()
+    {
+        ShowMenu(settingsPanel, true);
+        ShowMenu(mainMenuPanel, false);
     }
     public void OpenLevelHSBtnClick()
     {
@@ -224,6 +229,7 @@ public class GeneralUI : MonoBehaviour
         HUD = GameObject.Find("HUD");
         buttonsPanel = GameObject.Find("ButtonsPanel");
         mainMenuPanel = GameObject.Find("MainMenu");
+        settingsPanel = GameObject.Find("SettingsMenu");
         endGamePanel = GameObject.Find("EndGamePanel");
         selectLevelMenuPanel = GameObject.Find("SelectLevelMenu");
         loadPanel = GameObject.Find("LoadMenu");
@@ -276,7 +282,12 @@ public class GeneralUI : MonoBehaviour
                 file.Close();
                 availableLevel = saveData.level;
                 GameObject playerRef = GameObject.FindWithTag("Player");
-                if (playerRef is not null) UploadingCoins(saveData.coins);
+                if (playerRef is not null)
+                {
+                    UploadingCoins(saveData.coins);
+                    UploadingDifficultyValue(saveData.difficulty);
+                }
+            
             Debug.Log("Game data loaded!");
         }
         else
@@ -287,6 +298,7 @@ public class GeneralUI : MonoBehaviour
             SaveData saveData = new SaveData();
             saveData.level = 1;
             saveData.coins = 0;
+            saveData.difficulty = "Random";
             bf.Serialize(file, saveData);
             file.Close();
             Debug.Log("Available Level = 1, Coins = 0");
@@ -318,6 +330,7 @@ public class GeneralUI : MonoBehaviour
         if (GONullCheck(windowWin)) ShowMenu(windowWin, false);
         if (GONullCheck(windowLose)) ShowMenu(windowLose, false);
         if (GONullCheck(gameShopPanel)) ShowMenu(gameShopPanel, false);
+        if (GONullCheck(settingsPanel)) ShowMenu(settingsPanel, false);
         if (availableLevel == 0) availableLevel = 1;  
     }
     private int GetLevelId(string btnTextLevel)

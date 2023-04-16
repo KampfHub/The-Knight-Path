@@ -4,7 +4,8 @@ using UnityEngine;
 
 
 public delegate void PlayerTrigger();
-public delegate void LoadConteiner(int value);
+public delegate void LoadCoinConteiner(int value);
+public delegate void LoadTextConteiner(string value);
 [System.Serializable]
 public class Player : Character
 {
@@ -18,6 +19,7 @@ public class Player : Character
     [SerializeField] private float _raycastlengthForJump;
     private GameObject GUI;
     private int coins;
+    private string currentDifficulty;
     private bool isAttacikng, isLockController;
     private void Awake()
     {
@@ -26,6 +28,7 @@ public class Player : Character
         GUI.GetComponent<GeneralUI>().JumpTrigger += Jump;
         GUI.GetComponent<GeneralUI>().AttackTrigger += Attack;
         GUI.GetComponent<GeneralUI>().UploadingCoins += SetCoinsValue;
+        GUI.GetComponent<GeneralUI>().UploadingDifficultyValue += SetDifficultyValue;
     }
     void Start()
     {
@@ -79,6 +82,7 @@ public class Player : Character
             SaveData saveData = new SaveData();
             saveData.level = level;
             saveData.coins = coins;
+            saveData.difficulty = currentDifficulty;
             bf.Serialize(file, saveData);
             file.Close();
             Debug.Log("Game data saved!");
@@ -105,9 +109,13 @@ public class Player : Character
         coins -= value;
         Debug.Log($"Coins = {coins.ToString()}");
     }
-    public void SetCoinsValue(int value)
+    private void SetCoinsValue(int value)
     {
         coins = value;
+    }
+    private void SetDifficultyValue(string value)
+    {
+        currentDifficulty = value;
     }
     private void Attack()
     {
