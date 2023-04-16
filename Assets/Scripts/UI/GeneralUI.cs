@@ -4,8 +4,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine.EventSystems;
 
 [System.Serializable]
@@ -270,52 +268,18 @@ public class GeneralUI : MonoBehaviour
     }
     private void LoadGame()
     {
-        if (File.Exists(Application.persistentDataPath
-          + "/SaveData.dat"))
+        GameObject gameDataController = GameObject.Find("GameDataController");
+        GameObject playerRef = GameObject.FindWithTag("Player");
+        if (gameDataController is not null)
         {
-            BinaryFormatter bf = new BinaryFormatter();
-            FileStream file =
-              File.Open(Application.persistentDataPath
-              + "/SaveData.dat", FileMode.Open);
-                SaveData saveData = new SaveData();
-                saveData = (SaveData)bf.Deserialize(file);
-                file.Close();
-                availableLevel = saveData.level;
-                GameObject playerRef = GameObject.FindWithTag("Player");
-                if (playerRef is not null)
-                {
-                    UploadingCoins(saveData.coins);
-                    UploadingDifficultyValue(saveData.difficulty);
-                }
-            
-            Debug.Log("Game data loaded!");
+            SaveData saveData = gameDataController.GetComponent<GameDataController>().LoadData();
+            availableLevel = saveData.level;
+            if (playerRef is not null)
+            {
+                UploadingCoins(saveData.coins);
+                UploadingDifficultyValue(saveData.difficulty);
+            }
         }
-        else
-        {
-            BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Create(Application.persistentDataPath
-              + "/SaveData.dat");
-            SaveData saveData = new SaveData();
-            saveData.level = 1;
-            saveData.coins = 0;
-            saveData.difficulty = "Random";
-            bf.Serialize(file, saveData);
-            file.Close();
-            Debug.Log("Available Level = 1, Coins = 0");
-        }    
-    }
-    private void ResetData()
-    {
-        if (File.Exists(Application.persistentDataPath
-          + "/SaveData.dat"))
-        {
-            File.Delete(Application.persistentDataPath
-              + "/SaveData.dat");
-            availableLevel= 1;
-            Debug.Log("Data reset complete!");
-        }
-        else
-            Debug.Log("No save data to delete.");
     }
     private void UIPreparation()
     {

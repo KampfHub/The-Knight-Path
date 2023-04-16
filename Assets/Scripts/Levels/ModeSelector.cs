@@ -1,5 +1,3 @@
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 public class ModeSelector : MonoBehaviour
@@ -23,18 +21,12 @@ public class ModeSelector : MonoBehaviour
     }
     private void LoadData()
     {
-        if (File.Exists(Application.persistentDataPath
-          + "/SaveData.dat"))
+
+        GameObject gameDataController = GameObject.Find("GameDataController");
+        if (gameDataController is not null)
         {
-            BinaryFormatter bf = new BinaryFormatter();
-            FileStream file =
-              File.Open(Application.persistentDataPath
-              + "/SaveData.dat", FileMode.Open);
-            SaveData saveData = new SaveData();
-            saveData = (SaveData)bf.Deserialize(file);
-            file.Close();
+            SaveData saveData = gameDataController.GetComponent<GameDataController>().LoadData();
             gameDifficulty = saveData.difficulty;
-            Debug.Log(gameDifficulty);
         }
     }
     private void SetGameDifficulty()

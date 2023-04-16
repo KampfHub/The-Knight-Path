@@ -1,7 +1,7 @@
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using UnityEngine;
-
+using Unity.VisualScripting;
 
 public delegate void PlayerTrigger();
 public delegate void LoadCoinConteiner(int value);
@@ -74,18 +74,17 @@ public class Player : Character
   
     public void SaveGame(int level)
     {
-        if (level > GUI.GetComponent<GeneralUI>().GetAvailableLevel())
+        GameObject gameDataController = GameObject.Find("GameDataController");
+        if (gameDataController is not null)
         {
-            BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Create(Application.persistentDataPath
-              + "/SaveData.dat");
-            SaveData saveData = new SaveData();
-            saveData.level = level;
-            saveData.coins = coins;
-            saveData.difficulty = currentDifficulty;
-            bf.Serialize(file, saveData);
-            file.Close();
-            Debug.Log("Game data saved!");
+            if (level > GUI.GetComponent<GeneralUI>().GetAvailableLevel())
+            {
+                SaveData saveData = new SaveData();
+                saveData.level = level;
+                saveData.coins = coins;
+                saveData.difficulty = currentDifficulty;
+                gameDataController.GetComponent<GameDataController>().SaveData(saveData);
+            }
         }
     }
     public void LevelCompleteTrigger(int newAvailableLevel)
