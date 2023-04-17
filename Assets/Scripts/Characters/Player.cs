@@ -1,12 +1,8 @@
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
 using UnityEngine;
-using Unity.VisualScripting;
 
 public delegate void PlayerTrigger();
 public delegate void LoadCoinConteiner(int value);
 public delegate void LoadTextConteiner(string value);
-[System.Serializable]
 public class Player : Character
 {
     [SerializeField] private float _maxHP;
@@ -80,9 +76,9 @@ public class Player : Character
             if (level > GUI.GetComponent<GeneralUI>().GetAvailableLevel())
             {
                 SaveData saveData = new SaveData();
-                saveData.level = level;
-                saveData.coins = coins;
-                saveData.difficulty = currentDifficulty;
+                saveData._level = level;
+                saveData._coins = coins;
+                saveData._difficulty = currentDifficulty;
                 gameDataController.GetComponent<GameDataController>().SaveData(saveData);
             }
         }

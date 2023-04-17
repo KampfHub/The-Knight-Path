@@ -3,12 +3,22 @@ using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 [System.Serializable]
 public struct SaveData
-{
-    public int coins { get; set; }
-    public int level { get; set; }
-    public string difficulty { get; set; }
-    public bool gameShopEnable { get; set; }
-    public string language { get; set; }
+{   
+    private string difficulty, language;
+    public int _coins { get; set; }
+    public int _level { get; set; }
+    public bool _gameShopEnable { get; set; }
+    public string _difficulty
+    {
+        set { if (value is null) difficulty = "Random"; else difficulty = value; }
+        get { return difficulty; }
+    }
+    public string _language
+    {
+        set { if (value is null) language = "ENG"; else language = value; }
+        get { return language; }
+    }
+
 }
 [System.Serializable]
 public class GameDataController : MonoBehaviour
@@ -32,10 +42,10 @@ public class GameDataController : MonoBehaviour
             FileStream file =
               File.Open(Application.persistentDataPath
               + "/SaveData.dat", FileMode.Open);
-            SaveData saveData = new SaveData();
-            saveData = (SaveData)bf.Deserialize(file);
+            SaveData saveData = (SaveData)bf.Deserialize(file);
             file.Close();
             Debug.Log("Game data loaded!");
+            Debug.Log(saveData._level);
             return saveData;
         }
         else
@@ -44,14 +54,14 @@ public class GameDataController : MonoBehaviour
             FileStream file = File.Create(Application.persistentDataPath
               + "/SaveData.dat");
             SaveData saveData = new SaveData();
-            saveData.level = 1;
-            saveData.coins = 0;
-            saveData.gameShopEnable = true;
-            saveData.difficulty = "Random";
-            saveData.language = "ENG";
+            saveData._level = 1;
+            saveData._coins = 0;
+            saveData._gameShopEnable = true;
+            saveData._difficulty = "Random";
+            saveData._language = "ENG";
             bf.Serialize(file, saveData);
             file.Close();
-            Debug.Log("Available Level = 1, Coins = 0");
+            Debug.Log("Create new save data!");
             return saveData;
         }
     }

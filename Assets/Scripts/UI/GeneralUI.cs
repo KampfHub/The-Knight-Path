@@ -6,7 +6,6 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 
-[System.Serializable]
 public class GeneralUI : MonoBehaviour
 {
     private int availableLevel;
@@ -273,11 +272,11 @@ public class GeneralUI : MonoBehaviour
         if (gameDataController is not null)
         {
             SaveData saveData = gameDataController.GetComponent<GameDataController>().LoadData();
-            availableLevel = saveData.level;
+            availableLevel = saveData._level;
             if (playerRef is not null)
             {
-                UploadingCoins(saveData.coins);
-                UploadingDifficultyValue(saveData.difficulty);
+                UploadingCoins(saveData._coins);
+                UploadingDifficultyValue(saveData._difficulty);
             }
         }
     }

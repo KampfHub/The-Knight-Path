@@ -26,7 +26,7 @@ public class ModeSelector : MonoBehaviour
         if (gameDataController is not null)
         {
             SaveData saveData = gameDataController.GetComponent<GameDataController>().LoadData();
-            gameDifficulty = saveData.difficulty;
+            gameDifficulty = saveData._difficulty;
         }
     }
     private void SetGameDifficulty()
