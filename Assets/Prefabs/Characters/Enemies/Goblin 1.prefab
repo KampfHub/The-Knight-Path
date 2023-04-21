@@ -159,7 +159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHP: 25
   _speed: 2
-  _attackPower: 6.25
+  _attackPower: 10
   _attackCooldownTime: 0.7
   _attackRange: 0.8
   _sightLenght: 5

@@ -1,4 +1,5 @@
 using UnityEngine;
+public delegate void EnemyTrigger();
 public class Enemy : Character
 {
     [SerializeField] private float _maxHP;
@@ -9,8 +10,8 @@ public class Enemy : Character
     [SerializeField] private float _sightLenght;
     private bool isAttackCooldown;
     private GameObject playerRef { get; set; }
-    public event EnemyDeadTrigger EnemyDead;
-
+    public event EnemyTrigger EnemyDead, EnemyHit;
+    
     private void Awake()
     {
         playerRef = GameObject.FindWithTag("Player");
@@ -73,6 +74,10 @@ public class Enemy : Character
     {
         if(EnemyDead is not null) EnemyDead();
     }
+    protected override void OptionalGetHit() 
+    { 
+        if(EnemyHit is not null) EnemyHit();
+    }
     private void TargetLoss()
     {
         isWalking(false);
@@ -103,5 +108,8 @@ public class Enemy : Character
             spriteRenderer.flipX = false;
         }
     }
-
+    public float GetHPRatio()
+    {
+        return currentHP / maxHP;
+    }
 }

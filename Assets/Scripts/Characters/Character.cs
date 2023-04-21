@@ -84,12 +84,14 @@ public class Character : MonoBehaviour
             animator.SetTrigger("isHurting");
             if (currentHP <= 0) Dead();
             HealthWidgetTrigger();
+            OptionalGetHit();
         }
     }
     public virtual void HealthWidgetTrigger() { }
     protected virtual void InThePit() { }
     protected virtual void PlayerDead() { }
     protected virtual void OptionalDead() { }
+    protected virtual void OptionalGetHit() { }
     protected virtual void OptionalEndAttack() { }
     public virtual void EffectWidgetTrigger(string effectType, float duration) { }
     protected void Dead()

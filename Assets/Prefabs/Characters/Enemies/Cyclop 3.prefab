@@ -157,9 +157,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e70a3d102132aa749905fb972d9065ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHP: 50
+  _maxHP: 150
   _speed: 2
-  _attackPower: 23.75
+  _attackPower: 50
   _attackCooldownTime: 0.7
   _attackRange: 1.5
   _sightLenght: 5

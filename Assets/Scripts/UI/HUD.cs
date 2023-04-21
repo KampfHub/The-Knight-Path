@@ -15,17 +15,6 @@ public class HUD : MonoBehaviour
         defenseBar = GameObject.Find("DefenseBar");
         HideAllIcons();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    private void Start()
-    {
-      
-    }
     private IEnumerator ChangeBorderOnTimer(int slot, float duration)
     {
         float fillValue = duration;

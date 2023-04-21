@@ -114,7 +114,7 @@ public class Player : Character
     }
     private void Attack()
     {
-        if (RaycastCheck(Vector2.down, raycastlengthForJump, groundLayer))
+        if (ActionIsAllowed())
         {
             LaunchAttack();
             isAttacikng = true;
@@ -123,7 +123,7 @@ public class Player : Character
     }
     private void Jump()
     {
-        if (RaycastCheck(Vector2.down, raycastlengthForJump, groundLayer))
+        if (ActionIsAllowed())
         {
             animator.SetTrigger("isJumping");
             rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
@@ -195,6 +195,12 @@ public class Player : Character
             return GUI.GetComponentInChildren<MoveToLeftButton>().ButtonIsHold();
         }
         else return false;
+    }
+    private bool ActionIsAllowed()
+    {
+        return RaycastCheck(Vector2.down, raycastlengthForJump, groundLayer) 
+            || RaycastCheck(Vector2.down, raycastlengthForJump, environmentLayer) 
+            ?  true : false;
     }
     private bool PlayerIsAlive()
     {

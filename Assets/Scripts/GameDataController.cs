@@ -45,7 +45,6 @@ public class GameDataController : MonoBehaviour
             SaveData saveData = (SaveData)bf.Deserialize(file);
             file.Close();
             Debug.Log("Game data loaded!");
-            Debug.Log(saveData._level);
             return saveData;
         }
         else
