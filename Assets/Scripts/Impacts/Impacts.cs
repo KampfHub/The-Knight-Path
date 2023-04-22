@@ -11,7 +11,7 @@ public struct Impact
 public class Impacts : MonoBehaviour
 {
     protected Impact currentImpact = new Impact();
-    protected virtual void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Player")
         {

@@ -13,7 +13,7 @@ public class Trap : Impacts
         currentImpact._value = _value;
         currentImpact._duration = _duration;
     }
-    protected override void OnTriggerEnter2D(Collider2D collision)
+    protected override void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Player")
         {

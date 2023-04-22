@@ -8,12 +8,13 @@ using UnityEngine.EventSystems;
 
 public class GeneralUI : MonoBehaviour
 {
-    private int availableLevel;
-    AsyncOperation asyncOperation;
-    Image loadProgressBar;
     public event PlayerTrigger JumpTrigger, AttackTrigger;
     public event LoadCoinConteiner UploadingCoins;
     public event LoadTextConteiner UploadingDifficultyValue;
+    private int availableLevel;
+    private AsyncOperation asyncOperation;
+    private Image loadProgressBar;
+    private Localization localization;
     private bool isPauseButtonPressed = false;
     private int LevelMenuState = 0;
     private GameObject playerRef,
@@ -25,7 +26,10 @@ public class GeneralUI : MonoBehaviour
     {
         LoadGame();
         FindAndSetUIComponents();
+        LocalizationPreporation();
+        SetLocalizationOnGUI();
         UIPreparation();
+        
     }
     public void SettingsButton()
     {
@@ -127,11 +131,10 @@ public class GeneralUI : MonoBehaviour
     {
         Impact impact = new Impact();
         GameObject buttonRef = EventSystem.current.currentSelectedGameObject;
-        string buttonName = buttonRef.transform.GetChild(0).GetComponentInChildren<TextMeshProUGUI>().text;
         int cost = Convert.ToInt32(buttonRef.transform.GetChild(2).GetComponentInChildren<TextMeshProUGUI>().text);
-        switch (buttonName)
+        switch (buttonRef.name)
         { 
-            case "Potion of Power":
+            case "btnPotion_1":
                 {
                     impact._type = "Boost";
                     impact._name = "Power";
@@ -139,7 +142,7 @@ public class GeneralUI : MonoBehaviour
                     impact._duration = 10f;
                     break; 
                 }
-            case "Potion of Speed":
+            case "btnPotion_2":
                 {
                     impact._type = "Boost";
                     impact._name = "Speed";
@@ -147,7 +150,7 @@ public class GeneralUI : MonoBehaviour
                     impact._duration = 10f;
                     break; 
                 }
-            case "Mixture of Lightness":
+            case "btnPotion_3":
                 {
                     impact._type = "Boost";
                     impact._name = "JumpForce";
@@ -155,7 +158,7 @@ public class GeneralUI : MonoBehaviour
                     impact._duration = 10f;
                     break;
                 }
-            case "Elixir of Health":
+            case "btnPotion_4":
                 {
                     impact._type = "Boost";
                     impact._name = "HP";
@@ -163,7 +166,7 @@ public class GeneralUI : MonoBehaviour
                     impact._duration = 0f;
                     break;
                 }
-            case "Elixir of Forteresses":
+            case "btnPotion_5":
                 {
                     impact._type = "Boost";
                     impact._name = "Defence";
@@ -171,7 +174,7 @@ public class GeneralUI : MonoBehaviour
                     impact._duration = 0f;
                     break;
                 }
-            case "Mixture of Immortality":
+            case "btnPotion_6":
                 {
                     impact._type = "Boost";
                     impact._name = "Immortal";
@@ -197,6 +200,7 @@ public class GeneralUI : MonoBehaviour
         Pause(true);
         FillGameShop();
         SetWalletValue();
+        SetLocalizationOnGUI();
     }
     public void CloseGameShopBtnClick()
     {
@@ -298,8 +302,7 @@ public class GeneralUI : MonoBehaviour
     }
     private int GetLevelId(string btnTextLevel)
     {
-        btnTextLevel = btnTextLevel.Trim(new char[] { 'L','e','v','l',' '});
-        return Int32.TryParse(btnTextLevel, out int j) ? j : 0;
+        return localization.LevelNumberConstructor(btnTextLevel);
     }
     private void ShowLevelMenu(bool state)
     {
@@ -339,9 +342,9 @@ public class GeneralUI : MonoBehaviour
     }
     private void SetTextLevelMenu(int initialRange)
     {
-        textLevelHightSlot.GetComponent<TextMeshProUGUI>().text = $"Level {initialRange}";
-        textLevelMiddleSlot.GetComponent<TextMeshProUGUI>().text = $"Level {initialRange + 1}";
-        textLevelLowSlot.GetComponent<TextMeshProUGUI>().text = $"Level {initialRange + 2}";
+        textLevelHightSlot.GetComponent<TextMeshProUGUI>().text = localization.TextLevelButtons(initialRange);
+        textLevelMiddleSlot.GetComponent<TextMeshProUGUI>().text = localization.TextLevelButtons(initialRange + 1);
+        textLevelLowSlot.GetComponent<TextMeshProUGUI>().text = localization.TextLevelButtons(initialRange + 2);
     }
     private void ShowLevelMenuButtons()
     {
@@ -378,12 +381,12 @@ public class GeneralUI : MonoBehaviour
     }
     private void FillGameShop()
     {
-        FillPlaceInGameShop(1, "Potion of Power", "Increases attack power by 25% for 10 seconds", 2);
-        FillPlaceInGameShop(2, "Potion of Speed", "Increases movement speed by 25% for 10 seconds", 2);
-        FillPlaceInGameShop(3, "Mixture of Lightness", "Increases jump force by 25% for 10 seconds", 2);
-        FillPlaceInGameShop(4, "Elixir of Health", "Restores 33.3% of the maximum amount of health", 1);
-        FillPlaceInGameShop(5, "Elixir of Forteresses", "Gives 30 armor points", 1);
-        FillPlaceInGameShop(6, "Mixture of Immortality", "Gives invulnerability for 20 seconds", 4);
+        FillPlaceInGameShop(1, localization.GetPotionName("Power"), localization.GetPotionDescription("Power"), 2);
+        FillPlaceInGameShop(2, localization.GetPotionName("Speed"), localization.GetPotionDescription("Speed"), 2);
+        FillPlaceInGameShop(3, localization.GetPotionName("JumpForce"), localization.GetPotionDescription("JumpForce"), 2);
+        FillPlaceInGameShop(4, localization.GetPotionName("HP"), localization.GetPotionDescription("HP"), 1);
+        FillPlaceInGameShop(5, localization.GetPotionName("Defense"), localization.GetPotionDescription("Defense"), 1);
+        FillPlaceInGameShop(6, localization.GetPotionName("Immortal"), localization.GetPotionDescription("Immortal"), 4);
     }
     private void FillPlaceInGameShop(int slot, string potionName, string potionDescription, int price)
     {
@@ -407,6 +410,29 @@ public class GeneralUI : MonoBehaviour
     {
         if (GONullCheck(HUD)) HUD.SetActive(false);
         ShowMenu(buttonsPanel, false);
+    }
+    private void LocalizationPreporation()
+    {
+        if (GetComponent<Localization>() is not null)
+        {
+            localization = GetComponent<Localization>();
+        }
+        else
+        {
+            gameObject.AddComponent<Localization>();
+            localization = GetComponent<Localization>();
+        }
+    }
+    private void SetLocalizationOnGUI()
+    {
+        if (GONullCheck(GameObject.Find("textBalance"))) GameObject.Find("textBalance").GetComponent<TextMeshProUGUI>().text = localization.GetGUIText("Balance");
+        if (GONullCheck(GameObject.Find("textResume"))) GameObject.Find("textResume").GetComponent<TextMeshProUGUI>().text = localization.GetGUIText("Resume");
+        if (GONullCheck(GameObject.Find("textQuitGame"))) GameObject.Find("textQuitGame").GetComponent<TextMeshProUGUI>().text = localization.GetGUIText("QuitGame");
+        if (GONullCheck(GameObject.Find("textReplay"))) GameObject.Find("textReplay").GetComponent<TextMeshProUGUI>().text = localization.GetGUIText("Replay");
+        if (GONullCheck(GameObject.Find("textNextLevel"))) GameObject.Find("textNextLevel").GetComponent<TextMeshProUGUI>().text = localization.GetGUIText("NextLevel");
+        if (GONullCheck(GameObject.Find("textMainMenu"))) GameObject.Find("textMainMenu").GetComponent<TextMeshProUGUI>().text = localization.GetGUIText("MainMenu");
+        if (GONullCheck(GameObject.Find("textSettings"))) GameObject.Find("textSettings").GetComponent<TextMeshProUGUI>().text = localization.GetGUIText("Settings");
+        if (GONullCheck(GameObject.Find("textPlayGame"))) GameObject.Find("textPlayGame").GetComponent<TextMeshProUGUI>().text = localization.GetGUIText("PlayGame");
     }
     private void ShowMenu(GameObject menuPanel, bool state)
     {

@@ -8,6 +8,7 @@ public struct SaveData
     public int _coins { get; set; }
     public int _level { get; set; }
     public bool _gameShopEnable { get; set; }
+    public bool _soundsEnable { get; set; }
     public string _difficulty
     {
         set { if (value is null) difficulty = "Random"; else difficulty = value; }
@@ -56,6 +57,7 @@ public class GameDataController : MonoBehaviour
             saveData._level = 1;
             saveData._coins = 0;
             saveData._gameShopEnable = true;
+            saveData._soundsEnable = true;
             saveData._difficulty = "Random";
             saveData._language = "ENG";
             bf.Serialize(file, saveData);

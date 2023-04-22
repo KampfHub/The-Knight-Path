@@ -4,8 +4,7 @@ public class GOGenerator : MonoBehaviour
 {
     [SerializeField] private GameObject[] _enemies;
     [SerializeField] private GameObject[] _obstacles;
-    private GameObject[] enemiesPoints;
-    private GameObject[] obstaclePoints;
+    private GameObject[] enemiesPoints, obstaclePoints;
     private void Start()
     {
         if (isNotNullOrEmptyCheck(_enemies)) SwapObjects("EmptyEnemy", enemiesPoints, _enemies);
