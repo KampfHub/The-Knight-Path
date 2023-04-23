@@ -12,11 +12,7 @@ public class Character : MonoBehaviour
     protected float jumpForce { get; set; }
     protected float raycastlengthForJump { get; set; }
     protected bool immortalState { get; set; }
-    private Vector2 currentDirection
-    {
-        get { return vector;}
-        set{ if (value == null) vector = Vector2.left; vector = value;}
-    }
+    private Vector2 currentDirection { get; set; }
     protected Rigidbody2D rb;
     protected Animator animator;
     protected SpriteRenderer spriteRenderer;
@@ -31,6 +27,7 @@ public class Character : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        Debug.Log($"{gameObject.name}, {currentDirection}");
     }    
     protected void MoveTo(Vector2 direction)
     {
@@ -58,7 +55,7 @@ public class Character : MonoBehaviour
     protected void EndAttack()
     {
         OptionalEndAttack();
-        RaycastHit2D raycast = Physics2D.Raycast(rb.position, currentDirection, attackRange, GetTargetLayer());
+        RaycastHit2D raycast = Physics2D.Raycast(rb.position, GetCurrentDirection(), attackRange, GetTargetLayer());
         if (raycast.collider is not null)
         {
             var enemyScript = raycast.collider.gameObject.GetComponent<Character>();
@@ -67,6 +64,11 @@ public class Character : MonoBehaviour
                 enemyScript.GetHit(attackPower);
             }
         }
+    }
+    private Vector2 GetCurrentDirection()
+    {//crutch for EndAttack
+        if(spriteRenderer.flipX) return Vector2.left;
+        return Vector2.right;
     }
     private int GetTargetLayer()
     {
@@ -121,8 +123,19 @@ public class Character : MonoBehaviour
         {
             switch (impact._name)           
             {
-                case "HP": currentHP += maxHP * (impact._value / 100); break; // impact.value get in percentages 
-                case "Defence": currentDefence += impact._value; break;
+                case "HP":
+                    {// impact.value get in percentages 
+                        currentHP += maxHP * (impact._value / 100);
+                        if(currentHP > maxHP) currentHP = maxHP;
+                        Debug.Log(currentHP);
+                        break;
+                    }   
+                case "Defence":
+                    {
+                        currentDefence += impact._value; 
+                        if(currentDefence > maxDefence) currentDefence = maxDefence;
+                        break;
+                    }      
                 case "Power": Invoke("RestoreDefaulAttackPower", impact._duration); attackPower *= impact._value; break;
                 case "Speed": Invoke("RestoreDefaultSpeed", impact._duration); speed *= impact._value; break;
                 case "JumpForce": Invoke("RestoreDefaulJumpForce", impact._duration); jumpForce *= impact._value; break;

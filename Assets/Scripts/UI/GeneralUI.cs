@@ -8,10 +8,12 @@ using UnityEngine.EventSystems;
 
 public class GeneralUI : MonoBehaviour
 {
-    public event PlayerTrigger JumpTrigger, AttackTrigger;
+    public event VoidTrigger JumpTrigger, AttackTrigger;
     public event LoadCoinConteiner UploadingCoins;
     public event LoadTextConteiner UploadingDifficultyValue;
     private int availableLevel;
+    private string currentLocolization;
+    private bool gameShopEnabled;
     private AsyncOperation asyncOperation;
     private Image loadProgressBar;
     private Localization localization;
@@ -20,16 +22,15 @@ public class GeneralUI : MonoBehaviour
     private GameObject playerRef,
         mainMenuPanel, selectLevelMenuPanel, loadPanel, pausePanel, gameShopPanel, buttonsPanel,
         endGamePanel, settingsPanel, btnBack, btnNext, windowWin, windowLose, HUD,
-        btnLevelHightSlot, btnLevelMiddleSlot, btnLevelLowSlot, 
+        btnGameShop, btnLevelHightSlot, btnLevelMiddleSlot, btnLevelLowSlot,
         textLevelHightSlot, textLevelMiddleSlot, textLevelLowSlot;
     private void Start()
     {
+        LocalizationPreporation();
         LoadGame();
         FindAndSetUIComponents();
-        LocalizationPreporation();
         SetLocalizationOnGUI();
         UIPreparation();
-        
     }
     public void SettingsButton()
     {
@@ -66,6 +67,10 @@ public class GeneralUI : MonoBehaviour
     {
         ShowMenu(settingsPanel, true);
         ShowMenu(mainMenuPanel, false);
+    }
+    public void ShowMainMenu()
+    {
+        ShowMenu(mainMenuPanel, true);
     }
     public void OpenLevelHSBtnClick()
     {
@@ -138,7 +143,7 @@ public class GeneralUI : MonoBehaviour
                 {
                     impact._type = "Boost";
                     impact._name = "Power";
-                    impact._value = 1.25f;
+                    impact._value = 1.5f;
                     impact._duration = 10f;
                     break; 
                 }
@@ -179,7 +184,7 @@ public class GeneralUI : MonoBehaviour
                     impact._type = "Boost";
                     impact._name = "Immortal";
                     impact._value = 0f;
-                    impact._duration = 20f;
+                    impact._duration = 10f;
                     break;
                 }
         }
@@ -244,6 +249,7 @@ public class GeneralUI : MonoBehaviour
         btnLevelHightSlot = GameObject.Find("btnLevelHightSlot");
         btnLevelMiddleSlot = GameObject.Find("btnLevelMiddleSlot");
         btnLevelLowSlot = GameObject.Find("btnLevelLowSlot");
+        btnGameShop = GameObject.Find("btnGameShop");
         btnBack = GameObject.Find("btnBack");
         btnNext = GameObject.Find("btnNext");
         if (GONullCheck(loadPanel))
@@ -277,6 +283,8 @@ public class GeneralUI : MonoBehaviour
         {
             SaveData saveData = gameDataController.GetComponent<GameDataController>().LoadData();
             availableLevel = saveData._level;
+            currentLocolization = saveData._language;
+            gameShopEnabled = saveData._gameShopEnable;
             if (playerRef is not null)
             {
                 UploadingCoins(saveData._coins);
@@ -296,8 +304,16 @@ public class GeneralUI : MonoBehaviour
         if (GONullCheck(pausePanel)) ShowMenu(pausePanel, false);
         if (GONullCheck(windowWin)) ShowMenu(windowWin, false);
         if (GONullCheck(windowLose)) ShowMenu(windowLose, false);
-        if (GONullCheck(gameShopPanel)) ShowMenu(gameShopPanel, false);
-        if (GONullCheck(settingsPanel)) ShowMenu(settingsPanel, false);
+        if (GONullCheck(gameShopPanel))
+        {
+           ShowMenu(gameShopPanel, false);
+           if (!gameShopEnabled) btnGameShop.SetActive(false);
+        } 
+        if (GONullCheck(settingsPanel))
+        {
+            ShowMenu(settingsPanel, false);
+            settingsPanel.GetComponent<SettingsMenu>().UpdateLocalization += RelpayBtnClick;
+        }
         if (availableLevel == 0) availableLevel = 1;  
     }
     private int GetLevelId(string btnTextLevel)
@@ -428,6 +444,8 @@ public class GeneralUI : MonoBehaviour
         if (GONullCheck(GameObject.Find("textBalance"))) GameObject.Find("textBalance").GetComponent<TextMeshProUGUI>().text = localization.GetGUIText("Balance");
         if (GONullCheck(GameObject.Find("textResume"))) GameObject.Find("textResume").GetComponent<TextMeshProUGUI>().text = localization.GetGUIText("Resume");
         if (GONullCheck(GameObject.Find("textQuitGame"))) GameObject.Find("textQuitGame").GetComponent<TextMeshProUGUI>().text = localization.GetGUIText("QuitGame");
+        if (GONullCheck(GameObject.Find("loseQuitGame"))) GameObject.Find("loseQuitGame").GetComponent<TextMeshProUGUI>().text = localization.GetGUIText("QuitGame");
+        if (GONullCheck(GameObject.Find("winQuitGame"))) GameObject.Find("winQuitGame").GetComponent<TextMeshProUGUI>().text = localization.GetGUIText("QuitGame");
         if (GONullCheck(GameObject.Find("textReplay"))) GameObject.Find("textReplay").GetComponent<TextMeshProUGUI>().text = localization.GetGUIText("Replay");
         if (GONullCheck(GameObject.Find("textNextLevel"))) GameObject.Find("textNextLevel").GetComponent<TextMeshProUGUI>().text = localization.GetGUIText("NextLevel");
         if (GONullCheck(GameObject.Find("textMainMenu"))) GameObject.Find("textMainMenu").GetComponent<TextMeshProUGUI>().text = localization.GetGUIText("MainMenu");

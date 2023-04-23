@@ -4,7 +4,7 @@ using UnityEngine;
 public class Localization : MonoBehaviour
 {
     private string language;
-    void Start()
+    void Awake()
     {
         SetLanguage();
     }
@@ -137,6 +137,67 @@ public class Localization : MonoBehaviour
                         default: return "Translition Error!";
                     }
                 }
+            default: return "ERROR!";
+        }
+    }
+    public string TextSettingsButtons(string btnName, string variables)
+    {
+        switch (language)
+        {
+            case "RUS":
+                {
+                    switch (btnName)
+                    {
+                        case "btnDifficulty":
+                            {
+                                switch (variables)
+                                {
+                                    case "Random": return "Режим: Рандом";
+                                    case "Easy": return "Режим: Простой";
+                                    case "Normal": return "Режим: Средний";
+                                    case "Hard": return "Режим: Сложный";
+                                    default: return "Ошибка выбора режима!";
+                                }
+                            }
+                        case "btnGameMode":
+                            {
+                                switch (variables)
+                                {
+                                    case "True": return "Отключить Игровой магазин";
+                                    case "False": return "Включить Игровой магазин";
+                                    default: return "Ошибка выбора режима!";
+                                }
+                            }
+                        default: return "Неккоректная кнопка!";
+                    }
+                }
+            case "ENG":
+                {
+                    switch (btnName)
+                    {
+                        case "btnDifficulty":
+                            {
+                                switch (variables)
+                                {
+                                    case "Random": return "Difficulty: Random";
+                                    case "Easy": return "Difficulty: Easy";
+                                    case "Normal": return "Difficulty: Normal";
+                                    case "Hard": return "Difficulty: Hard";
+                                    default: return "Difficulty state error!";
+                                }
+                            }
+                        case "btnGameMode":
+                            {
+                                switch (variables)
+                                {
+                                    case "True": return "Disable GameShop ";
+                                    case "False": return "Enable GameShop";
+                                    default: return "GameShop state error!";
+                                }
+                            }
+                        default: return "Uncorrect button error!";
+                    }
+                }
             default: return "";
         }
     }
@@ -234,7 +295,7 @@ public class Localization : MonoBehaviour
                         }
                     case "Immortal":
                         {
-                            return "Mixture of Immortality";
+                            return "Elixir of Immortality";
                         }
                     default: return "Translation error!";
                 }
@@ -251,15 +312,15 @@ public class Localization : MonoBehaviour
                     {
                         case "Power":
                             {
-                                return "Увеличивает силу атаки на 25% на 10 секунд";
+                                return "Сила атаки +50% на 10 секунд";
                             }
                         case "Speed":
                             {
-                                return "Увеличивает скорость передвижения на 25% на 10 секунд";
+                                return "Скорость бега +25% на 10 секунд";
                             }
                         case "JumpForce":
                             {
-                                return "Увеличивает силу прыжка на 25% на 10 секунд";
+                                return "Сила прыжка +25% на 10 секунд";
                             }
                         case "HP":
                             {
@@ -267,11 +328,11 @@ public class Localization : MonoBehaviour
                             }
                         case "Defense":
                             {
-                                return "Добавляет 30 ед. защиты";
+                                return "+30 ед. защиты";
                             }
                         case "Immortal":
                             {
-                                return "Дает неуязвимость на 20 секунд";
+                                return "Неуязвимость на 10 секунд";
                             }
                         default: return "Ошибка перевода!";
                     }
@@ -283,27 +344,27 @@ public class Localization : MonoBehaviour
                 {
                     case "Power":
                         {
-                            return "Increases attack power by 25% for 10 seconds";
+                            return "Attack power +50% for 10 seconds";
                         }
                     case "Speed":
                         {
-                            return "Increases movement speed by 25% for 10 seconds";
+                            return "Run speed +25% for 10 seconds";
                         }
                     case "JumpForce":
                         {
-                            return "Increases jump force by 25% for 10 seconds";
+                            return "Jump force +25% for 10 seconds";
                         }
                     case "HP":
                         {
-                            return "Restores 33.3% of the maximum amount of health";
+                            return "+33.3% HP of the maximum amount";
                         }
                     case "Defense":
                         {
-                            return "Gives 30 armor points";
+                            return "+30 armor points";
                         }
                     case "Immortal":
                         {
-                            return "Gives invulnerability for 20 seconds";
+                            return "Invulnerability for 10 seconds";
                         }
                     default: return "Translation error!";
                 }

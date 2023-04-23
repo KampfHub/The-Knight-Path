@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public delegate void PlayerTrigger();
+public delegate void VoidTrigger();
 public delegate void LoadCoinConteiner(int value);
 public delegate void LoadTextConteiner(string value);
 public class Player : Character
@@ -16,6 +16,7 @@ public class Player : Character
     private GameObject GUI;
     private int coins;
     private string currentDifficulty;
+    private SaveData dataBuffer;
     private bool isAttacikng, isLockController;
     private void Awake()
     {
@@ -42,6 +43,7 @@ public class Player : Character
         raycastlengthForJump = _raycastlengthForJump;
         immortalState = false;
         HealthWidgetTrigger();
+        LoadDataInBuffer();
     }
     void Update()
     {
@@ -79,6 +81,9 @@ public class Player : Character
                 saveData._level = level;
                 saveData._coins = coins;
                 saveData._difficulty = currentDifficulty;
+                saveData._language = dataBuffer._language;
+                saveData._soundsEnable = dataBuffer._soundsEnable;
+                saveData._gameShopEnable = dataBuffer._gameShopEnable;
                 gameDataController.GetComponent<GameDataController>().SaveData(saveData);
             }
         }
@@ -205,6 +210,20 @@ public class Player : Character
     private bool PlayerIsAlive()
     {
         return currentHP <= 0 || isAttacikng || isLockController ? false : true;
+    }
+    private void LoadDataInBuffer()
+    {
+        if (GameObject.Find("GameDataController") is not null)
+        {
+            GameObject gameDataController = GameObject.Find("GameDataController");
+            if (gameDataController is not null)
+            {
+                SaveData saveData = gameDataController.GetComponent<GameDataController>().LoadData();
+                dataBuffer._soundsEnable = saveData._soundsEnable;
+                dataBuffer._gameShopEnable = saveData._gameShopEnable;
+                dataBuffer._language = saveData._language;
+            }
+        }
     }
     public void StopMove() //crutch for ui
     {

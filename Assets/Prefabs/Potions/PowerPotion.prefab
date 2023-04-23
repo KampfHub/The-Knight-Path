@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2721662553636324555}
   - component: {fileID: 2721662553636324554}
   - component: {fileID: 2721662553636324557}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: PowerPotion
   m_TagString: Potion
   m_Icon: {fileID: 0}
@@ -124,5 +124,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bfda75a7bf1d13488e717d42ad652b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _value: 1.25
+  _value: 1.5
   _duration: 10

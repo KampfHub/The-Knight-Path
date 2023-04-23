@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7223456254587835637}
   - component: {fileID: 7223456254587835638}
   - component: {fileID: 7223456254587835639}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ImmortalPotion
   m_TagString: Potion
   m_Icon: {fileID: 0}
@@ -124,4 +124,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 371646a9005d59846bef63b0f21def2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _duration: 20
+  _duration: 10

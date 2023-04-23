@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6419921192900613216}
   - component: {fileID: 6419921192900613217}
   - component: {fileID: 6419921192900613222}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: PoisonCloud
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -138,7 +138,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4150450790101122781}
   - component: {fileID: 8157061099385203503}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: PoisonCloud
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -222,7 +222,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6715534131062047311}
   - component: {fileID: 2956339651985409518}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: PoisonCloud (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

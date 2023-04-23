@@ -4,9 +4,13 @@ public class GOGenerator : MonoBehaviour
 {
     [SerializeField] private GameObject[] _enemies;
     [SerializeField] private GameObject[] _obstacles;
-    private GameObject[] enemiesPoints, obstaclePoints;
+    private GameObject[] enemiesPoints, obstaclePoints, uselessObjects;
+    private bool gameShopEnabled;
     private void Start()
     {
+        LoadData();
+        if (gameShopEnabled) DesrtoyUselessObjects("Potion");
+        if (!gameShopEnabled) DesrtoyUselessObjects("Coin");
         if (isNotNullOrEmptyCheck(_enemies)) SwapObjects("EmptyEnemy", enemiesPoints, _enemies);
         if (isNotNullOrEmptyCheck(_obstacles)) SwapObjects("EmptyObstacle", obstaclePoints, _obstacles);
     }
@@ -21,8 +25,25 @@ public class GOGenerator : MonoBehaviour
             Instantiate(newObjects[Random.Range(0, newObjects.Length)], position, rotation);
         }
     }
+    private void DesrtoyUselessObjects(string tag)
+    {
+        uselessObjects = GameObject.FindGameObjectsWithTag(tag);
+        for (int i = 0; i < uselessObjects.Length; i++)
+        {
+            Destroy(uselessObjects[i]);
+        }
+    }
     private bool isNotNullOrEmptyCheck(GameObject[] go)
     {
         return go is null || go.Length == 0 ? false : true;
+    }
+    private void LoadData()
+    {
+        GameObject gameDataController = GameObject.Find("GameDataController");
+        if (gameDataController is not null)
+        {
+            SaveData saveData = gameDataController.GetComponent<GameDataController>().LoadData();
+            gameShopEnabled = saveData._gameShopEnable;
+        }
     }
 }

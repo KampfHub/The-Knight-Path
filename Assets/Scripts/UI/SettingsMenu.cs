@@ -1,15 +1,114 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class SettingsMenu : MonoBehaviour
 {
-    private GameObject gameDataController;
+    public event VoidTrigger UpdateLocalization;
+    private GameObject gameDataController, GUIRef, panelENG, panelRUS,
+        btnSoundsOn, btnSoundsOff, btnGameMode, btnDifficulty, btnLanguage;
     private SaveData dataBuffer;
+    private Localization localization;
     void Start()
     {
-        FindAndSetDataController();
+        FindAndSetGameObjRefs();
         LoadData();
+        LocalizationPreporation();
+        SettingsMenuOpenPrep();
+    }
+    public void CloseBtnClick()
+    {
+        GUIRef.GetComponent<GeneralUI>().ShowMainMenu();
+        gameObject.SetActive(false);
+    }
+    public void SaveChangesBtnClick()
+    {
+        SaveData();
+        UpdateLocalization();
+    }
+    public void SwitchDifficultyBtnKclick()
+    {
+        switch (dataBuffer._difficulty)
+        {
+            case "Easy":
+                {
+                    dataBuffer._difficulty = "Normal";
+                    break;
+                }
+            case "Normal":
+                {
+                    dataBuffer._difficulty = "Hard";
+                    break;
+                }
+            case "Hard":
+                {
+                    dataBuffer._difficulty = "Random";
+                    break;
+                }
+            case "Random":
+                {
+                    dataBuffer._difficulty = "Easy";
+                    break;
+                }
+            default: break;    
+        }
+        btnDifficulty.transform.GetComponentInChildren<TextMeshProUGUI>().text = GetBtnText(btnDifficulty);
+    }
+    public void SwitchLanguageBtnClick()
+    {
+        switch (dataBuffer._language)
+        {
+            case "RUS": 
+                {
+                    dataBuffer._language = "ENG";
+                    panelRUS.SetActive(false);
+                    panelENG.SetActive(true); 
+                    break;
+                } 
+            case "ENG":
+                {
+                    dataBuffer._language = "RUS";
+                    panelRUS.SetActive(true);
+                    panelENG.SetActive(false);
+                    break;
+                }
+            default: break;
+        }
+    }
+    public void ToggleSoundsVolumeBtnClick()
+    {
+        if (dataBuffer._soundsEnable)
+        {
+            dataBuffer._soundsEnable = false;
+            btnSoundsOff.SetActive(true);
+            btnSoundsOn.SetActive(false);
+        }
+        else
+        {
+            dataBuffer._soundsEnable = true;
+            btnSoundsOff.SetActive(false);
+            btnSoundsOn.SetActive(true);
+        }   
+    }
+    public void ToggleGameModeBtnClick()
+    {
+        if(dataBuffer._gameShopEnable) dataBuffer._gameShopEnable = false;
+        else dataBuffer._gameShopEnable = true;
+        btnGameMode.transform.GetComponentInChildren<TextMeshProUGUI>().text = GetBtnText(btnGameMode);
+    }
+    private void SettingsMenuOpenPrep()
+    {
+        switch (dataBuffer._language)
+        {
+            case "RUS": panelENG.SetActive(false); break;
+            case "ENG": panelRUS.SetActive(false); break;
+            default: break;
+        }
+        if (dataBuffer._soundsEnable) btnSoundsOff.SetActive(false);
+        if (!dataBuffer._soundsEnable) btnSoundsOn.SetActive(false);
+        btnDifficulty.transform.GetComponentInChildren<TextMeshProUGUI>().text = GetBtnText(btnDifficulty);
+        btnGameMode.transform.GetComponentInChildren<TextMeshProUGUI>().text = GetBtnText(btnGameMode);
     }
     private void LoadData()
     {
@@ -20,6 +119,8 @@ public class SettingsMenu : MonoBehaviour
             dataBuffer._language = saveData._language;
             dataBuffer._gameShopEnable= saveData._gameShopEnable;
             dataBuffer._soundsEnable= saveData._soundsEnable;
+            dataBuffer._level = saveData._level;
+            dataBuffer._coins = saveData._coins;
         }
     }
     
@@ -32,14 +133,75 @@ public class SettingsMenu : MonoBehaviour
             saveData._language = dataBuffer._language;
             saveData._soundsEnable = dataBuffer._soundsEnable;
             saveData._gameShopEnable = dataBuffer._gameShopEnable;
+            saveData._level = dataBuffer._level;
+            saveData._coins = dataBuffer._coins;
             gameDataController.GetComponent<GameDataController>().SaveData(saveData);
         }       
     }
-    private void FindAndSetDataController()
+    private string GetBtnText(GameObject buttonRef)
+    {
+        switch(buttonRef.name)
+        {
+            case "btnDifficulty":
+                {
+                    return localization.TextSettingsButtons(btnDifficulty.name, dataBuffer._difficulty);
+                }
+            case "btnGameMode":
+                {
+                    return localization.TextSettingsButtons(btnGameMode.name, dataBuffer._gameShopEnable.ToString());
+                }
+            default: return "Error!";
+        }
+    }
+    private void LocalizationPreporation()
+    {
+        if (GetComponent<Localization>() is not null)
+        {
+            localization = GetComponent<Localization>();
+        }
+        else
+        {
+            gameObject.AddComponent<Localization>();
+            localization = GetComponent<Localization>();
+        }
+    }
+    private void FindAndSetGameObjRefs()
     {
         if(GameObject.Find("GameDataController") is not null)
         {
             gameDataController = GameObject.Find("GameDataController");
+        }
+        if (GameObject.Find("MainMenuCamera") is not null)
+        {
+            GUIRef = GameObject.Find("MainMenuCamera");
+        }
+        if (GameObject.Find("btnLanguage") is not null)
+        {
+            btnLanguage = GameObject.Find("btnLanguage");
+        }
+        if (GameObject.Find("btnDifficulty") is not null)
+        {
+            btnDifficulty = GameObject.Find("btnDifficulty");
+        }
+        if (GameObject.Find("btnGameMode") is not null)
+        {
+            btnGameMode = GameObject.Find("btnGameMode");
+        }
+        if (GameObject.Find("btnMusicOnToogle") is not null)
+        {
+            btnSoundsOn = GameObject.Find("btnMusicOnToogle");
+        }
+        if (GameObject.Find("btnMusicOffToogle") is not null)
+        {
+            btnSoundsOff = GameObject.Find("btnMusicOffToogle"); 
+        }
+        if (GameObject.Find("ENGpanel") is not null)
+        {
+            panelENG = GameObject.Find("ENGpanel");
+        }
+        if (GameObject.Find("RUSpanel") is not null)
+        {
+            panelRUS = GameObject.Find("RUSpanel");
         }
     }
 }

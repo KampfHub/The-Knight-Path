@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6334450247707413675}
   - component: {fileID: 6334450247707413672}
   - component: {fileID: 6334450247707413673}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: JumpForcePotion
   m_TagString: Potion
   m_Icon: {fileID: 0}

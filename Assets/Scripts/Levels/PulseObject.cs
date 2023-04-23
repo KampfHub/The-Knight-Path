@@ -16,7 +16,6 @@ public class PulseObject : MonoBehaviour
         if (gameObject.transform.localScale.x >= _upperBound) upscale = false;
         if (gameObject.transform.localScale.x <= _lowerBound) upscale = true;
         SetScale();
-        Debug.Log(transform.localScale);
     }
     private void SetScale()
     {
