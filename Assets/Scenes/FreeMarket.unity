@@ -2304,6 +2304,10 @@ PrefabInstance:
       propertyPath: _obstacles.Array.data[2]
       value: 
       objectReference: {fileID: 1880589095868568584, guid: 8aebd1e2c7ec4e747904218ef46b7055, type: 3}
+    - target: {fileID: 68292066959214847, guid: 0a0f497f3e9f218448becab4ea0895aa, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 1b1008df7a18d8444b1436aaf3eeecd5, type: 3}
     - target: {fileID: 2392066684688031708, guid: 0a0f497f3e9f218448becab4ea0895aa, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -6483,7 +6487,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 124
+  m_RootOrder: 125
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1285663644
 GameObject:
@@ -38553,5 +38557,5 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 123
+  m_RootOrder: 124
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

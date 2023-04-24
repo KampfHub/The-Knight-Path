@@ -2899,6 +2899,10 @@ PrefabInstance:
       propertyPath: _obstacles.Array.data[2]
       value: 
       objectReference: {fileID: 1020354347104701576, guid: 64406629fc3d2574193f4727f817095a, type: 3}
+    - target: {fileID: 68292066959214847, guid: 0a0f497f3e9f218448becab4ea0895aa, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: b848f7743a952f9419452a20a7e4aa5b, type: 3}
     - target: {fileID: 2392066684688031710, guid: 0a0f497f3e9f218448becab4ea0895aa, type: 3}
       propertyPath: m_Sprite
       value: 
