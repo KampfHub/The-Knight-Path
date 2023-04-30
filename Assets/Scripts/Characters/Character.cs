@@ -16,18 +16,20 @@ public class Character : MonoBehaviour
     protected Rigidbody2D rb;
     protected Animator animator;
     protected SpriteRenderer spriteRenderer;
+    protected GameObject soundsControllerRef;
     protected const int playerLayer = 8;
     protected const int groundLayer = 64;
     protected const int environmentLayer = 128;
     protected const int enemyLayer = 256;
-    protected const int deadLayer = 512; 
+    protected const int deadLayer = 512;
     private Vector2 vector;
+
     private void Start()
     {
+        soundsControllerRef = GameObject.Find("SoundsController");
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        Debug.Log($"{gameObject.name}, {currentDirection}");
     }    
     protected void MoveTo(Vector2 direction)
     {
@@ -92,6 +94,8 @@ public class Character : MonoBehaviour
     public virtual void HealthWidgetTrigger() { }
     protected virtual void InThePit() { }
     protected virtual void PlayerDead() { }
+    protected virtual void UsePorion() { }
+    protected virtual void ActivateObstacle(string obstacleName) { }
     protected virtual void OptionalDead() { }
     protected virtual void OptionalGetHit() { }
     protected virtual void OptionalEndAttack() { }
@@ -121,6 +125,7 @@ public class Character : MonoBehaviour
         EffectWidgetTrigger(impact._name, impact._duration);
         if (impact._type == "Boost")
         {
+            UsePorion();
             switch (impact._name)           
             {
                 case "HP":
@@ -147,8 +152,21 @@ public class Character : MonoBehaviour
             switch (impact._name)
             {
                 case "Spike": GetHit(impact._value); break;
-                case "Trap": GetHit(impact._value); Invoke("RestoreDefaultSpeed", impact._duration); speed -= speed * (impact._value / 100); break;
-                case "Poison": Invoke("RestoreDefaulAttackPower", impact._duration); attackPower *= impact._value; break;
+                case "Trap":
+                    {
+                        GetHit(impact._value); Invoke("RestoreDefaultSpeed", impact._duration);
+                        speed -= speed * (impact._value / 100);
+                        ActivateObstacle("BearTrap");
+                        break;
+                    }
+
+                case "Poison":
+                    {
+                        Invoke("RestoreDefaulAttackPower", impact._duration); 
+                        attackPower *= impact._value;
+                        ActivateObstacle("Poison");
+                        break;
+                    }
             }
         }
     }

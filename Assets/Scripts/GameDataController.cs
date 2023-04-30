@@ -1,6 +1,9 @@
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
+public delegate void VoidTrigger();
+public delegate void IntConteiner(int value);
+public delegate void TextConteiner(string value);
 [System.Serializable]
 public struct SaveData
 {   
@@ -21,6 +24,7 @@ public struct SaveData
     }
 
 }
+
 [System.Serializable]
 public class GameDataController : MonoBehaviour
 {

@@ -1,8 +1,5 @@
 using UnityEngine;
 
-public delegate void VoidTrigger();
-public delegate void LoadCoinConteiner(int value);
-public delegate void LoadTextConteiner(string value);
 public class Player : Character
 {
     [SerializeField] private float _maxHP;
@@ -15,23 +12,26 @@ public class Player : Character
     [SerializeField] private float _raycastlengthForJump;
     private GameObject GUI;
     private int coins;
+    private SoundsController soundsController;
     private string currentDifficulty;
     private SaveData dataBuffer;
     private bool isAttacikng, isLockController;
     private void Awake()
     {
         CheckAndSetEmptyValues();
+        soundsControllerRef = GameObject.Find("SoundsController");
         GUI = GameObject.Find("GUI");
         GUI.GetComponent<GeneralUI>().JumpTrigger += Jump;
         GUI.GetComponent<GeneralUI>().AttackTrigger += Attack;
         GUI.GetComponent<GeneralUI>().UploadingCoins += SetCoinsValue;
         GUI.GetComponent<GeneralUI>().UploadingDifficultyValue += SetDifficultyValue;
     }
-    void Start()
+    private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        soundsController = soundsControllerRef.GetComponent<SoundsController>();
         maxHP = _maxHP;
         currentHP = maxHP;
         maxDefence = _maxDefence;
@@ -45,7 +45,7 @@ public class Player : Character
         HealthWidgetTrigger();
         LoadDataInBuffer();
     }
-    void Update()
+    private void Update()
     {
         if (PlayerIsAlive()) InputsListener();
         if (CheckOnPit()) InThePit();
@@ -92,6 +92,8 @@ public class Player : Character
     {   
         isLockController = true;
         StopMove();
+        soundsController.PlaySound("Win", 0.5f);
+        DisableLevelMusic();
         GUI.GetComponent<GeneralUI>().AvailableLevelUpgrade(newAvailableLevel);
         GUI.GetComponent<GeneralUI>().ShowWinWindow(); 
     }
@@ -102,13 +104,13 @@ public class Player : Character
     public void AddCoin()
     {
         coins++;
-        Debug.Log($"Coins = {coins.ToString()}");
+        soundsController.PlaySound("Coin");
     }
     public void SpendCoins(int value)
     {
         coins -= value;
-        Debug.Log($"Coins = {coins.ToString()}");
     }
+
     private void SetCoinsValue(int value)
     {
         coins = value;
@@ -122,14 +124,17 @@ public class Player : Character
         if (ActionIsAllowed())
         {
             LaunchAttack();
+            soundsController.PlaySound("Attack");
             isAttacikng = true;
-            Invoke("RestoreAttakState", _timeAttack);
+            Invoke("RestoreAttackState", _timeAttack);
         }
     }
+
     private void Jump()
     {
         if (ActionIsAllowed())
         {
+            soundsController.PlaySound("Jump");
             animator.SetTrigger("isJumping");
             rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
         }
@@ -138,16 +143,30 @@ public class Player : Character
     {
         this.PlayerDead();
     }
+    protected override void ActivateObstacle(string obstacleName)
+    {
+        soundsController.PlaySound(obstacleName);
+    }
+    protected override void UsePorion()
+    {
+        soundsController.PlaySound("Potion");
+    }
     protected override void PlayerDead()
     {
         ClearLinkToPlatform();
-        gameObject.SetActive(false);
+        gameObject.SetActive(false);;
+        DisableLevelMusic();
+        soundsController.PlaySound("Lose", 0.5f);
         GUI.GetComponent<GeneralUI>().ShowLoseWindow();
     }
-    private void RestoreAttakState()
+    private void RestoreAttackState()
     {
         isAttacikng = false;
         isWalking(false);
+    }
+    protected override void OptionalGetHit()
+    {
+        soundsController.PlaySound("Hit");
     }
     protected void RestoreDefaultSpeed()
     {
@@ -225,6 +244,11 @@ public class Player : Character
             }
         }
     }
+    private void DisableLevelMusic()
+    {
+        soundsController.MuteLevelMusic();
+    }
+
     public void StopMove() //crutch for ui
     {
         animator.SetBool("isWalking", false);

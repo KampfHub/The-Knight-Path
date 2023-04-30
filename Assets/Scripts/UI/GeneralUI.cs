@@ -9,13 +9,15 @@ using UnityEngine.EventSystems;
 public class GeneralUI : MonoBehaviour
 {
     public event VoidTrigger JumpTrigger, AttackTrigger;
-    public event LoadCoinConteiner UploadingCoins;
-    public event LoadTextConteiner UploadingDifficultyValue;
+    public event IntConteiner UploadingCoins;
+    public event TextConteiner UploadingDifficultyValue;
     private int availableLevel;
-    private string currentLocolization;
+    private string currentLocolization; //buffer only
     private bool gameShopEnabled;
     private AsyncOperation asyncOperation;
     private Image loadProgressBar;
+    private GameObject soundsControllerRef;
+    private SoundsController soundsController;
     private Localization localization;
     private bool isPauseButtonPressed = false;
     private int LevelMenuState = 0;
@@ -31,6 +33,7 @@ public class GeneralUI : MonoBehaviour
         FindAndSetUIComponents();
         SetLocalizationOnGUI();
         UIPreparation();
+        SoundControllerPreporation();
     }
     public void SettingsButton()
     {
@@ -45,6 +48,7 @@ public class GeneralUI : MonoBehaviour
             Pause(true);
             ShowMenu(pausePanel, true);
         }
+        ClickSound();
     }
     public void JumpButton()
     {
@@ -67,6 +71,7 @@ public class GeneralUI : MonoBehaviour
     {
         ShowMenu(settingsPanel, true);
         ShowMenu(mainMenuPanel, false);
+        ClickSound();
     }
     public void ShowMainMenu()
     {
@@ -75,22 +80,27 @@ public class GeneralUI : MonoBehaviour
     public void OpenLevelHSBtnClick()
     {
         StartCoroutine(LoadLevel(GetLevelId(btnLevelHightSlot.GetComponentInChildren<TextMeshProUGUI>().text)));
+        ClickSound();
     }
     public void OpenLevelMSBtnClick()
     {
         StartCoroutine(LoadLevel(GetLevelId(btnLevelMiddleSlot.GetComponentInChildren<TextMeshProUGUI>().text)));
+        ClickSound();
     }
     public void OpenLevelLSBtnClick()
     {
         StartCoroutine(LoadLevel(GetLevelId(btnLevelLowSlot.GetComponentInChildren<TextMeshProUGUI>().text)));
+        ClickSound();
     }
     public void NextLevelBtnClick()
     {
         StartCoroutine(LoadLevel(availableLevel));
+        ClickSound();
     }
     public void MainMenuBtnClick()
     {
         StartCoroutine(LoadLevel(0));
+        ClickSound();
     }
     public void ShowWinWindow()
     {
@@ -105,21 +115,25 @@ public class GeneralUI : MonoBehaviour
     public void RelpayBtnClick()
     {
         StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex));
+        ClickSound();
     }
     public void CloseSelectLevelMenuBtnClick()
     {
         ShowLevelMenu(false);
         Pause(false);
+        ClickSound();
     }
     public void NextBtnClick()
     {
         LevelMenuState++;
         ShowLevelMenu(true);
+        ClickSound();
     }
     public void BackBtnClick()
     {
         LevelMenuState--;
         ShowLevelMenu(true);
+        ClickSound();
     }
     public void EndGameMenu()
     {
@@ -206,12 +220,13 @@ public class GeneralUI : MonoBehaviour
         FillGameShop();
         SetWalletValue();
         SetLocalizationOnGUI();
+        ClickSound();
     }
     public void CloseGameShopBtnClick()
     {
         ShowMenu(gameShopPanel, false);
         Pause(false);
-
+        ClickSound();
     }
     public void AvailableLevelUpgrade(int level)
     {
@@ -455,5 +470,17 @@ public class GeneralUI : MonoBehaviour
     private void ShowMenu(GameObject menuPanel, bool state)
     {
         if (GONullCheck(menuPanel)) menuPanel.SetActive(state);
+    }
+    private void SoundControllerPreporation()
+    {
+        if (GONullCheck(GameObject.Find("SoundsController")))
+        {
+            soundsControllerRef = GameObject.Find("SoundsController");
+            soundsController = soundsControllerRef.GetComponent<SoundsController>();
+        }
+    }
+    private void ClickSound()
+    {
+        soundsController.PlaySound("Click");
     }
 }

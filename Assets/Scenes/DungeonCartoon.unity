@@ -37831,7 +37831,7 @@ GameObject:
   - component: {fileID: 754112433}
   - component: {fileID: 754112432}
   - component: {fileID: 754112431}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Pillar_01 (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38330,7 +38330,7 @@ GameObject:
   - component: {fileID: 833607497}
   - component: {fileID: 833607496}
   - component: {fileID: 833607495}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: Pillar_01 (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39933,6 +39933,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 2474ed6e7d069b24cb43be401055ce4a, type: 3}
+    - target: {fileID: 2569572160746749334, guid: 0a0f497f3e9f218448becab4ea0895aa, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 77eae561bb2669d459636525b701f142, type: 3}
     - target: {fileID: 5728542381112446011, guid: 0a0f497f3e9f218448becab4ea0895aa, type: 3}
       propertyPath: m_Sprite
       value: 

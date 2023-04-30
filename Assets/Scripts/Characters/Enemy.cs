@@ -9,18 +9,21 @@ public class Enemy : Character
     [SerializeField] private float _attackRange;
     [SerializeField] private float _sightLenght;
     private bool isAttackCooldown;
+    private SoundsController soundsController;
     private GameObject playerRef { get; set; }
     public event EnemyTrigger EnemyDead, EnemyHit;
     
     private void Awake()
     {
         playerRef = GameObject.FindWithTag("Player");
+        soundsControllerRef = GameObject.Find("SoundsController");
     }
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        soundsController = soundsControllerRef.GetComponent<SoundsController>();
         maxHP = _maxHP;
         currentHP = maxHP;
         speed = _speed;
@@ -77,6 +80,7 @@ public class Enemy : Character
     protected override void OptionalGetHit() 
     { 
         if(EnemyHit is not null) EnemyHit();
+        soundsController.PlaySound("Hit", 0.7f);
     }
     private void TargetLoss()
     {

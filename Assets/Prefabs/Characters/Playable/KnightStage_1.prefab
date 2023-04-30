@@ -177,6 +177,8 @@ MonoBehaviour:
   _jumpForce: 5
   _timeAttack: 0.5
   _raycastlengthForJump: 0.7
+  _audioSource: {fileID: 0}
+  playerSounds: []
 --- !u!70 &7874753483848406520
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

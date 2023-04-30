@@ -6,9 +6,10 @@ using TMPro;
 public class SettingsMenu : MonoBehaviour
 {
     public event VoidTrigger UpdateLocalization;
-    private GameObject gameDataController, GUIRef, panelENG, panelRUS,
+    private GameObject gameDataController, soundsControllerRef, GUIRef, panelENG, panelRUS,
         btnSoundsOn, btnSoundsOff, btnGameMode, btnDifficulty, btnLanguage;
     private SaveData dataBuffer;
+    private SoundsController soundsController;
     private Localization localization;
     void Start()
     {
@@ -21,11 +22,13 @@ public class SettingsMenu : MonoBehaviour
     {
         GUIRef.GetComponent<GeneralUI>().ShowMainMenu();
         gameObject.SetActive(false);
+        ClickSound();
     }
     public void SaveChangesBtnClick()
     {
         SaveData();
         UpdateLocalization();
+        ClickSound();
     }
     public void SwitchDifficultyBtnKclick()
     {
@@ -54,6 +57,7 @@ public class SettingsMenu : MonoBehaviour
             default: break;    
         }
         btnDifficulty.transform.GetComponentInChildren<TextMeshProUGUI>().text = GetBtnText(btnDifficulty);
+        ClickSound();
     }
     public void SwitchLanguageBtnClick()
     {
@@ -75,27 +79,32 @@ public class SettingsMenu : MonoBehaviour
                 }
             default: break;
         }
+        ClickSound();
     }
     public void ToggleSoundsVolumeBtnClick()
     {
         if (dataBuffer._soundsEnable)
         {
             dataBuffer._soundsEnable = false;
+            soundsController.ToogleSoundsEnabled(false);
             btnSoundsOff.SetActive(true);
             btnSoundsOn.SetActive(false);
         }
         else
         {
             dataBuffer._soundsEnable = true;
+            soundsController.ToogleSoundsEnabled(true);
             btnSoundsOff.SetActive(false);
             btnSoundsOn.SetActive(true);
-        }   
+        }
+        ClickSound();
     }
     public void ToggleGameModeBtnClick()
     {
         if(dataBuffer._gameShopEnable) dataBuffer._gameShopEnable = false;
         else dataBuffer._gameShopEnable = true;
         btnGameMode.transform.GetComponentInChildren<TextMeshProUGUI>().text = GetBtnText(btnGameMode);
+        ClickSound();
     }
     private void SettingsMenuOpenPrep()
     {
@@ -203,5 +212,14 @@ public class SettingsMenu : MonoBehaviour
         {
             panelRUS = GameObject.Find("RUSpanel");
         }
+        if (GameObject.Find("SoundsController") is not null)
+        {
+            soundsControllerRef = GameObject.Find("SoundsController");
+            soundsController = soundsControllerRef.GetComponent<SoundsController>();
+        }
+    }
+    private void ClickSound()
+    {
+        soundsController.PlaySound("Click");
     }
 }
