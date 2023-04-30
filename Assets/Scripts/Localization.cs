@@ -28,13 +28,13 @@ public class Localization : MonoBehaviour
                     {
                         case "textKnightGirl":
                             {
-                                return "Лишь камнем оглушив, Дракона можно победить! Найди камень и сбрось на голову ему!";
+                                return "Р›РёС€СЊ РєР°РјРЅРµРј РѕРіР»СѓС€РёРІ, Р”СЂР°РєРѕРЅР° РјРѕР¶РЅРѕ РїРѕР±РµРґРёС‚СЊ! РќР°Р№РґРё РєР°РјРµРЅСЊ Рё СЃР±СЂРѕСЃСЊ РЅР° РіРѕР»РѕРІСѓ РµРјСѓ!";
                             }
                         case "textGenie":
                             {
-                                return "Не тронь меня! Иначе я обрушу на тебя магию камней!!!";
+                                return "РќРµ С‚СЂРѕРЅСЊ РјРµРЅСЏ! РРЅР°С‡Рµ СЏ РѕР±СЂСѓС€Сѓ РЅР° С‚РµР±СЏ РјР°РіРёСЋ РєР°РјРЅРµР№!!!";
                             }
-                        default: return "Ошибка перевода!";
+                        default: return "РћС€РёР±РєР° РїРµСЂРµРІРѕРґР°!";
                     }
                 }
             case "ENG":
@@ -65,37 +65,37 @@ public class Localization : MonoBehaviour
                     {
                         case "Balance":
                             {
-                                return "Баланс";
+                                return "Р‘Р°Р»Р°РЅСЃ";
                             }
                         case "NextLevel":
                             {
-                                return "Следующий уровень";
+                                return "РЎР»РµРґСѓСЋС‰РёР№ СѓСЂРѕРІРµРЅСЊ";
                             }
                         case "QuitGame":
                             {
-                                return "Выйти из игры";
+                                return "Р’С‹Р№С‚Рё РёР· РёРіСЂС‹";
                             }
                         case "Replay":
                             {
-                                return "Повторить";
+                                return "РџРѕРІС‚РѕСЂРёС‚СЊ";
                             }
                         case "Resume":
                             {
-                                return "Продолжить";
+                                return "РџСЂРѕРґРѕР»Р¶РёС‚СЊ";
                             }
                         case "MainMenu":
                             {
-                                return "Главное меню";
+                                return "Р“Р»Р°РІРЅРѕРµ РјРµРЅСЋ";
                             }
                         case "Settings":
                             {
-                                return "Настройки";
+                                return "РќР°СЃС‚СЂРѕР№РєРё";
                             }
                         case "PlayGame":
                             {
-                                return "Начать игру";
+                                return "РќР°С‡Р°С‚СЊ РёРіСЂСѓ";
                             }
-                        default: return "Ошибка перевода!";
+                        default: return "РћС€РёР±РєР° РїРµСЂРµРІРѕРґР°!";
                     }  
                 }
             case "ENG":
@@ -152,23 +152,23 @@ public class Localization : MonoBehaviour
                             {
                                 switch (variables)
                                 {
-                                    case "Random": return "Режим: Рандом";
-                                    case "Easy": return "Режим: Простой";
-                                    case "Normal": return "Режим: Средний";
-                                    case "Hard": return "Режим: Сложный";
-                                    default: return "Ошибка выбора режима!";
+                                    case "Random": return "Р РµР¶РёРј: Р Р°РЅРґРѕРј";
+                                    case "Easy": return "Р РµР¶РёРј: РџСЂРѕСЃС‚РѕР№";
+                                    case "Normal": return "Р РµР¶РёРј: РЎСЂРµРґРЅРёР№";
+                                    case "Hard": return "Р РµР¶РёРј: РЎР»РѕР¶РЅС‹Р№";
+                                    default: return "РћС€РёР±РєР° РІС‹Р±РѕСЂР° СЂРµР¶РёРјР°!";
                                 }
                             }
                         case "btnGameMode":
                             {
                                 switch (variables)
                                 {
-                                    case "True": return "Отключить Игровой магазин";
-                                    case "False": return "Включить Игровой магазин";
-                                    default: return "Ошибка выбора режима!";
+                                    case "True": return "РћС‚РєР»СЋС‡РёС‚СЊ РРіСЂРѕРІРѕР№ РјР°РіР°Р·РёРЅ";
+                                    case "False": return "Р’РєР»СЋС‡РёС‚СЊ РРіСЂРѕРІРѕР№ РјР°РіР°Р·РёРЅ";
+                                    default: return "РћС€РёР±РєР° РІС‹Р±РѕСЂР° СЂРµР¶РёРјР°!";
                                 }
                             }
-                        default: return "Неккоректная кнопка!";
+                        default: return "РќРµРєРєРѕСЂРµРєС‚РЅР°СЏ РєРЅРѕРїРєР°!";
                     }
                 }
             case "ENG":
@@ -207,7 +207,7 @@ public class Localization : MonoBehaviour
         {
             case "RUS":
                 {
-                    return $"Уровень {initialRange}";
+                    return $"РЈСЂРѕРІРµРЅСЊ {initialRange}";
                 }
             case "ENG":
                 {
@@ -222,7 +222,7 @@ public class Localization : MonoBehaviour
         {
             case "RUS":
                 {
-                    btnTextLevel = btnTextLevel.Trim(new char[] { 'У', 'р', 'о', 'в', 'е', 'н', 'ь', ' ' });
+                    btnTextLevel = btnTextLevel.Trim(new char[] { 'РЈ', 'СЂ', 'Рѕ', 'РІ', 'Рµ', 'РЅ', 'СЊ', ' ' });
                     return Int32.TryParse(btnTextLevel, out int j) ? j : 0;
                 }
             case "ENG":
@@ -243,29 +243,29 @@ public class Localization : MonoBehaviour
                     {
                         case "Power":
                             {
-                                return "Зелье силы";
+                                return "Р—РµР»СЊРµ СЃРёР»С‹";
                             }
                         case "Speed":
                             {
-                                return "Зелье скорости";
+                                return "Р—РµР»СЊРµ СЃРєРѕСЂРѕСЃС‚Рё";
                             }
                         case "JumpForce":
                             {
-                                return "Зелье лёгкости";
+                                return "Р—РµР»СЊРµ Р»С‘РіРєРѕСЃС‚Рё";
                             }
                         case "HP":
                             {
-                                return "Эликсир здоровья";
+                                return "Р­Р»РёРєСЃРёСЂ Р·РґРѕСЂРѕРІСЊСЏ";
                             }
                         case "Defense":
                             {
-                                return "Эликсир крепости";
+                                return "Р­Р»РёРєСЃРёСЂ РєСЂРµРїРѕСЃС‚Рё";
                             }
                         case "Immortal":
                             {
-                                return "Микстура бессмертия";
+                                return "РњРёРєСЃС‚СѓСЂР° Р±РµСЃСЃРјРµСЂС‚РёСЏ";
                             }
-                        default: return "Ошибка перевода!";
+                        default: return "РћС€РёР±РєР° РїРµСЂРµРІРѕРґР°!";
                     }
                     
                 }
@@ -312,29 +312,29 @@ public class Localization : MonoBehaviour
                     {
                         case "Power":
                             {
-                                return "Сила атаки +50% на 10 секунд";
+                                return "РЎРёР»Р° Р°С‚Р°РєРё +50% РЅР° 10 СЃРµРєСѓРЅРґ";
                             }
                         case "Speed":
                             {
-                                return "Скорость бега +25% на 10 секунд";
+                                return "РЎРєРѕСЂРѕСЃС‚СЊ Р±РµРіР° +25% РЅР° 10 СЃРµРєСѓРЅРґ";
                             }
                         case "JumpForce":
                             {
-                                return "Сила прыжка +25% на 10 секунд";
+                                return "РЎРёР»Р° РїСЂС‹Р¶РєР° +25% РЅР° 10 СЃРµРєСѓРЅРґ";
                             }
                         case "HP":
                             {
-                                return "Восстанавливает 33.3% здоровья";
+                                return "Р’РѕСЃСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ 33.3% Р·РґРѕСЂРѕРІСЊСЏ";
                             }
                         case "Defense":
                             {
-                                return "+30 ед. защиты";
+                                return "+30 РµРґ. Р·Р°С‰РёС‚С‹";
                             }
                         case "Immortal":
                             {
-                                return "Неуязвимость на 10 секунд";
+                                return "РќРµСѓСЏР·РІРёРјРѕСЃС‚СЊ РЅР° 10 СЃРµРєСѓРЅРґ";
                             }
-                        default: return "Ошибка перевода!";
+                        default: return "РћС€РёР±РєР° РїРµСЂРµРІРѕРґР°!";
                     }
 
                 }
