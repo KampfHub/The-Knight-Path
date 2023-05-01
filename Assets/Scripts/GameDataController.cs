@@ -63,7 +63,7 @@ public class GameDataController : MonoBehaviour
             saveData._gameShopEnable = true;
             saveData._soundsEnable = true;
             saveData._difficulty = "Random";
-            saveData._language = "ENG";
+            saveData._language = "RUS";
             bf.Serialize(file, saveData);
             file.Close();
             Debug.Log("Create new save data!");

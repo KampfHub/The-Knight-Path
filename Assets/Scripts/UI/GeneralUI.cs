@@ -94,6 +94,7 @@ public class GeneralUI : MonoBehaviour
     }
     public void NextLevelBtnClick()
     {
+        ShowMenu(windowWin, false);
         StartCoroutine(LoadLevel(availableLevel));
         ClickSound();
     }
@@ -114,6 +115,7 @@ public class GeneralUI : MonoBehaviour
     }
     public void RelpayBtnClick()
     {
+        ShowMenu(windowLose, false);
         StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex));
         ClickSound();
     }

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1749383262623240705}
   - component: {fileID: 1749383262623240706}
   - component: {fileID: 1749383262623240707}
+  - component: {fileID: 2253124150228612448}
   m_Layer: 5
   m_Name: btnJump
   m_TagString: Untagged
@@ -121,19 +122,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1749383262623240706}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1749383262657045772}
-        m_TargetAssemblyTypeName: Buttons, Assembly-CSharp
-        m_MethodName: JumpButton
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
+--- !u!114 &2253124150228612448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1749383262623240709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d90be1d184c3b343bdaf01bdaf75b51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1749383262967720467
 GameObject:
   m_ObjectHideFlags: 0
@@ -1772,13 +1773,13 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2055800059142088558}
-  - {fileID: 5611822929895840586}
   - {fileID: 1433684630003876371}
   - {fileID: 5721089538312347412}
   - {fileID: 8077068383770598726}
   - {fileID: 8077068385130761848}
   - {fileID: 4255114416404739196}
   - {fileID: 1470208745200923768}
+  - {fileID: 5611822929895840586}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6011,7 +6012,7 @@ RectTransform:
   - {fileID: 4255114416236397841}
   - {fileID: 4255114415731134278}
   m_Father: {fileID: 2055800058919849168}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -7197,7 +7198,7 @@ RectTransform:
   - {fileID: 1749383264461135734}
   - {fileID: 4255114415644761329}
   m_Father: {fileID: 2055800058919849168}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -7412,7 +7413,7 @@ RectTransform:
   - {fileID: 5721089538465062001}
   - {fileID: 5721089539884486877}
   m_Father: {fileID: 2055800058919849168}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -8642,7 +8643,7 @@ RectTransform:
   - {fileID: 8077068383733821072}
   - {fileID: 8077068384140327106}
   m_Father: {fileID: 2055800058919849168}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -9398,7 +9399,7 @@ RectTransform:
   - {fileID: 8077068383542626494}
   - {fileID: 8077068383333298868}
   m_Father: {fileID: 2055800058919849168}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -9504,7 +9505,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6665358290427339495, guid: 01b2e93c54aed84419a88c9eae738e34, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6665358290427339495, guid: 01b2e93c54aed84419a88c9eae738e34, type: 3}
       propertyPath: m_AnchorMax.x
@@ -9626,7 +9627,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 181366260625584800, guid: 617c4350d20526449b4e65e12eed4a78, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 181366260625584800, guid: 617c4350d20526449b4e65e12eed4a78, type: 3}
       propertyPath: m_AnchorMax.x

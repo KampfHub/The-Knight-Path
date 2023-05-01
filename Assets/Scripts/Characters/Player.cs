@@ -22,7 +22,7 @@ public class Player : Character
         CheckAndSetEmptyValues();
         soundsControllerRef = GameObject.Find("SoundsController");
         GUI = GameObject.Find("GUI");
-        GUI.GetComponent<GeneralUI>().JumpTrigger += Jump;
+        GUI.GetComponentInChildren<JumpPressed>().JumpTrigger += Jump;
         GUI.GetComponent<GeneralUI>().AttackTrigger += Attack;
         GUI.GetComponent<GeneralUI>().UploadingCoins += SetCoinsValue;
         GUI.GetComponent<GeneralUI>().UploadingDifficultyValue += SetDifficultyValue;
