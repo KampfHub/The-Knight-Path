@@ -9,13 +9,14 @@ public class Player : Character
     [SerializeField] private float _speed;
     [SerializeField] private float _jumpForce;
     [SerializeField] private float _timeAttack;
+    [SerializeField] private float _jumpCooldownTime;
     [SerializeField] private float _raycastlengthForJump;
     private GameObject GUI;
     private int coins;
     private SoundsController soundsController;
     private string currentDifficulty;
     private SaveData dataBuffer;
-    private bool isAttacikng, isLockController;
+    private bool isAttacikng, isJumping, isLockController;
     private void Awake()
     {
         CheckAndSetEmptyValues();
@@ -121,7 +122,7 @@ public class Player : Character
     }
     private void Attack()
     {
-        if (ActionIsAllowed())
+        if (ActionIsAllowed() && isAttacikng == false)
         {
             LaunchAttack();
             soundsController.PlaySound("Attack");
@@ -129,14 +130,14 @@ public class Player : Character
             Invoke("RestoreAttackState", _timeAttack);
         }
     }
-
     private void Jump()
     {
-        if (ActionIsAllowed())
+        if (ActionIsAllowed() && isJumping == false)
         {
             soundsController.PlaySound("Jump");
             animator.SetTrigger("isJumping");
             rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+            Invoke("RestoreJumpState", _jumpCooldownTime);
         }
     }
     protected override void InThePit()
@@ -163,6 +164,10 @@ public class Player : Character
     {
         isAttacikng = false;
         isWalking(false);
+    }
+    private void RestoreJumpState()
+    {
+        isJumping = false;
     }
     protected override void OptionalGetHit()
     {
