@@ -55,6 +55,44 @@ public class Localization : MonoBehaviour
             default: return "localization is not selected";
         }
     }
+    public string GetEndGameText(string text)
+    {
+        switch (language)
+        {
+            case "RUS":
+                {
+                    switch (text)
+                    {
+                        case "Button":
+                            {
+                                return "Главное меню";
+                            }
+                        case "Comment":
+                            {
+                                return "Спасибо за игру\r\nРазработчик: Виктор Кампф";
+                            }
+                        
+                        default: return "Ошибка перевода!";
+                    }
+                }
+            case "ENG":
+                {
+                    switch (text)
+                    {
+                        case "Button":
+                            {
+                                return "Main Menu";
+                            }
+                        case "Comment":
+                            {
+                                return "Thanks for playing\r\nCreated by Viktor Kampf";
+                            }
+                        default: return "Translition Error!";
+                    }
+                }
+            default: return "ERROR!";
+        }
+    }
     public string GetGUIText(string text)
     {
         switch (language)

@@ -145,7 +145,9 @@ public class GeneralUI : MonoBehaviour
         {
             playerRef.GetComponent<Player>().LockController(true);
             playerRef.GetComponent<Player>().StopMove();
-        }  
+        }
+        soundsController.MuteLevelMusic();
+        soundsController.PlaySound("GameOver", 0.7f);
         ShowMenu(endGamePanel, true);
     }
     public void UsePotion()
