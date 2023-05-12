@@ -4,6 +4,7 @@ using UnityEngine;
 public delegate void VoidTrigger();
 public delegate void IntConteiner(int value);
 public delegate void TextConteiner(string value);
+
 [System.Serializable]
 public struct SaveData
 {   

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Summoner : Character
+class Summoner : Character
 {
     [SerializeField] private float _maxHP;
     [SerializeField] private Vector3 selfSpawnPoint1;
@@ -16,6 +16,8 @@ public class Summoner : Character
         if(transform.position == selfSpawnPoint1) sr.flipX= false;
         gameObject.layer = 8;
     }
+    protected override void InThePit() => Reborn();
+    protected override void OptionalGetHit() { }
     protected override void OptionalDead()
     {
         if(gameObject.GetComponent<ObjectSpawner>() is not null)

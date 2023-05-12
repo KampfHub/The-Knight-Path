@@ -35,11 +35,12 @@ public class SoundsController : MonoBehaviour
     }  
     public void PlaySound(string name, float volume)
     {
-        if(soundsEnabled)
+        if (soundsEnabled)
         {
             audioSource.volume = volume;
             audioSource.clip = sounds[name];
             audioSource.Play();
+            Debug.Log($"{audioSource.clip} played");
         }
     }
     public void MuteLevelMusic()

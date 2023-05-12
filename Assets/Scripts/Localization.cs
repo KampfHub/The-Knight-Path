@@ -55,6 +55,59 @@ public class Localization : MonoBehaviour
             default: return "localization is not selected";
         }
     }
+    public string GetControllerInfo(string text)
+    {
+        switch (language)
+        {
+            case "RUS":
+                {
+                    switch (text)
+                    {
+                        case "MoveToRight":
+                            {
+                                return "Бежать вперед - [В]";
+                            }
+                        case "MoveToLeft":
+                            {
+                                return "Бежать назад - [Ф]";
+                            }
+                        case "Attack":
+                            {
+                                return "Атака - [У]";
+                            }
+                        case "Jump":
+                            {
+                                return "Прыжок - [Пробел]";
+                            }
+                        default: return "Ошибка перевода!";
+                    }
+                }
+            case "ENG":
+                {
+                    switch (text)
+                    {
+                        case "MoveToRight":
+                            {
+                                return "Move to right - [D]";
+                            }
+                        case "MoveToLeft":
+                            {
+                                return "Move to left - [A] ";
+                            }
+                        case "Attack":
+                            {
+                                return "Attack - [E]";
+                            }
+                        case "Jump":
+                            {
+                                return "Jump - [Space]";
+                            }
+                        default: return "Translition Error!";
+                    }
+                }
+            default: return "ERROR!";
+        }
+    }
     public string GetEndGameText(string text)
     {
         switch (language)

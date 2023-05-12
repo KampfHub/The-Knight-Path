@@ -1,6 +1,7 @@
+using Unity.VisualScripting;
 using UnityEngine;
 public delegate void EnemyTrigger();
-public class Enemy : Character
+class Enemy : Character
 {
     [SerializeField] private float _maxHP;
     [SerializeField] private float _speed;
@@ -82,11 +83,7 @@ public class Enemy : Character
         if(EnemyHit is not null) EnemyHit();
         soundsController.PlaySound("Hit", 0.7f);
     }
-    private void TargetLoss()
-    {
-        isWalking(false);
-    }
-    
+    private void TargetLoss() => isWalking(false);    
     private Vector2 GetCurrentDirection()
     {
         if (spriteRenderer.flipX) return Vector2.left;
@@ -112,8 +109,5 @@ public class Enemy : Character
             spriteRenderer.flipX = false;
         }
     }
-    public float GetHPRatio()
-    {
-        return currentHP / maxHP;
-    }
+    public float GetHPRatio() => currentHP / maxHP;
 }

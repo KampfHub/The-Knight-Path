@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Character : MonoBehaviour
+abstract class Character : MonoBehaviour
 {
     protected float maxHP { get; set; }
     protected float currentHP { get; set; }
@@ -17,12 +17,11 @@ public class Character : MonoBehaviour
     protected Animator animator;
     protected SpriteRenderer spriteRenderer;
     protected GameObject soundsControllerRef;
-    protected const int playerLayer = 8;
-    protected const int groundLayer = 64;
-    protected const int environmentLayer = 128;
-    protected const int enemyLayer = 256;
-    protected const int deadLayer = 512;
-    private Vector2 vector;
+    protected readonly int playerLayer = 8;
+    protected readonly int groundLayer = 64;
+    protected readonly int environmentLayer = 128;
+    protected readonly int enemyLayer = 256;
+    protected readonly int deadLayer = 512;
 
     private void Start()
     {
@@ -46,14 +45,8 @@ public class Character : MonoBehaviour
             spriteRenderer.flipX = false;
         }
     }
-    protected void isWalking(bool state)
-    {
-        animator.SetBool("isWalking", state);
-    }
-    protected void LaunchAttack()
-    {
-        animator.SetTrigger("isAttacking");
-    }
+    protected void isWalking(bool state) => animator.SetBool("isWalking", state);
+    protected void LaunchAttack() => animator.SetTrigger("isAttacking");
     protected void EndAttack()
     {
         OptionalEndAttack();
@@ -67,16 +60,8 @@ public class Character : MonoBehaviour
             }
         }
     }
-    private Vector2 GetCurrentDirection()
-    {//crutch for EndAttack
-        if(spriteRenderer.flipX) return Vector2.left;
-        return Vector2.right;
-    }
-    private int GetTargetLayer()
-    {
-        if (gameObject.layer == 3) return enemyLayer;
-        return playerLayer;
-    }
+    private Vector2 GetCurrentDirection() => spriteRenderer.flipX ? Vector2.left : Vector2.right;
+    private int GetTargetLayer() => gameObject.layer == 3 ? enemyLayer : playerLayer;
     public void GetHit(float damage)
     {
         if (immortalState == false)
@@ -91,41 +76,33 @@ public class Character : MonoBehaviour
             OptionalGetHit();
         }
     }
-    public virtual void HealthWidgetTrigger() { }
-    protected virtual void InThePit() { }
-    protected virtual void PlayerDead() { }
-    protected virtual void UsePorion() { }
+    
+    protected abstract void OptionalDead();
+    protected abstract void OptionalGetHit();
+    protected abstract void InThePit();
+    protected virtual void UsePotion() { }
     protected virtual void ActivateObstacle(string obstacleName) { }
-    protected virtual void OptionalDead() { }
-    protected virtual void OptionalGetHit() { }
     protected virtual void OptionalEndAttack() { }
     public virtual void EffectWidgetTrigger(string effectType, float duration) { }
+    public virtual void HealthWidgetTrigger() { }
     protected void Dead()
     {
         gameObject.layer = 9;
         animator.SetTrigger("isDead");
-        PlayerDead();
         OptionalDead();
     }
     protected bool RaycastCheck(Vector2 direction, float distance, int layer)
     {
         RaycastHit2D hit = Physics2D.Raycast(rb.position, direction, distance, layer);
-
-        if (hit.collider is null) return false;
-            return true;
- 
+        return hit.collider is null ? false : true;
     }
-    protected bool CheckOnPit()
-    {
-        return transform.position.y <= -5 ? true : false;
-    }
-
+    protected bool CheckOnPit() => transform.position.y <= -5 ? true : false;
     public void GetImpact(Impact impact)
     {
         EffectWidgetTrigger(impact._name, impact._duration);
         if (impact._type == "Boost")
         {
-            UsePorion();
+            UsePotion();
             switch (impact._name)           
             {
                 case "HP":

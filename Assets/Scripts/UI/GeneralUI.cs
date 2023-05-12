@@ -23,7 +23,7 @@ public class GeneralUI : MonoBehaviour
     private int LevelMenuState = 0;
     private GameObject playerRef,
         mainMenuPanel, selectLevelMenuPanel, loadPanel, pausePanel, gameShopPanel, buttonsPanel,
-        endGamePanel, settingsPanel, btnBack, btnNext, windowWin, windowLose, HUD,
+        endGamePanel, settingsPanel, infoPanel, btnBack, btnNext, windowWin, windowLose, HUD,
         btnGameShop, btnLevelHightSlot, btnLevelMiddleSlot, btnLevelLowSlot,
         textLevelHightSlot, textLevelMiddleSlot, textLevelLowSlot;
     private void Start()
@@ -65,6 +65,7 @@ public class GeneralUI : MonoBehaviour
     public void OpenSelectLevelMenu()
     {
         ShowMenu(mainMenuPanel, false);
+        ShowMenu(buttonsPanel, false);
         ShowLevelMenu(true);
     }
     public void ShowSettingsMenuBtnClick()
@@ -102,6 +103,16 @@ public class GeneralUI : MonoBehaviour
     {
         StartCoroutine(LoadLevel(0));
         ClickSound();
+    }
+    public void ShowInfoBtnClick()
+    {
+        ShowMenu(infoPanel, true);
+        ShowMenu(buttonsPanel, false);
+    }
+    public void CloseInfoPanel()
+    {
+        ShowMenu(infoPanel, false);
+        ShowMenu(buttonsPanel, true);
     }
     public void ShowWinWindow()
     {
@@ -236,10 +247,7 @@ public class GeneralUI : MonoBehaviour
     {
         availableLevel = level;
     }
-    public int GetAvailableLevel()
-    {
-        return availableLevel;
-    }
+    public int GetAvailableLevel() => availableLevel;
     private void Pause(bool pauseState)
     {
         if (pauseState) Time.timeScale = 0;
@@ -257,6 +265,7 @@ public class GeneralUI : MonoBehaviour
         settingsPanel = GameObject.Find("SettingsMenu");
         endGamePanel = GameObject.Find("EndGamePanel");
         selectLevelMenuPanel = GameObject.Find("SelectLevelMenu");
+        infoPanel = GameObject.Find("InfoMenu");
         loadPanel = GameObject.Find("LoadMenu");
         pausePanel = GameObject.Find("PauseMenu");
         gameShopPanel = GameObject.Find("GameShopMenu");
@@ -276,10 +285,7 @@ public class GeneralUI : MonoBehaviour
             loadProgressBar = GameObject.Find("LoadProgressBar").GetComponent<Image>();
         }
     }
-    private bool GONullCheck(GameObject gameObject)
-    {
-        return gameObject is not null ? true : false;
-    }
+    private bool GONullCheck(GameObject gameObject) => gameObject is not null ? true : false;
     private IEnumerator LoadLevel(int levelId)
     {
         yield return null;
@@ -313,12 +319,14 @@ public class GeneralUI : MonoBehaviour
     }
     private void UIPreparation()
     {
+        HideUIController(); // only PC build
         if (GONullCheck(selectLevelMenuPanel))
         {
             ShowLevelMenu(false);
             HideAllLevelMenuButtons();
         }
         if (GONullCheck(loadPanel)) ShowMenu(loadPanel, false);
+        if (GONullCheck(infoPanel)) ShowMenu(infoPanel, false);
         if (GONullCheck(endGamePanel)) ShowMenu(endGamePanel, false);
         if (GONullCheck(pausePanel)) ShowMenu(pausePanel, false);
         if (GONullCheck(windowWin)) ShowMenu(windowWin, false);
@@ -335,9 +343,16 @@ public class GeneralUI : MonoBehaviour
         }
         if (availableLevel == 0) availableLevel = 1;  
     }
-    private int GetLevelId(string btnTextLevel)
-    {
-        return localization.LevelNumberConstructor(btnTextLevel);
+    private int GetLevelId(string btnTextLevel) => localization.LevelNumberConstructor(btnTextLevel);
+    private void HideUIController()
+    {                                       // only PC build
+        if (GONullCheck(buttonsPanel))
+        {
+            GameObject.Find("btnJump").SetActive(false);
+            GameObject.Find("btnAttack").SetActive(false);
+            GameObject.Find("btnMoveToLeft").SetActive(false);
+            GameObject.Find("btnMoveToRight").SetActive(false);
+        }
     }
     private void ShowLevelMenu(bool state)
     {
@@ -470,6 +485,14 @@ public class GeneralUI : MonoBehaviour
         if (GONullCheck(GameObject.Find("textMainMenu"))) GameObject.Find("textMainMenu").GetComponent<TextMeshProUGUI>().text = localization.GetGUIText("MainMenu");
         if (GONullCheck(GameObject.Find("textSettings"))) GameObject.Find("textSettings").GetComponent<TextMeshProUGUI>().text = localization.GetGUIText("Settings");
         if (GONullCheck(GameObject.Find("textPlayGame"))) GameObject.Find("textPlayGame").GetComponent<TextMeshProUGUI>().text = localization.GetGUIText("PlayGame");
+        if (GONullCheck(GameObject.Find("textAttackController")))
+            GameObject.Find("textAttackController").GetComponent<TextMeshProUGUI>().text = localization.GetControllerInfo("Attack");
+        if (GONullCheck(GameObject.Find("textJumpController")))
+            GameObject.Find("textJumpController").GetComponent<TextMeshProUGUI>().text = localization.GetControllerInfo("Jump");
+        if (GONullCheck(GameObject.Find("textLeftController")))
+            GameObject.Find("textLeftController").GetComponent<TextMeshProUGUI>().text = localization.GetControllerInfo("MoveToLeft");
+        if (GONullCheck(GameObject.Find("textRightController")))
+            GameObject.Find("textRightController").GetComponent<TextMeshProUGUI>().text = localization.GetControllerInfo("MoveToRight");
     }
     private void ShowMenu(GameObject menuPanel, bool state)
     {

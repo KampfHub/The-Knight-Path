@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Player : Character
+class Player : Character
 {
     [SerializeField] private float _maxHP;
     [SerializeField] private float _maxDefence;
@@ -98,28 +98,15 @@ public class Player : Character
         GUI.GetComponent<GeneralUI>().AvailableLevelUpgrade(newAvailableLevel);
         GUI.GetComponent<GeneralUI>().ShowWinWindow(); 
     }
-    public int GetCoinsValue()
-    {
-        return coins;
-    }
     public void AddCoin()
     {
         coins++;
         soundsController.PlaySound("Coin");
     }
-    public void SpendCoins(int value)
-    {
-        coins -= value;
-    }
-
-    private void SetCoinsValue(int value)
-    {
-        coins = value;
-    }
-    private void SetDifficultyValue(string value)
-    {
-        currentDifficulty = value;
-    }
+    public int GetCoinsValue() => coins;
+    public void SpendCoins(int value) => coins -= value;
+    private void SetCoinsValue(int value) => coins = value;
+    private void SetDifficultyValue(string value) => currentDifficulty = value;
     private void Attack()
     {
         if (ActionIsAllowed() && isAttacikng == false)
@@ -140,24 +127,16 @@ public class Player : Character
             Invoke("RestoreJumpState", _jumpCooldownTime);
         }
     }
-    protected override void InThePit()
+    protected override void InThePit() => this.OptionalDead();
+    protected override void ActivateObstacle(string obstacleName) => soundsController.PlaySound(obstacleName);
+    protected override void UsePotion() => soundsController.PlaySound("Potion");
+    protected override void OptionalGetHit() => soundsController.PlaySound("Hit");
+    protected override void OptionalDead()
     {
-        this.PlayerDead();
-    }
-    protected override void ActivateObstacle(string obstacleName)
-    {
-        soundsController.PlaySound(obstacleName);
-    }
-    protected override void UsePorion()
-    {
-        soundsController.PlaySound("Potion");
-    }
-    protected override void PlayerDead()
-    {
+        soundsController.PlaySound("Lose", 0.5f);
         ClearLinkToPlatform();
         gameObject.SetActive(false);;
         DisableLevelMusic();
-        soundsController.PlaySound("Lose", 0.5f);
         GUI.GetComponent<GeneralUI>().ShowLoseWindow();
     }
     private void RestoreAttackState()
@@ -165,38 +144,17 @@ public class Player : Character
         isAttacikng = false;
         isWalking(false);
     }
-    private void RestoreJumpState()
-    {
-        isJumping = false;
-    }
-    protected override void OptionalGetHit()
-    {
-        soundsController.PlaySound("Hit");
-    }
-    protected void RestoreDefaultSpeed()
-    {
-        speed = _speed;
-    }
-    protected void RestoreDefaulAttackPower()
-    {
-        attackPower = _attackPower;
-    }
-    protected void RestoreDefaulJumpForce()
-    {
-        jumpForce = _jumpForce;
-    }
-    protected void RestoreDefaulImmortalState()
-    {
-        immortalState = false;
-    }
-    public float GetFormattingHPValueToWidget()
-    {
-        return currentHP / maxHP;
-    }
-    public float GetFormattingDefenceValueToWidget()
-    {
-        return currentDefence / maxDefence;
-    }
+    private void RestoreJumpState() => isJumping = false;
+   
+    protected void RestoreDefaultSpeed() => speed = _speed;
+
+    protected void RestoreDefaulAttackPower() => attackPower = _attackPower;
+
+    protected void RestoreDefaulJumpForce() => jumpForce = _jumpForce;
+    protected void RestoreDefaulImmortalState() => immortalState = false;
+    public float GetFormattingHPValueToWidget() => currentHP / maxHP;
+    public float GetFormattingDefenceValueToWidget() => currentDefence / maxDefence;
+
     public override void HealthWidgetTrigger()
     {
         if (GUI is not null) GUI.GetComponent<HUD>().ÑhangeWidgetValue();
@@ -249,25 +207,9 @@ public class Player : Character
             }
         }
     }
-    private void DisableLevelMusic()
-    {
-        soundsController.MuteLevelMusic();
-    }
-
-    public void StopMove() //crutch for ui
-    {
-        animator.SetBool("isWalking", false);
-    }
-    public void LockController(bool state) //crutch for ui
-    {
-        isLockController = state;
-    }
-    public void LinkToPlatform(GameObject parent) //crutch for platform
-    {
-        this.transform.SetParent(parent.transform);
-    }
-    public void ClearLinkToPlatform()
-    {
-        this.transform.SetParent(null);
-    }
+    private void DisableLevelMusic() => soundsController.MuteLevelMusic();
+    public void StopMove() => animator.SetBool("isWalking", false);
+    public void LockController(bool state) => isLockController = state;
+    public void LinkToPlatform(GameObject parent) => this.transform.SetParent(parent.transform);
+    public void ClearLinkToPlatform() => this.transform.SetParent(null);
 }
