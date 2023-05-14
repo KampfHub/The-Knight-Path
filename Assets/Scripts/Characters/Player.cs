@@ -1,6 +1,6 @@
 using UnityEngine;
 
-class Player : Character
+class Player : Character, IPlayable, ICombat
 {
     [SerializeField] private float _maxHP;
     [SerializeField] private float _maxDefence;
@@ -11,6 +11,9 @@ class Player : Character
     [SerializeField] private float _timeAttack;
     [SerializeField] private float _jumpCooldownTime;
     [SerializeField] private float _raycastlengthForJump;
+    public float jumpForce { get; set; }
+    public float attackPower { get; set; }
+    public float attackRange { get; set; }
     private GameObject GUI;
     private int coins;
     private SoundsController soundsController;
@@ -23,7 +26,7 @@ class Player : Character
         soundsControllerRef = GameObject.Find("SoundsController");
         GUI = GameObject.Find("GUI");
         GUI.GetComponentInChildren<JumpPressed>().JumpTrigger += Jump;
-        GUI.GetComponent<GeneralUI>().AttackTrigger += Attack;
+        GUI.GetComponent<GeneralUI>().AttackTrigger += LaunchAttack;
         GUI.GetComponent<GeneralUI>().UploadingCoins += SetCoinsValue;
         GUI.GetComponent<GeneralUI>().UploadingDifficultyValue += SetDifficultyValue;
     }
@@ -54,23 +57,23 @@ class Player : Character
     private void InputsListener()
     {
         if (Input.GetKeyDown(KeyCode.E))
-            Attack();
+            LaunchAttack();
         if (Input.GetKey(KeyCode.D))
-            MoveTo(Vector2.right);
+            Move(Vector2.right);
         if (Input.GetKeyUp(KeyCode.D))
-            isWalking(false);
+            AnimatorController("isWalking",false);
         if (Input.GetKey(KeyCode.A))
-            MoveTo(Vector2.left);
+            Move(Vector2.left);
         if (Input.GetKeyUp(KeyCode.A))
-            isWalking(false);
+            AnimatorController("isWalking", false);
         if (Input.GetKeyDown(KeyCode.Space))
             Jump();
         if (CheckMoveToRightBtnHold())
-            MoveTo(Vector2.right);
+            Move(Vector2.right);
         if (CheckMoveToLeftBtnHold())
-            MoveTo(Vector2.left);
+            Move(Vector2.left);
     }
-  
+
     public void SaveGame(int level)
     {
         GameObject gameDataController = GameObject.Find("GameDataController");
@@ -107,17 +110,21 @@ class Player : Character
     public void SpendCoins(int value) => coins -= value;
     private void SetCoinsValue(int value) => coins = value;
     private void SetDifficultyValue(string value) => currentDifficulty = value;
-    private void Attack()
+    public void LaunchAttack()
     {
+        AnimatorController("isAttacking");
         if (ActionIsAllowed() && isAttacikng == false)
         {
-            LaunchAttack();
             soundsController.PlaySound("Attack");
             isAttacikng = true;
             Invoke("RestoreAttackState", _timeAttack);
         }
     }
-    private void Jump()
+    protected override void EndAttack()
+    {
+        Attack(attackRange, attackPower);
+    }
+    public void Jump()
     {
         if (ActionIsAllowed() && isJumping == false)
         {
@@ -125,6 +132,57 @@ class Player : Character
             animator.SetTrigger("isJumping");
             rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
             Invoke("RestoreJumpState", _jumpCooldownTime);
+        }
+    }
+    public void GetImpact(Impact impact)
+    {
+        EffectWidgetTrigger(impact._name, impact._duration);
+        HealthWidgetTrigger();
+        if (impact._type == "Boost")
+        {
+            UsePotion();
+            switch (impact._name)
+            {
+                case "HP":
+                    {// impact.value get in percentages 
+                        currentHP += maxHP * (impact._value / 100);
+                        if (currentHP > maxHP) currentHP = maxHP;
+                        Debug.Log(currentHP);
+                        break;
+                    }
+                case "Defence":
+                    {
+                        currentDefence += impact._value;
+                        if (currentDefence > maxDefence) currentDefence = maxDefence;
+                        break;
+                    }
+                case "Power": Invoke("RestoreDefaulAttackPower", impact._duration); attackPower *= impact._value; break;
+                case "Speed": Invoke("RestoreDefaultSpeed", impact._duration); speed *= impact._value; break;
+                case "JumpForce": Invoke("RestoreDefaulJumpForce", impact._duration); jumpForce *= impact._value; break;
+                case "Immortal": Invoke("RestoreDefaulImmortalState", impact._duration); immortalState = true; break;
+            }
+        }
+        if (impact._type == "Decrease")
+        {
+            switch (impact._name)
+            {
+                case "Spike": GetHit(impact._value); break;
+                case "Trap":
+                    {
+                        GetHit(impact._value); Invoke("RestoreDefaultSpeed", impact._duration);
+                        speed -= speed * (impact._value / 100);
+                        ActivateObstacle("BearTrap");
+                        break;
+                    }
+
+                case "Poison":
+                    {
+                        Invoke("RestoreDefaulAttackPower", impact._duration);
+                        attackPower *= impact._value;
+                        ActivateObstacle("Poison");
+                        break;
+                    }
+            }
         }
     }
     protected override void InThePit() => this.OptionalDead();
@@ -142,7 +200,7 @@ class Player : Character
     private void RestoreAttackState()
     {
         isAttacikng = false;
-        isWalking(false);
+        AnimatorController("isWalking", false);
     }
     private void RestoreJumpState() => isJumping = false;
    

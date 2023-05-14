@@ -19,7 +19,7 @@ public class Trap : Impacts
         {
             Invoke("DestroyTrap", 1.2f);
             animator.SetTrigger("isWorked");
-            collision.gameObject.GetComponent<Character>().GetImpact(currentImpact);
+            collision.gameObject.GetComponent<Player>().GetImpact(currentImpact);
         }
     }
     private void DestroyTrap()

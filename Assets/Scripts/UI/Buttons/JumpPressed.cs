@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 
 public class JumpPressed : MonoBehaviour, IPointerDownHandler 
 {
-    public event VoidTrigger JumpTrigger;
+    public event VoidHandler JumpTrigger;
     public void OnPointerDown(PointerEventData pointerEventData)
     {
         JumpTrigger();

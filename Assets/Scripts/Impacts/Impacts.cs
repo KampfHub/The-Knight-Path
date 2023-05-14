@@ -15,8 +15,7 @@ public class Impacts : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            collision.gameObject.GetComponent<Character>().GetImpact(currentImpact);
-            collision.gameObject.GetComponent<Character>().HealthWidgetTrigger();
+            collision.gameObject.GetComponent<Player>().GetImpact(currentImpact);
             Destroy(gameObject);
         }
     }

@@ -1,7 +1,7 @@
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
-public delegate void VoidTrigger();
+public delegate void VoidHandler();
 public delegate void IntConteiner(int value);
 public delegate void TextConteiner(string value);
 

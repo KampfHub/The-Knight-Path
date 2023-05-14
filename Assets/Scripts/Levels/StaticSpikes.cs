@@ -16,8 +16,7 @@ public class StaticSpikes : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player" && AdditionalCheck())
         {
-            collision.gameObject.GetComponent<Character>().GetImpact(currentImpact);
-            collision.gameObject.GetComponent<Character>().HealthWidgetTrigger();
+            collision.gameObject.GetComponent<Player>().GetImpact(currentImpact);
             gameObject.GetComponent<BoxCollider2D>().enabled = false;
             Invoke("EnableSpikes", _cooldown);
         }

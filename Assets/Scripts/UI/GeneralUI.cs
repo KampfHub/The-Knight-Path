@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 
 public class GeneralUI : MonoBehaviour
 {
-    public event VoidTrigger JumpTrigger, AttackTrigger;
+    public event VoidHandler JumpTrigger, AttackTrigger;
     public event IntConteiner UploadingCoins;
     public event TextConteiner UploadingDifficultyValue;
     private int availableLevel;
@@ -223,8 +223,7 @@ public class GeneralUI : MonoBehaviour
             {
                 playerRef.GetComponent<Player>().SpendCoins(cost);
                 SetWalletValue();
-                playerRef.GetComponent<Character>().GetImpact(impact);
-                playerRef.GetComponent<Character>().HealthWidgetTrigger();
+                playerRef.GetComponent<Player>().GetImpact(impact);
             }  
         }
     }

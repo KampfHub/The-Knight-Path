@@ -1,18 +1,14 @@
 using UnityEngine;
 
-abstract class Character : MonoBehaviour
+public class Character : MonoBehaviour, IAlive
 {
-    protected float maxHP { get; set; }
+    public float maxHP { get; set; }
+    public float speed { get; set; }
     protected float currentHP { get; set; }
     protected float maxDefence { get; set; }
     protected float currentDefence { get; set; }
-    protected float attackPower { get; set; }
-    protected float attackRange { get; set; }
-    protected float speed { get; set; }
-    protected float jumpForce { get; set; }
     protected float raycastlengthForJump { get; set; }
     protected bool immortalState { get; set; }
-    private Vector2 currentDirection { get; set; }
     protected Rigidbody2D rb;
     protected Animator animator;
     protected SpriteRenderer spriteRenderer;
@@ -29,11 +25,10 @@ abstract class Character : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-    }    
-    protected void MoveTo(Vector2 direction)
+    }
+    public void MoveTo(Vector2 direction)
     {
-        currentDirection = direction;
-        isWalking(true);
+        AnimatorController("isWalking", true);
         if (direction == Vector2.left)
         {
             transform.Translate(speed * Time.deltaTime * -1, 0, 0);
@@ -45,11 +40,15 @@ abstract class Character : MonoBehaviour
             spriteRenderer.flipX = false;
         }
     }
-    protected void isWalking(bool state) => animator.SetBool("isWalking", state);
-    protected void LaunchAttack() => animator.SetTrigger("isAttacking");
-    protected void EndAttack()
+    public void Die()
     {
-        OptionalEndAttack();
+        gameObject.layer = 9;
+        AnimatorController("isDead");
+        OptionalDead();
+    }
+    protected void Move(Vector2 direction) => MoveTo(direction);
+    protected void Attack(float attackRange, float attackPower)
+    {
         RaycastHit2D raycast = Physics2D.Raycast(rb.position, GetCurrentDirection(), attackRange, GetTargetLayer());
         if (raycast.collider is not null)
         {
@@ -59,7 +58,8 @@ abstract class Character : MonoBehaviour
                 enemyScript.GetHit(attackPower);
             }
         }
-    }
+    }    
+    protected void EndAttackNotify() => EndAttack(); // called in Animation "Attack"
     private Vector2 GetCurrentDirection() => spriteRenderer.flipX ? Vector2.left : Vector2.right;
     private int GetTargetLayer() => gameObject.layer == 3 ? enemyLayer : playerLayer;
     public void GetHit(float damage)
@@ -70,81 +70,33 @@ abstract class Character : MonoBehaviour
             if (currentDefence > 0 && currentDefence < damage) { currentHP -= residualDamage; currentDefence = 0; }
             if (currentDefence <= 0) currentHP -= damage; 
             if (currentDefence >= damage) currentDefence -= damage;
-            animator.SetTrigger("isHurting");
-            if (currentHP <= 0) Dead();
+            if (currentHP <= 0) Die();
+            AnimatorController("isHurting");
             HealthWidgetTrigger();
             OptionalGetHit();
         }
     }
-    
-    protected abstract void OptionalDead();
-    protected abstract void OptionalGetHit();
-    protected abstract void InThePit();
+    protected void AnimatorController(string triggerName)
+    {
+        animator.SetTrigger(triggerName);
+    }
+    protected void AnimatorController(string triggerName, bool state)
+    {
+        animator.SetBool(triggerName, state);
+    }
+    protected virtual void OptionalDead() { } 
+    protected virtual void OptionalGetHit() { }
+    protected virtual void InThePit() { }
     protected virtual void UsePotion() { }
     protected virtual void ActivateObstacle(string obstacleName) { }
-    protected virtual void OptionalEndAttack() { }
+    protected virtual void EndAttack() { }
     public virtual void EffectWidgetTrigger(string effectType, float duration) { }
     public virtual void HealthWidgetTrigger() { }
-    protected void Dead()
-    {
-        gameObject.layer = 9;
-        animator.SetTrigger("isDead");
-        OptionalDead();
-    }
     protected bool RaycastCheck(Vector2 direction, float distance, int layer)
     {
         RaycastHit2D hit = Physics2D.Raycast(rb.position, direction, distance, layer);
         return hit.collider is null ? false : true;
     }
     protected bool CheckOnPit() => transform.position.y <= -5 ? true : false;
-    public void GetImpact(Impact impact)
-    {
-        EffectWidgetTrigger(impact._name, impact._duration);
-        if (impact._type == "Boost")
-        {
-            UsePotion();
-            switch (impact._name)           
-            {
-                case "HP":
-                    {// impact.value get in percentages 
-                        currentHP += maxHP * (impact._value / 100);
-                        if(currentHP > maxHP) currentHP = maxHP;
-                        Debug.Log(currentHP);
-                        break;
-                    }   
-                case "Defence":
-                    {
-                        currentDefence += impact._value; 
-                        if(currentDefence > maxDefence) currentDefence = maxDefence;
-                        break;
-                    }      
-                case "Power": Invoke("RestoreDefaulAttackPower", impact._duration); attackPower *= impact._value; break;
-                case "Speed": Invoke("RestoreDefaultSpeed", impact._duration); speed *= impact._value; break;
-                case "JumpForce": Invoke("RestoreDefaulJumpForce", impact._duration); jumpForce *= impact._value; break;
-                case "Immortal": Invoke("RestoreDefaulImmortalState", impact._duration); immortalState = true; break;
-            }
-        }
-        if (impact._type == "Decrease")
-        {
-            switch (impact._name)
-            {
-                case "Spike": GetHit(impact._value); break;
-                case "Trap":
-                    {
-                        GetHit(impact._value); Invoke("RestoreDefaultSpeed", impact._duration);
-                        speed -= speed * (impact._value / 100);
-                        ActivateObstacle("BearTrap");
-                        break;
-                    }
-
-                case "Poison":
-                    {
-                        Invoke("RestoreDefaulAttackPower", impact._duration); 
-                        attackPower *= impact._value;
-                        ActivateObstacle("Poison");
-                        break;
-                    }
-            }
-        }
-    }
+  
 }

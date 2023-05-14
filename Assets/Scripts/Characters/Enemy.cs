@@ -1,7 +1,6 @@
-using Unity.VisualScripting;
 using UnityEngine;
 public delegate void EnemyTrigger();
-class Enemy : Character
+class Enemy : Character, ICombat
 {
     [SerializeField] private float _maxHP;
     [SerializeField] private float _speed;
@@ -9,6 +8,8 @@ class Enemy : Character
     [SerializeField] private float _attackCooldownTime;
     [SerializeField] private float _attackRange;
     [SerializeField] private float _sightLenght;
+    public float attackPower { get; set; }
+    public float attackRange { get; set; }
     private bool isAttackCooldown;
     private SoundsController soundsController;
     private GameObject playerRef { get; set; }
@@ -41,13 +42,13 @@ class Enemy : Character
             {
                 if (RaycastCheck(GetCurrentDirection(), attackRange, playerLayer) == false)
                 {
-                    MoveTo(GetCurrentDirection());
+                    Move(GetCurrentDirection());
                     CheckPlayerBehind();
                 }
                 if (RaycastCheck(GetCurrentDirection(),attackRange, playerLayer))
                 {
-                    isWalking(false);
-                    Attack();
+                    AnimatorController("isWalking", false);
+                    LaunchAttack();
                 }
             }
             else TargetLoss();
@@ -58,21 +59,22 @@ class Enemy : Character
     {
         Destroy(gameObject);
     }
-    private void Attack()
+    public void LaunchAttack()
     {
         if (isAttackCooldown) 
         {
-            LaunchAttack();
-            isAttackCooldown= false; 
+            isAttackCooldown= false;
+            AnimatorController("isAttacking");
         }
     }
     private void RestoreCooldown()
     {
         isAttackCooldown = true;
     }
-    protected override void OptionalEndAttack() 
+    protected override void EndAttack() 
     {
         Invoke("RestoreCooldown", _attackCooldownTime);
+        Attack(attackRange, attackPower);
     }
     protected override void OptionalDead()
     {
@@ -83,7 +85,7 @@ class Enemy : Character
         if(EnemyHit is not null) EnemyHit();
         soundsController.PlaySound("Hit", 0.7f);
     }
-    private void TargetLoss() => isWalking(false);    
+    private void TargetLoss() => AnimatorController("isWalking", false);
     private Vector2 GetCurrentDirection()
     {
         if (spriteRenderer.flipX) return Vector2.left;
