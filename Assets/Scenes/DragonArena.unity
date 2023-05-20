@@ -12491,6 +12491,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: KnightStage_3
       objectReference: {fileID: 0}
+    - target: {fileID: 7512652281157976846, guid: 2234961b1e6d34d458e6b20276a6130d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7512652281157976849, guid: 2234961b1e6d34d458e6b20276a6130d, type: 3}
       propertyPath: m_Size.x
       value: 0.5826727

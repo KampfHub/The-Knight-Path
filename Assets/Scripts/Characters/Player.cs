@@ -14,11 +14,16 @@ class Player : Character, IPlayable, ICombat
     public float jumpForce { get; set; }
     public float attackPower { get; set; }
     public float attackRange { get; set; }
-    private GameObject GUI;
-    private int coins;
+    private float raycastlengthForJump { get; set; }
+    private GameObject GUI, soundsControllerRef;
     private SoundsController soundsController;
-    private string currentDifficulty;
+    private InputController inputController;
     private SaveData dataBuffer;
+    private string currentDifficulty;
+    private const string keyClick = "click";
+    private const string keyDown = "down";
+    private const string keyUp = "up";
+    private int coins;
     private bool isAttacikng, isJumping, isLockController;
     private void Awake()
     {
@@ -35,6 +40,7 @@ class Player : Character, IPlayable, ICombat
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        inputController = GetComponent<InputController>();
         soundsController = soundsControllerRef.GetComponent<SoundsController>();
         maxHP = _maxHP;
         currentHP = maxHP;
@@ -56,24 +62,17 @@ class Player : Character, IPlayable, ICombat
     }
     private void InputsListener()
     {
-        if (Input.GetKeyDown(KeyCode.E))
-            LaunchAttack();
-        if (Input.GetKey(KeyCode.D))
-            Move(Vector2.right);
-        if (Input.GetKeyUp(KeyCode.D))
-            AnimatorController("isWalking",false);
-        if (Input.GetKey(KeyCode.A))
-            Move(Vector2.left);
-        if (Input.GetKeyUp(KeyCode.A))
-            AnimatorController("isWalking", false);
-        if (Input.GetKeyDown(KeyCode.Space))
-            Jump();
-        if (CheckMoveToRightBtnHold())
-            Move(Vector2.right);
-        if (CheckMoveToLeftBtnHold())
-            Move(Vector2.left);
+        inputController.KeyboardController(LaunchAttack, KeyCode.E, keyClick);
+        inputController.KeyboardController(MoveToRight, KeyCode.D, keyDown);
+        inputController.KeyboardController(MoveToLeft, KeyCode.A, keyDown);
+        inputController.KeyboardController(Jump, KeyCode.Space, keyClick);
+        inputController.KeyboardController(StopMove, KeyCode.A, keyUp);
+        inputController.KeyboardController(StopMove, KeyCode.D, keyUp);
+        inputController.UIController(MoveToRight, CheckMoveToRightBtnHold());
+        inputController.UIController(MoveToLeft, CheckMoveToLeftBtnHold());
     }
-
+    private void MoveToLeft() => Move(Vector2.left);
+    private void MoveToRight() => Move(Vector2.right);
     public void SaveGame(int level)
     {
         GameObject gameDataController = GameObject.Find("GameDataController");
@@ -136,8 +135,6 @@ class Player : Character, IPlayable, ICombat
     }
     public void GetImpact(Impact impact)
     {
-        EffectWidgetTrigger(impact._name, impact._duration);
-        HealthWidgetTrigger();
         if (impact._type == "Boost")
         {
             UsePotion();
@@ -184,11 +181,15 @@ class Player : Character, IPlayable, ICombat
                     }
             }
         }
+        EffectWidgetTrigger(impact._name, impact._duration);
+        HealthWidgetTrigger();
     }
     protected override void InThePit() => this.OptionalDead();
-    protected override void ActivateObstacle(string obstacleName) => soundsController.PlaySound(obstacleName);
-    protected override void UsePotion() => soundsController.PlaySound("Potion");
-    protected override void OptionalGetHit() => soundsController.PlaySound("Hit");
+    protected override void OptionalGetHit()
+    {
+        soundsController.PlaySound("Hit");
+        HealthWidgetTrigger();
+    }
     protected override void OptionalDead()
     {
         soundsController.PlaySound("Lose", 0.5f);
@@ -202,8 +203,9 @@ class Player : Character, IPlayable, ICombat
         isAttacikng = false;
         AnimatorController("isWalking", false);
     }
+    private void ActivateObstacle(string obstacleName) => soundsController.PlaySound(obstacleName);
     private void RestoreJumpState() => isJumping = false;
-   
+    protected void UsePotion() => soundsController.PlaySound("Potion");
     protected void RestoreDefaultSpeed() => speed = _speed;
 
     protected void RestoreDefaulAttackPower() => attackPower = _attackPower;
@@ -213,11 +215,11 @@ class Player : Character, IPlayable, ICombat
     public float GetFormattingHPValueToWidget() => currentHP / maxHP;
     public float GetFormattingDefenceValueToWidget() => currentDefence / maxDefence;
 
-    public override void HealthWidgetTrigger()
+    public void HealthWidgetTrigger()
     {
         if (GUI is not null) GUI.GetComponent<HUD>().ÑhangeWidgetValue();
     }
-    public override void EffectWidgetTrigger(string effectType, float duration)
+    public void EffectWidgetTrigger(string effectType, float duration)
     {
         if (GUI is not null) GUI.GetComponent<HUD>().SetIconInSlot(effectType, duration);
     }

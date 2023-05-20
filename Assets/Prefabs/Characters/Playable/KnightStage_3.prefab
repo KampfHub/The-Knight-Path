@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7512652281157976850}
   - component: {fileID: 7512652281157976851}
   - component: {fileID: 7512652281157976844}
-  - component: {fileID: 7512652281157976845}
+  - component: {fileID: 8217359908122147254}
   m_Layer: 3
   m_Name: KnightStage_3
   m_TagString: Player
@@ -194,7 +194,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0.14143308, y: 0.76629835}
   m_Size: {x: 2.6029904, y: 5.137738}
   m_Direction: 0
---- !u!114 &7512652281157976845
+--- !u!114 &8217359908122147254
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -203,6 +203,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 7512652281157976846}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed1cb9e3839b70940ba7ba400ead20cf, type: 3}
+  m_Script: {fileID: 11500000, guid: da5a12300db629d4b928e9df7bc07554, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

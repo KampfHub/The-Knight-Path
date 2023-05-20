@@ -1,7 +1,7 @@
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
-public delegate void VoidHandler();
+public delegate void VoidConteiner();
 public delegate void IntConteiner(int value);
 public delegate void TextConteiner(string value);
 
@@ -36,7 +36,7 @@ public class GameDataController : MonoBehaviour
         + "/SaveData.dat");
         bf.Serialize(file, saveData);
         file.Close();
-        Debug.Log("Game data saved!");
+        Debug.Log("Game saved!");
     }
 
     public SaveData LoadData()
@@ -50,7 +50,7 @@ public class GameDataController : MonoBehaviour
               + "/SaveData.dat", FileMode.Open);
             SaveData saveData = (SaveData)bf.Deserialize(file);
             file.Close();
-            Debug.Log("Game data loaded!");
+            Debug.Log("Game loaded!");
             return saveData;
         }
         else

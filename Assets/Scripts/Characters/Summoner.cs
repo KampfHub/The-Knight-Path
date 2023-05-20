@@ -17,7 +17,14 @@ class Summoner : Character
         gameObject.layer = 8;
     }
     protected override void InThePit() => Reborn();
-    protected override void OptionalGetHit() { }
+    protected override void OptionalGetHit() 
+    {
+        //does not need to be implemented
+    }
+    protected override void EndAttack()
+    {
+        //does not need to be implemented
+    }
     protected override void OptionalDead()
     {
         if(gameObject.GetComponent<ObjectSpawner>() is not null)

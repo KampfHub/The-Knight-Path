@@ -12,7 +12,7 @@ class Enemy : Character, ICombat
     public float attackRange { get; set; }
     private bool isAttackCooldown;
     private SoundsController soundsController;
-    private GameObject playerRef { get; set; }
+    private GameObject playerRef, soundsControllerRef;
     public event EnemyTrigger EnemyDead, EnemyHit;
     
     private void Awake()

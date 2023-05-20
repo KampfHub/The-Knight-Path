@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 
 public class GeneralUI : MonoBehaviour
 {
-    public event VoidHandler JumpTrigger, AttackTrigger;
+    public event VoidConteiner JumpTrigger, AttackTrigger;
     public event IntConteiner UploadingCoins;
     public event TextConteiner UploadingDifficultyValue;
     private int availableLevel;
@@ -74,6 +74,15 @@ public class GeneralUI : MonoBehaviour
         ShowMenu(mainMenuPanel, false);
         ClickSound();
     }
+    public void ResetDataBtnClick()
+    {
+        GameObject gameDataController = GameObject.Find("GameDataController");
+        if (gameDataController is not null)
+        {
+            gameDataController.GetComponent<GameDataController>().ResetData();
+        }
+        //availableLevel = 1;
+    }
     public void ShowMainMenu()
     {
         ShowMenu(mainMenuPanel, true);
@@ -132,9 +141,20 @@ public class GeneralUI : MonoBehaviour
     }
     public void CloseSelectLevelMenuBtnClick()
     {
-        ShowLevelMenu(false);
-        Pause(false);
         ClickSound();
+        if (playerRef is not null)
+        {
+            ShowLevelMenu(false);
+            Pause(false);
+        }
+        else
+        {
+            if (selectLevelMenuPanel is not null)
+            {
+                ShowMenu(selectLevelMenuPanel, false);
+                ShowMenu(mainMenuPanel, true);
+            }
+        }
     }
     public void NextBtnClick()
     {
@@ -318,7 +338,7 @@ public class GeneralUI : MonoBehaviour
     }
     private void UIPreparation()
     {
-        HideUIController(); // only PC build
+        //HideUIController(); // only PC build
         if (GONullCheck(selectLevelMenuPanel))
         {
             ShowLevelMenu(false);
@@ -345,13 +365,13 @@ public class GeneralUI : MonoBehaviour
     private int GetLevelId(string btnTextLevel) => localization.LevelNumberConstructor(btnTextLevel);
     private void HideUIController()
     {                                       // only PC build
-        if (GONullCheck(buttonsPanel))
-        {
-            GameObject.Find("btnJump").SetActive(false);
-            GameObject.Find("btnAttack").SetActive(false);
-            GameObject.Find("btnMoveToLeft").SetActive(false);
-            GameObject.Find("btnMoveToRight").SetActive(false);
-        }
+        //if (GONullCheck(buttonsPanel))
+        //{
+        //    GameObject.Find("btnJump").SetActive(false);
+        //    GameObject.Find("btnAttack").SetActive(false);
+        //    GameObject.Find("btnMoveToLeft").SetActive(false);
+        //    GameObject.Find("btnMoveToRight").SetActive(false);
+        //}
     }
     private void ShowLevelMenu(bool state)
     {

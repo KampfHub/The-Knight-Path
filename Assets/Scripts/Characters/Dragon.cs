@@ -65,8 +65,5 @@ public class Dragon : MonoBehaviour
         if (Cage is not null) Cage.GetComponent<ObjectSpawner>().DestroyAndSpawn();
         if (summonRef is not null) Destroy(summonRef);
     }
-    private void SetIsDead()
-    {
-        isDead = true;
-    }
+    private void SetIsDead() => isDead = true;
 }

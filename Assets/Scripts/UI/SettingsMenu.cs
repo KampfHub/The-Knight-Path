@@ -5,7 +5,7 @@ using TMPro;
 
 public class SettingsMenu : MonoBehaviour
 {
-    public event VoidHandler UpdateLocalization;
+    public event VoidConteiner UpdateLocalization;
     private GameObject gameDataController, soundsControllerRef, GUIRef, panelENG, panelRUS,
         btnSoundsOn, btnSoundsOff, btnGameMode, btnDifficulty, btnLanguage;
     private SaveData dataBuffer;
