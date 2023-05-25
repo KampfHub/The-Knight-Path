@@ -24872,6 +24872,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3592372757662400718, guid: c60c08f67c62ce44c87da90d10a130b9, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3826386711602991976, guid: c60c08f67c62ce44c87da90d10a130b9, type: 3}
       propertyPath: m_Camera
       value: 

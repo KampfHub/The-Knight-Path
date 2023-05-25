@@ -5558,6 +5558,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1089126546325808246}
+        m_TargetAssemblyTypeName: Buttons, Assembly-CSharp
+        m_MethodName: BtnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2998734562311156756
 GameObject:
   m_ObjectHideFlags: 0
@@ -6838,6 +6850,7 @@ GameObject:
   - component: {fileID: 3592372757662400712}
   - component: {fileID: 3592372757662400719}
   - component: {fileID: 3592372757662400718}
+  - component: {fileID: 3250054869022048586}
   m_Layer: 5
   m_Name: btnAttack
   m_TagString: Untagged
@@ -6947,19 +6960,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3592372757662400719}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3592372756262812343}
-        m_TargetAssemblyTypeName: Buttons, Assembly-CSharp
-        m_MethodName: AttackButton
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
+--- !u!114 &3250054869022048586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3592372757662400716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca2c0866c9e0a2c4981f4e3f2ffa3cab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3592372757739230424
 GameObject:
   m_ObjectHideFlags: 0
@@ -7959,6 +7972,8 @@ GameObject:
   - component: {fileID: 3592372756262812347}
   - component: {fileID: 3592372756262812343}
   - component: {fileID: 1058487529904879723}
+  - component: {fileID: 2210415116265954219}
+  - component: {fileID: 1089126546325808246}
   m_Layer: 5
   m_Name: GUI (PC)
   m_TagString: Untagged
@@ -8104,6 +8119,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e15846d9e7dbf4643b93bd78d8df5d16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2210415116265954219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3826386711602991983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c1d249c31c393847ab361ba49eac0af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1089126546325808246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3826386711602991983}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d28a85e46522e04bbd42d43a014fb68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &3826386711838234691

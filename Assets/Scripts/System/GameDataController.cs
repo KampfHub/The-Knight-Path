@@ -76,11 +76,16 @@ public class GameDataController : MonoBehaviour
         if (File.Exists(Application.persistentDataPath
           + "/SaveData.dat"))
         {
-            File.Delete(Application.persistentDataPath
-              + "/SaveData.dat");
-            Debug.Log("Data reset complete!");
+            try
+            {
+                File.Delete(Application.persistentDataPath
+                  + "/SaveData.dat");
+                Debug.Log("Data reset complete!");
+            }
+            catch 
+            {
+                Debug.Log("No save data to delete.");
+            }
         }
-        else
-            Debug.Log("No save data to delete.");
     }
 }

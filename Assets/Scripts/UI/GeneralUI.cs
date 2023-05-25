@@ -16,12 +16,11 @@ public class GeneralUI : MonoBehaviour
     private bool gameShopEnabled;
     private AsyncOperation asyncOperation;
     private Image loadProgressBar;
-    private GameObject soundsControllerRef;
     private SoundsController soundsController;
     private Localization localization;
     private bool isPauseButtonPressed = false;
     private int LevelMenuState = 0;
-    private GameObject playerRef,
+    private GameObject playerRef,soundsControllerRef,
         mainMenuPanel, selectLevelMenuPanel, loadPanel, pausePanel, gameShopPanel, buttonsPanel,
         endGamePanel, settingsPanel, infoPanel, btnBack, btnNext, windowWin, windowLose, HUD,
         btnGameShop, btnLevelHightSlot, btnLevelMiddleSlot, btnLevelLowSlot,
@@ -338,7 +337,7 @@ public class GeneralUI : MonoBehaviour
     }
     private void UIPreparation()
     {
-        //HideUIController(); // only PC build
+        HideUIController(); // only PC build
         if (GONullCheck(selectLevelMenuPanel))
         {
             ShowLevelMenu(false);

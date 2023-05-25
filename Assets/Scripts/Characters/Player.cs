@@ -31,7 +31,7 @@ class Player : Character, IPlayable, ICombat
         soundsControllerRef = GameObject.Find("SoundsController");
         GUI = GameObject.Find("GUI");
         GUI.GetComponentInChildren<JumpPressed>().JumpTrigger += Jump;
-        GUI.GetComponent<GeneralUI>().AttackTrigger += LaunchAttack;
+        GUI.GetComponentInChildren<AttackPressed>().AttackTrigger += LaunchAttack;
         GUI.GetComponent<GeneralUI>().UploadingCoins += SetCoinsValue;
         GUI.GetComponent<GeneralUI>().UploadingDifficultyValue += SetDifficultyValue;
     }
