@@ -144,7 +144,6 @@ class Player : Character, IPlayable, ICombat
                     {// impact.value get in percentages 
                         currentHP += maxHP * (impact._value / 100);
                         if (currentHP > maxHP) currentHP = maxHP;
-                        Debug.Log(currentHP);
                         break;
                     }
                 case "Defence":
